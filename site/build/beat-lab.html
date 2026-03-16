@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beat Lab — Clock School</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body, #root { height: 100%; }
+    body { font-family: 'Source Serif 4', Georgia, serif; -webkit-font-smoothing: antialiased; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+  <script type="text/babel">
+// (imports provided by UMD globals)
+const { useState, useRef, useEffect, useCallback } = React;
+
+// ─── Constants ───
+const FFT_SIZE = 4096;
+const WAVEFORM_SIZE = 2048;
+const MIN_FREQ = 100;
+const MAX_FREQ = 2000;
+const DEFAULT_F1 = 440;
+const DEFAULT_F2 = 443;
+
+// ─── Color tokens (observatory logbook) ───
+const C = {
+  bg: "#1a2332",
+  panel: "#1e2a3a",
+  panelBorder: "#2e3f56",
+  surface: "#243044",
+  text: "#c4ced8",
+  textBright: "#e3e8ed",
+  textDim: "#6b7d90",
+  amber: "#d4860a",
+  amberLight: "#e8a020",
+  amberDim: "#8a5a10",
+  green: "#2dd4a0",
+  red: "#ef6461",
+  sand: "#f7f3ea",
+  waveform: "#5db8fe",
+  spectrum: "#e8a020",
+  envelope: "#2dd4a0",
+  grid: "rgba(122,143,166,0.12)",
+  gridText: "rgba(122,143,166,0.5)",
+};
+
+// ─── Utility ───
+function formatFreq(f) {
+  return f < 10 ? f.toFixed(2) : f < 100 ? f.toFixed(1) : f.toFixed(0);
+}
+
+function timestamp() {
+  const d = new Date();
+  return d.toISOString().slice(0, 19).replace("T", " ");
+}
+
+// ─── Canvas: Waveform ───
+function drawWaveform(canvas, analyser, beatFreqRef, sampleRate) {
+  if (!canvas || !analyser) return;
+  const ctx = canvas.getContext("2d");
+  const W = canvas.width;
+  const H = canvas.height;
+  const data = new Float32Array(analyser.fftSize);
+  analyser.getFloatTimeDomainData(data);
+
+  ctx.fillStyle = C.panel;
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid
+  ctx.strokeStyle = C.grid;
+  ctx.lineWidth = 1;
+  for (let i = 1; i < 4; i++) {
+    const y = (H * i) / 4;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(W, y);
+    ctx.stroke();
+  }
+
+  // Zero line
+  ctx.strokeStyle = C.gridText;
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath();
+  ctx.moveTo(0, H / 2);
+  ctx.lineTo(W, H / 2);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Waveform
+  ctx.strokeStyle = C.waveform;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  const step = Math.max(1, Math.floor(data.length / W));
+  for (let i = 0; i < W; i++) {
+    const idx = i * step;
+    if (idx >= data.length) break;
+    const y = ((1 - data[idx]) / 2) * H;
+    if (i === 0) ctx.moveTo(i, y);
+    else ctx.lineTo(i, y);
+  }
+  ctx.stroke();
+
+  // Envelope (simple absolute value smoothed)
+  if (beatFreqRef.current > 0.3) {
+    ctx.strokeStyle = C.envelope;
+    ctx.lineWidth = 2;
+    ctx.globalAlpha = 0.6;
+    ctx.beginPath();
+    const envWindow = Math.max(20, Math.floor(sampleRate / (beatFreqRef.current * 4)));
+    let started = false;
+    for (let i = 0; i < W; i++) {
+      const idx = i * step;
+      if (idx >= data.length) break;
+      let maxVal = 0;
+      for (let j = Math.max(0, idx - envWindow); j < Math.min(data.length, idx + envWindow); j++) {
+        maxVal = Math.max(maxVal, Math.abs(data[j]));
+      }
+      const y = ((1 - maxVal) / 2) * H;
+      if (!started) { ctx.moveTo(i, y); started = true; }
+      else ctx.lineTo(i, y);
+    }
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+}
+
+// ─── Canvas: FFT Spectrum ───
+function drawSpectrum(canvas, analyser, sampleRate) {
+  if (!canvas || !analyser) return;
+  const ctx = canvas.getContext("2d");
+  const W = canvas.width;
+  const H = canvas.height;
+  const bufLen = analyser.frequencyBinCount;
+  const data = new Float32Array(bufLen);
+  analyser.getFloatFrequencyData(data);
+
+  ctx.fillStyle = C.panel;
+  ctx.fillRect(0, 0, W, H);
+
+  // Only show 0–2500 Hz
+  const maxFreqDisplay = 2500;
+  const binWidth = sampleRate / FFT_SIZE;
+  const maxBin = Math.min(bufLen, Math.ceil(maxFreqDisplay / binWidth));
+
+  // Freq grid lines
+  ctx.fillStyle = C.gridText;
+  ctx.font = "10px 'JetBrains Mono', monospace";
+  ctx.textAlign = "center";
+  for (let f = 500; f <= 2000; f += 500) {
+    const x = (f / maxFreqDisplay) * W;
+    ctx.strokeStyle = C.grid;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, H);
+    ctx.stroke();
+    ctx.fillText(f + " Hz", x, H - 4);
+  }
+
+  // dB grid
+  ctx.textAlign = "right";
+  for (let db = -80; db <= 0; db += 20) {
+    const y = H * (1 - (db + 100) / 100);
+    ctx.strokeStyle = C.grid;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(W, y);
+    ctx.stroke();
+    if (db > -100) ctx.fillText(db + " dB", 38, y + 3);
+  }
+
+  // Spectrum bars
+  ctx.fillStyle = C.spectrum;
+  const barW = Math.max(1, W / maxBin);
+  for (let i = 0; i < maxBin; i++) {
+    const val = data[i];
+    const normVal = (val + 100) / 100;
+    const barH = Math.max(0, normVal * H);
+    ctx.globalAlpha = 0.7;
+    ctx.fillRect(i * barW, H - barH, Math.max(1, barW - 0.5), barH);
+  }
+  ctx.globalAlpha = 1;
+}
+
+// ─── Beat frequency from FFT peaks ───
+function estimateBeatFromFFT(analyser, sampleRate) {
+  if (!analyser) return null;
+  const bufLen = analyser.frequencyBinCount;
+  const data = new Float32Array(bufLen);
+  analyser.getFloatFrequencyData(data);
+  const binWidth = sampleRate / FFT_SIZE;
+  const maxBin = Math.min(bufLen, Math.ceil(2500 / binWidth));
+
+  // Find two highest peaks above -50 dB, separated by at least 5 bins
+  let peaks = [];
+  for (let i = 2; i < maxBin - 2; i++) {
+    if (data[i] > data[i - 1] && data[i] > data[i + 1] && data[i] > -50) {
+      // Parabolic interpolation for sub-bin accuracy
+      const alpha = data[i - 1];
+      const beta = data[i];
+      const gamma = data[i + 1];
+      const p = 0.5 * (alpha - gamma) / (alpha - 2 * beta + gamma);
+      peaks.push({ bin: i + p, mag: beta });
+    }
+  }
+
+  peaks.sort((a, b) => b.mag - a.mag);
+  if (peaks.length < 2) return null;
+
+  // Find second peak that's at least 2 Hz away from first
+  const f1 = peaks[0].bin * binWidth;
+  for (let i = 1; i < peaks.length; i++) {
+    const f2 = peaks[i].bin * binWidth;
+    if (Math.abs(f2 - f1) > 2) {
+      return Math.abs(f2 - f1);
+    }
+  }
+  return null;
+}
+
+// ─── Freq Slider Component ───
+function FreqControl({ label, freq, setFreq, color }) {
+  return (
+    <div style={{ marginBottom: 12 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: C.textDim }}>{label}</span>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 18, fontWeight: 600, color }}>{formatFreq(freq)} <span style={{ fontSize: 11, color: C.textDim }}>Hz</span></span>
+      </div>
+      <input
+        type="range" min={MIN_FREQ} max={MAX_FREQ} step={0.1} value={freq}
+        onChange={(e) => setFreq(parseFloat(e.target.value))}
+        style={{ width: "100%", accentColor: color }}
+      />
+      <div style={{ display: "flex", gap: 6, marginTop: 4 }}>
+        {[-10, -1, -0.1, 0.1, 1, 10].map((d) => (
+          <button key={d} onClick={() => setFreq(Math.max(MIN_FREQ, Math.min(MAX_FREQ, freq + d)))}
+            style={{ flex: 1, padding: "3px 0", fontSize: 10, fontFamily: "'JetBrains Mono', monospace", background: C.surface, color: C.textDim, border: `1px solid ${C.panelBorder}`, borderRadius: 3, cursor: "pointer" }}>
+            {d > 0 ? "+" : ""}{d}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Main App ───
+function BeatLab() {
+  const [freq1, setFreq1] = useState(DEFAULT_F1);
+  const [freq2, setFreq2] = useState(DEFAULT_F2);
+  const [playing, setPlaying] = useState(false);
+  const [volume, setVolume] = useState(0.3);
+  const [mode, setMode] = useState("internal"); // internal | mic
+  const [beatFreq, setBeatFreq] = useState(null);
+  const [log, setLog] = useState([]);
+  const [showGuide, setShowGuide] = useState(true);
+  const [micError, setMicError] = useState(null);
+
+  const audioCtxRef = useRef(null);
+  const osc1Ref = useRef(null);
+  const osc2Ref = useRef(null);
+  const gainRef = useRef(null);
+  const analyserRef = useRef(null);
+  const micStreamRef = useRef(null);
+  const micSourceRef = useRef(null);
+  const waveCanvasRef = useRef(null);
+  const specCanvasRef = useRef(null);
+  const animRef = useRef(null);
+  const beatFreqRef = useRef(0);
+
+  // Update osc frequencies live
+  useEffect(() => {
+    if (osc1Ref.current && mode === "internal") osc1Ref.current.frequency.setValueAtTime(freq1, audioCtxRef.current.currentTime);
+    if (osc2Ref.current && mode === "internal") osc2Ref.current.frequency.setValueAtTime(freq2, audioCtxRef.current.currentTime);
+  }, [freq1, freq2, mode]);
+
+  useEffect(() => {
+    if (gainRef.current) gainRef.current.gain.setValueAtTime(volume, audioCtxRef.current.currentTime);
+  }, [volume]);
+
+  // Animation loop
+  const animate = useCallback(() => {
+    const wc = waveCanvasRef.current;
+    const sc = specCanvasRef.current;
+    const an = analyserRef.current;
+    const sr = audioCtxRef.current ? audioCtxRef.current.sampleRate : 44100;
+    if (wc && an) {
+      // Size canvas buffer to match CSS layout (1:1, no DPI scaling for performance)
+      if (wc.width !== wc.offsetWidth || wc.height !== wc.offsetHeight) {
+        wc.width = wc.offsetWidth;
+        wc.height = wc.offsetHeight;
+      }
+      drawWaveform(wc, an, beatFreqRef, sr);
+    }
+    if (sc && an) {
+      if (sc.width !== sc.offsetWidth || sc.height !== sc.offsetHeight) {
+        sc.width = sc.offsetWidth;
+        sc.height = sc.offsetHeight;
+      }
+      drawSpectrum(sc, an, sr);
+    }
+    // Beat estimation
+    if (an) {
+      if (mode === "internal") {
+        const b = Math.abs(freq2 - freq1);
+        setBeatFreq(b);
+        beatFreqRef.current = b;
+      } else {
+        const est = estimateBeatFromFFT(an, sr);
+        if (est !== null) {
+          setBeatFreq(est);
+          beatFreqRef.current = est;
+        }
+      }
+    }
+    animRef.current = requestAnimationFrame(animate);
+  }, [mode, freq1, freq2]);
+
+  // Start audio
+  const start = useCallback(async () => {
+    if (playing) return;
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    audioCtxRef.current = ctx;
+
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = FFT_SIZE;
+    analyser.smoothingTimeConstant = 0.6;
+    analyserRef.current = analyser;
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gainRef.current = gain;
+
+    gain.connect(analyser);
+    analyser.connect(ctx.destination);
+
+    if (mode === "internal") {
+      const osc1 = ctx.createOscillator();
+      osc1.type = "sine";
+      osc1.frequency.setValueAtTime(freq1, ctx.currentTime);
+      osc1.connect(gain);
+      osc1.start();
+      osc1Ref.current = osc1;
+
+      const osc2 = ctx.createOscillator();
+      osc2.type = "sine";
+      osc2.frequency.setValueAtTime(freq2, ctx.currentTime);
+      osc2.connect(gain);
+      osc2.start();
+      osc2Ref.current = osc2;
+    } else {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+        micStreamRef.current = stream;
+        const src = ctx.createMediaStreamSource(stream);
+        src.connect(analyser);
+        micSourceRef.current = src;
+        // Don't connect analyser to destination in mic mode (prevent feedback)
+        analyser.disconnect();
+        setMicError(null);
+      } catch (err) {
+        setMicError("Microphone access denied or unavailable.");
+        return;
+      }
+    }
+
+    setPlaying(true);
+    animRef.current = requestAnimationFrame(animate);
+  }, [playing, mode, freq1, freq2, volume, animate]);
+
+  // Stop audio
+  const stop = useCallback(() => {
+    if (animRef.current) cancelAnimationFrame(animRef.current);
+    if (osc1Ref.current) { osc1Ref.current.stop(); osc1Ref.current = null; }
+    if (osc2Ref.current) { osc2Ref.current.stop(); osc2Ref.current = null; }
+    if (micStreamRef.current) { micStreamRef.current.getTracks().forEach((t) => t.stop()); micStreamRef.current = null; }
+    if (micSourceRef.current) { micSourceRef.current.disconnect(); micSourceRef.current = null; }
+    if (audioCtxRef.current) { audioCtxRef.current.close(); audioCtxRef.current = null; }
+    analyserRef.current = null;
+    gainRef.current = null;
+    setPlaying(false);
+  }, []);
+
+  // Record measurement
+  const record = () => {
+    if (beatFreq === null) return;
+    setLog((prev) => [...prev, { time: timestamp(), beat: beatFreq, f1: freq1, f2: freq2, mode }]);
+  };
+
+  // Export CSV
+  const exportCSV = () => {
+    if (log.length === 0) return;
+    const header = "timestamp,beat_frequency_Hz,f1_Hz,f2_Hz,mode\n";
+    const rows = log.map((r) => `${r.time},${r.beat.toFixed(3)},${r.f1.toFixed(1)},${r.f2.toFixed(1)},${r.mode}`).join("\n");
+    const blob = new Blob([header + rows], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "beat-lab-log.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // Cleanup on unmount
+  useEffect(() => { return () => { stop(); }; }, [stop]);
+
+  const btnStyle = (active) => ({
+    padding: "8px 18px",
+    fontSize: 12,
+    fontFamily: "'JetBrains Mono', monospace",
+    fontWeight: 500,
+    letterSpacing: "0.04em",
+    textTransform: "uppercase",
+    background: active ? C.amber : C.surface,
+    color: active ? C.bg : C.text,
+    border: `1px solid ${active ? C.amber : C.panelBorder}`,
+    borderRadius: 3,
+    cursor: "pointer",
+    transition: "all 0.15s",
+  });
+
+  const smallBtn = {
+    padding: "5px 12px",
+    fontSize: 10,
+    fontFamily: "'JetBrains Mono', monospace",
+    fontWeight: 500,
+    letterSpacing: "0.04em",
+    textTransform: "uppercase",
+    background: C.surface,
+    color: C.textDim,
+    border: `1px solid ${C.panelBorder}`,
+    borderRadius: 3,
+    cursor: "pointer",
+  };
+
+  return (
+    <div style={{ background: C.bg, color: C.text, minHeight: "100vh", fontFamily: "'Source Serif 4', Georgia, serif" }}>
+      {/* ─── Header ─── */}
+      <div style={{ background: C.surface, borderBottom: `1px solid ${C.panelBorder}`, padding: "12px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: C.amberLight }}>Tier 1A · Clock School</span>
+          <h1 style={{ fontSize: 20, fontWeight: 700, color: C.textBright, margin: "2px 0 0", lineHeight: 1.2 }}>Beat Lab</h1>
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <button onClick={() => { if (playing) stop(); setMode("internal"); }} style={btnStyle(mode === "internal")}>Internal</button>
+          <button onClick={() => { if (playing) stop(); setMode("mic"); }} style={btnStyle(mode === "mic")}>Microphone</button>
+        </div>
+      </div>
+
+      {/* ─── Guide ─── */}
+      {showGuide && (
+        <div style={{ background: "rgba(212,134,10,0.08)", borderBottom: `1px solid ${C.amberDim}`, padding: "12px 20px", fontSize: 14, lineHeight: 1.6 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <div style={{ maxWidth: 700 }}>
+              You are comparing two periodic signals. When their frequencies differ slightly, they produce a pattern called <strong style={{ color: C.amberLight }}>beating</strong>. The beat frequency tells you how much they disagree. This is the same measurement principle used in atomic clock networks — only the precision and the tools change.
+            </div>
+            <button onClick={() => setShowGuide(false)} style={{ ...smallBtn, flexShrink: 0, marginLeft: 16 }}>Hide</button>
+          </div>
+        </div>
+      )}
+
+      <div style={{ display: "flex", flexWrap: "wrap", minHeight: "calc(100vh - 120px)" }}>
+        {/* ─── Left: Controls ─── */}
+        <div style={{ width: 280, flexShrink: 0, padding: 20, borderRight: `1px solid ${C.panelBorder}` }}>
+          {mode === "internal" && (
+            <>
+              <FreqControl label="Oscillator A" freq={freq1} setFreq={setFreq1} color={C.waveform} />
+              <FreqControl label="Oscillator B" freq={freq2} setFreq={setFreq2} color={C.spectrum} />
+            </>
+          )}
+          {mode === "mic" && (
+            <div style={{ padding: "12px 0", fontSize: 13, color: C.textDim, lineHeight: 1.6 }}>
+              <p style={{ marginBottom: 8 }}>Microphone mode analyses audio from your device's microphone. Feed in two tones from speakers, tuning forks, or external signal generators.</p>
+              <p style={{ fontSize: 11, color: C.textDim }}>For best results, disable echo cancellation and noise suppression in your browser's audio settings.</p>
+              {micError && <p style={{ color: C.red, marginTop: 8 }}>{micError}</p>}
+            </div>
+          )}
+
+          {/* Volume */}
+          {mode === "internal" && (
+            <div style={{ marginTop: 16 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: "uppercase", color: C.textDim }}>Volume</span>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: C.text }}>{Math.round(volume * 100)}%</span>
+              </div>
+              <input type="range" min={0} max={1} step={0.01} value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))} style={{ width: "100%", accentColor: C.textDim }} />
+            </div>
+          )}
+
+          {/* Play/Stop */}
+          <div style={{ marginTop: 20, display: "flex", gap: 8 }}>
+            {!playing ? (
+              <button onClick={start} style={{ ...btnStyle(true), flex: 1 }}>▶ Start</button>
+            ) : (
+              <button onClick={stop} style={{ ...btnStyle(false), flex: 1, borderColor: C.red, color: C.red }}>■ Stop</button>
+            )}
+          </div>
+
+          {/* ─── Beat readout ─── */}
+          <div style={{ marginTop: 24, padding: 16, background: C.surface, border: `1px solid ${C.panelBorder}`, borderRadius: 4, textAlign: "center" }}>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", color: C.textDim, marginBottom: 4 }}>Beat Frequency</div>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 32, fontWeight: 700, color: beatFreq !== null && beatFreq > 0.01 ? C.green : C.textDim }}>
+              {playing && beatFreq !== null ? formatFreq(beatFreq) : "—"}
+              <span style={{ fontSize: 14, fontWeight: 400, color: C.textDim, marginLeft: 4 }}>Hz</span>
+            </div>
+            {mode === "internal" && (
+              <div style={{ fontSize: 11, color: C.textDim, marginTop: 4 }}>|f₂ − f₁| = {formatFreq(Math.abs(freq2 - freq1))} Hz (exact)</div>
+            )}
+          </div>
+
+          {/* Record */}
+          <button onClick={record} disabled={!playing} style={{ ...btnStyle(false), width: "100%", marginTop: 12, opacity: playing ? 1 : 0.4 }}>
+            ● Record Measurement
+          </button>
+
+          {/* ─── Notebook prompts ─── */}
+          <div style={{ marginTop: 24, padding: 12, background: "rgba(212,134,10,0.06)", border: `1px solid ${C.amberDim}`, borderRadius: 4, fontSize: 12, lineHeight: 1.7, color: C.textDim }}>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, textTransform: "uppercase", letterSpacing: "0.1em", color: C.amber, marginBottom: 6 }}>Notebook Prompts</div>
+            <div>→ What beat frequency do you observe?</div>
+            <div>→ Is it stable over repeated measurements?</div>
+            <div>→ What happens when you change one frequency by 1 Hz?</div>
+          </div>
+        </div>
+
+        {/* ─── Right: Displays ─── */}
+        <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
+          {/* Waveform */}
+          <div style={{ flex: 1, minHeight: 180, padding: "12px 16px 4px", position: "relative" }}>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em", color: C.textDim, marginBottom: 4 }}>
+              Time Domain
+              <span style={{ marginLeft: 12, color: C.waveform }}>■</span> Signal
+              <span style={{ marginLeft: 8, color: C.envelope }}>■</span> Envelope
+            </div>
+            <canvas ref={waveCanvasRef} style={{ width: "100%", height: "calc(100% - 20px)", background: C.panel, borderRadius: 4, border: `1px solid ${C.panelBorder}` }} />
+          </div>
+
+          {/* Spectrum */}
+          <div style={{ flex: 1, minHeight: 180, padding: "4px 16px 12px", position: "relative" }}>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em", color: C.textDim, marginBottom: 4 }}>
+              Frequency Spectrum
+              <span style={{ marginLeft: 12, color: C.spectrum }}>■</span> Magnitude
+            </div>
+            <canvas ref={specCanvasRef} style={{ width: "100%", height: "calc(100% - 20px)", background: C.panel, borderRadius: 4, border: `1px solid ${C.panelBorder}` }} />
+          </div>
+
+          {/* Data log */}
+          <div style={{ borderTop: `1px solid ${C.panelBorder}`, padding: "12px 16px", maxHeight: 200, overflowY: "auto" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em", color: C.textDim }}>
+                Measurement Log ({log.length} entries)
+              </span>
+              <div style={{ display: "flex", gap: 6 }}>
+                <button onClick={exportCSV} disabled={log.length === 0} style={{ ...smallBtn, opacity: log.length > 0 ? 1 : 0.4 }}>Export CSV</button>
+                <button onClick={() => setLog([])} disabled={log.length === 0} style={{ ...smallBtn, opacity: log.length > 0 ? 1 : 0.4 }}>Clear</button>
+              </div>
+            </div>
+            {log.length === 0 ? (
+              <div style={{ fontSize: 12, color: C.textDim, fontStyle: "italic" }}>No measurements recorded yet. Press "Record" to log the current beat frequency.</div>
+            ) : (
+              <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: "'JetBrains Mono', monospace", fontSize: 11 }}>
+                <thead>
+                  <tr style={{ color: C.textDim, borderBottom: `1px solid ${C.panelBorder}` }}>
+                    <th style={{ textAlign: "left", padding: "4px 8px", fontWeight: 500 }}>#</th>
+                    <th style={{ textAlign: "left", padding: "4px 8px", fontWeight: 500 }}>Time</th>
+                    <th style={{ textAlign: "right", padding: "4px 8px", fontWeight: 500 }}>Beat (Hz)</th>
+                    <th style={{ textAlign: "right", padding: "4px 8px", fontWeight: 500 }}>f₁</th>
+                    <th style={{ textAlign: "right", padding: "4px 8px", fontWeight: 500 }}>f₂</th>
+                    <th style={{ textAlign: "center", padding: "4px 8px", fontWeight: 500 }}>Mode</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {log.map((r, i) => (
+                    <tr key={i} style={{ borderBottom: `1px solid ${C.grid}` }}>
+                      <td style={{ padding: "3px 8px", color: C.textDim }}>{i + 1}</td>
+                      <td style={{ padding: "3px 8px" }}>{r.time.slice(11)}</td>
+                      <td style={{ padding: "3px 8px", textAlign: "right", color: C.green }}>{r.beat.toFixed(3)}</td>
+                      <td style={{ padding: "3px 8px", textAlign: "right" }}>{r.f1.toFixed(1)}</td>
+                      <td style={{ padding: "3px 8px", textAlign: "right" }}>{r.f2.toFixed(1)}</td>
+                      <td style={{ padding: "3px 8px", textAlign: "center", color: C.textDim }}>{r.mode}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ─── Footer ─── */}
+      <div style={{ borderTop: `1px solid ${C.panelBorder}`, padding: "8px 20px", fontSize: 11, color: C.textDim, fontFamily: "'JetBrains Mono', monospace", display: "flex", justifyContent: "space-between" }}>
+        <span>Clock School — What Is a Clock? · Beat Lab v0.1</span>
+        <span>Web Audio API · Educational use · Not metrology-grade timing</span>
+      </div>
+    </div>
+  );
+}
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(React.createElement(BeatLab));
+  </script>
+</body>
+</html>

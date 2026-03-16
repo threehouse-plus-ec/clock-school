@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What Is a Clock? — An Open Science School</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="A free, open-source teaching programme on the physics of timekeeping. From a stick in the ground to a millisecond pulsar — the same question, the same science.">
+</head>
+<body>
+
+<div class="topbar">
+  <a href="https://github.com/clock-school/clock-school">GitHub</a>
+  <a href="#tiers">Tiers</a>
+  <a href="#status">Status</a>
+  <a href="#contribute">Contribute</a>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="epigraph">
+      Every civilisation has built clocks.<br>
+      Every clock is a comparison.<br>
+      This school teaches how to make those comparisons carefully.
+    </div>
+    <h1>What Is a Clock?</h1>
+    <p class="subtitle">A free, open-source teaching programme on the physics of timekeeping. No fees. No prerequisites. No borders.</p>
+    <a href="observe/experiment-01.html" class="hero-cta">Start with Tier 0 &rarr;</a>
+  </div>
+</div>
+
+<div class="content">
+
+  <h2>The Idea</h2>
+
+  <p>Most physics curricula treat clocks as a subtopic of metrology. This programme treats clocks as a framework for understanding measurement itself.</p>
+
+  <div class="principle">
+    <strong>A clock is not a thing that oscillates.</strong> A clock is an operational comparison between periodic processes that yields information about timing, offset, and relative stability.
+  </div>
+
+  <p>A sundial compared to a pendulum, a quartz oscillator compared to a GPS reference, a caesium standard compared to a millisecond pulsar &mdash; these instantiate the same operational question under different precision regimes. They differ in scale, in tools, and in mathematical form. They require the same kind of scientific reasoning.</p>
+
+  <p>This framing has deep roots. Einstein (1905) defined time operationally through synchronisation procedures. Allan (1966) formalised clock stability through pairwise comparisons. Modern time scales such as TAI are constructed from ensembles of clock comparisons. This programme sits within that tradition.</p>
+
+  <!-- ── Tiers ── -->
+  <h2 id="tiers">Four Tiers</h2>
+
+  <p>Each tier preserves the same question while changing the scale, the tools, and the precision. A student who starts with a stick in the ground and finishes with pulsar timing residuals has never changed the fundamental question.</p>
+
+  <div class="tier-grid">
+    <a class="tier-card" href="observe/index.html">
+      <div class="tier-label">Tier 0</div>
+      <h3>Observe</h3>
+      <p>Compare the Sun&rsquo;s shadow, a pendulum, and a household clock. Record disagreements in a notebook over one to two weeks. Discover that a clock is defined by its comparison, not its mechanism.</p>
+      <div class="tier-access">Universal &middot; No cost &middot; Age 10+</div>
+    </a>
+    <a class="tier-card" href="build/index.html">
+      <div class="tier-label">Tier 1</div>
+      <h3>Build</h3>
+      <p>Compare electronic oscillators: tone generators, a DDS, a voltage-controlled oscillator. Hear the beat note. Measure drift. Learn the distinction between free-running, programmable, and disciplined clocks.</p>
+      <div class="tier-access">Portable kit &middot; &euro;10&ndash;150 &middot; Prototype in development</div>
+    </a>
+    <a class="tier-card" href="simulate/index.html">
+      <div class="tier-label">Tier 2</div>
+      <h3>Simulate</h3>
+      <p>Model clock networks numerically. Compute Allan deviations, fit noise models with Bayesian inference, explore network topology. Formalise the comparison geometry that unifies all tiers.</p>
+      <div class="tier-access">Laptop with Python &middot; Based on U. Freiburg lab</div>
+    </a>
+    <a class="tier-card" href="explore/index.html">
+      <div class="tier-label">Tier 3</div>
+      <h3>Explore</h3>
+      <p>Work with real timing data: GPS atomic time, UT1 from IERS, millisecond pulsar residuals. Confront the comparison framework with planetary and interstellar baselines.</p>
+      <div class="tier-access">Public datasets &middot; Research level</div>
+    </a>
+  </div>
+
+  <!-- ── Why clocks ── -->
+  <h2>Why Clocks?</h2>
+
+  <p>Because the question <em>&ldquo;what is a clock?&rdquo;</em> is one of the most deceptively simple questions in physics. Answering it carefully requires engaging with periodicity, noise, systematic error, network logic, relativity, and the philosophy of measurement &mdash; all from a single entry point.</p>
+
+  <p>And because a programme that begins with a stick in the ground and ends with neutron stars makes a quiet but serious claim: that scientific rigour does not begin when expensive equipment appears. It begins when you write down what you observe and ask whether your clocks agree.</p>
+
+  <!-- ── Access ── -->
+  <h2>Access</h2>
+
+  <p>This programme is not attached to any university, degree, or credentialing body. It is freely available under open licence.</p>
+
+  <p>It is designed so that scientific seriousness does not require expensive equipment. Tier&nbsp;0 requires nothing that cannot be found in any household. Tier&nbsp;1 begins at approximately &euro;10. Tier&nbsp;2 runs on any laptop. Tier&nbsp;3 uses public data.</p>
+
+  <p>This is not charity. It is good engineering: a programme that works under tight constraints is a better programme for everyone.</p>
+
+  <!-- ── Status ── -->
+  <h2 id="status">Current Status</h2>
+
+  <ul class="status-list">
+    <li>
+      <span class="status-badge status-published">Published</span>
+      Project blueprint (v0.3)
+    </li>
+    <li>
+      <span class="status-badge status-active">In progress</span>
+      Tier 0 &mdash; Experiment 0.1: Three Clocks That Disagree
+    </li>
+    <li>
+      <span class="status-badge status-active">In design</span>
+      Tier 1a &mdash; Constrained-access hardware prototype
+    </li>
+    <li>
+      <span class="status-badge status-active">Adapting</span>
+      Tier 2 &mdash; Numerical Clock Networks (from U.&nbsp;Freiburg lab material)
+    </li>
+    <li>
+      <span class="status-badge status-planned">Planned</span>
+      Tier 3 &mdash; Timing Frontiers
+    </li>
+  </ul>
+
+  <!-- ── Framework ── -->
+  <h2>Framework</h2>
+
+  <p>The programme is organised by a causal-geometry framework in which clocks are unified by the geometry of phase comparison, not by oscillator physics. When two clocks are separated by distance&nbsp;L and compared over averaging time&nbsp;&tau;, the ratio &eta;(&tau;)&nbsp;=&nbsp;L/(c&tau;) is an architectural control parameter that locates the comparison in the design space between local averaging (&eta;&nbsp;&rarr;&nbsp;0) and the causal limit (&eta;&nbsp;&rarr;&nbsp;1).</p>
+
+  <p>This framework is developed in: U.&nbsp;Warring, <em>Causal Clock Unification Framework</em>, Zenodo v1.0.0, DOI:&nbsp;<a href="https://doi.org/10.5281/zenodo.17948436">10.5281/zenodo.17948436</a>. It is under local stewardship, has not received broad community endorsement, and is presented here because it is internally consistent, falsifiable, and pedagogically productive. Students and teachers are encouraged to test it and report where it breaks.</p>
+
+  <!-- ── Contribute ── -->
+  <h2 id="contribute">Contribute</h2>
+
+  <p>Contributions of all kinds are welcome: testing, feedback, translations, field reports, hardware improvements, code, teaching notes. See the <a href="https://github.com/clock-school/clock-school/blob/main/CONTRIBUTING.md">contribution guidelines</a> for details.</p>
+
+  <h3>Licensing</h3>
+  <p>Text and documentation: <strong>CC BY-SA 4.0</strong>. Code: <strong>MIT</strong>. 3D designs: <strong>CC BY-SA 4.0</strong>. Public datasets in Tier&nbsp;3 retain their original licences.</p>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <strong>What Is a Clock?</strong> &mdash; An Open Science School on Time, Comparison, and Measurement.
+    <br>Initiated by Ulrich Warring &middot; Physikalisches Institut &middot; Albert-Ludwigs-Universit&auml;t Freiburg.
+    <div class="footer-links">
+      <a href="https://github.com/clock-school/clock-school">Repository</a>
+      <a href="https://github.com/clock-school/clock-school/blob/main/CONTRIBUTING.md">Contribute</a>
+      <a href="https://github.com/clock-school/clock-school/blob/main/LICENSE-TEXT.md">Licence</a>
+    </div>
+    <div class="footer-licence">
+      Text: CC BY-SA 4.0 &middot; Code: MIT &middot; &copy; 2026 Ulrich Warring and contributors
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

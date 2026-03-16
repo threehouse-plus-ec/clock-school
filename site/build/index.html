@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tier 1: Build — Clock School</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html">Home</a>
+  <a href="beat-lab.html">Beat Lab</a>
+  <a href="https://github.com/clock-school/clock-school">GitHub</a>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(232,160,32,0.8); margin-bottom: 8px;">Tier 1</div>
+    <h1>Build</h1>
+    <p class="subtitle">Electronic oscillator comparison. From audio tones to RF hardware.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <p>In Tier 0 you compared the Sun, a pendulum, and a household clock by observation and notebook. In Tier 1 you compare electronic oscillators &mdash; first in the browser, then with physical hardware.</p>
+
+  <h2>Tier 1A &mdash; Browser Oscillator Lab</h2>
+
+  <div class="tier-grid">
+    <a class="tier-card" href="beat-lab.html">
+      <div class="tier-label">Browser App</div>
+      <h3>Beat Lab</h3>
+      <p>Generate two tones, observe the beat pattern, measure the frequency difference. Use internal oscillators or your device microphone with real external signals.</p>
+      <div class="tier-access">Browser &middot; No install &middot; No hardware required</div>
+    </a>
+  </div>
+
+  <p>Beat Lab runs entirely in the browser using the Web Audio API. It has two modes:</p>
+
+  <p><strong>Internal mode:</strong> The browser generates two sine tones. You control the frequencies, hear the beat, see the waveform and spectrum, and log measurements. This is where everyone starts.</p>
+
+  <p><strong>Microphone mode:</strong> The browser analyses audio from your device microphone. Feed in two tones from speakers, tuning forks, or external signal generators. The same analysis chain measures the beat frequency from real signals.</p>
+
+  <h2>Tier 1B &mdash; External Oscillator Lab</h2>
+
+  <p>Tier 1B uses physical electronic oscillators: a DDS (digitally synthesised frequency), a VCO (voltage-controlled oscillator), and optionally a GPS-disciplined 10 MHz reference. The Beat Lab browser interface serves as the analysis and logging front end &mdash; the same tool, now connected to real hardware.</p>
+
+  <p><strong>Status:</strong> The constrained-access hardware prototype is in design. See the <a href="https://github.com/clock-school/clock-school/blob/main/docs/blueprint.md">blueprint</a> for the specification and bill of materials plan.</p>
+
+  <h2>Conceptual Bridge</h2>
+
+  <p>In Tier 0, the pendulum is free-running, the mechanical clock is regulated, and the Sun is the reference. In Tier 1, the VCO is free-running, the DDS is programmable, and the GPSDO is the reference disciplined to an atomic standard via satellite. Same logic, higher bandwidth, electronic rather than mechanical.</p>
+
+  <h2>Going Further</h2>
+
+  <p>After Tier 1, continue to <a href="../simulate/index.html">Tier 2: Simulate</a> &mdash; numerical clock networks with full statistical analysis.</p>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <strong>What Is a Clock?</strong> &mdash; An Open Science School.
+    <br>Text: CC BY-SA 4.0 &middot; <a href="https://github.com/clock-school/clock-school">Repository</a>
+  </div>
+</footer>
+
+</body>
+</html>
