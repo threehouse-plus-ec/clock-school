@@ -242,6 +242,10 @@ export default function BeatLab() {
   const [micError, setMicError] = useState(null);
   const [micRefEnabled, setMicRefEnabled] = useState(true);
   const [micRefFreq, setMicRefFreq] = useState(DEFAULT_F1);
+  const [integrationTime, setIntegrationTime] = useState(1.0); // seconds
+  const [avgBeat, setAvgBeat] = useState(null);
+  const [beatSigma, setBeatSigma] = useState(null);
+  const [sampleCount, setSampleCount] = useState(0);
 
   const audioCtxRef = useRef(null);
   const osc1Ref = useRef(null);
@@ -257,6 +261,8 @@ export default function BeatLab() {
   const animRef = useRef(null);
   const beatFreqRef = useRef(0);
   const canvasSizedRef = useRef(false);
+  const sampleBufRef = useRef([]);     // {time, value} pairs for rolling average
+  const lastAvgUpdateRef = useRef(0);  // throttle state updates to ~10 Hz
 
   // Size canvases to fit their containers — called once and on resize
   const sizeCanvases = useCallback(() => {
@@ -311,21 +317,45 @@ export default function BeatLab() {
     }
     // Beat estimation — runs every frame
     if (an) {
+      let instantBeat = null;
       if (mode === "internal") {
-        const b = Math.abs(freq2 - freq1);
-        beatFreqRef.current = b;
-        setBeatFreq(b);
+        instantBeat = Math.abs(freq2 - freq1);
       } else {
         const est = estimateBeatFromFFT(an, sr);
-        if (est !== null) {
-          beatFreqRef.current = est;
-          setBeatFreq(est);
+        if (est !== null) instantBeat = est;
+      }
+
+      if (instantBeat !== null) {
+        beatFreqRef.current = instantBeat;
+        setBeatFreq(instantBeat);
+
+        // Accumulate into rolling buffer
+        const now = performance.now() / 1000;
+        sampleBufRef.current.push({ time: now, value: instantBeat });
+
+        // Trim buffer to integration window
+        const cutoff = now - integrationTime;
+        sampleBufRef.current = sampleBufRef.current.filter((s) => s.time >= cutoff);
+
+        // Compute statistics — throttled to ~10 Hz to avoid excessive re-renders
+        if (now - lastAvgUpdateRef.current > 0.1) {
+          lastAvgUpdateRef.current = now;
+          const buf = sampleBufRef.current;
+          const n = buf.length;
+          if (n > 0) {
+            const mean = buf.reduce((s, x) => s + x.value, 0) / n;
+            const variance = n > 1 ? buf.reduce((s, x) => s + (x.value - mean) ** 2, 0) / (n - 1) : 0;
+            const sigma = Math.sqrt(variance);
+            const semean = n > 1 ? sigma / Math.sqrt(n) : sigma;
+            setAvgBeat(mean);
+            setBeatSigma(semean);
+            setSampleCount(n);
+          }
         }
-        // If no estimate found, keep displaying last known value (already in state)
       }
     }
     animRef.current = requestAnimationFrame(animate);
-  }, [mode, freq1, freq2, sizeCanvases]);
+  }, [mode, freq1, freq2, sizeCanvases, integrationTime]);
 
   // Start audio
   const start = useCallback(async () => {
@@ -409,21 +439,34 @@ export default function BeatLab() {
     analyserRef.current = null;
     gainRef.current = null;
     setPlaying(false);
+    sampleBufRef.current = [];
+    setAvgBeat(null);
+    setBeatSigma(null);
+    setSampleCount(0);
   }, []);
 
-  // Record measurement — enabled whenever beat frequency is available
+  // Record measurement — logs averaged value with uncertainty
   const record = () => {
-    if (beatFreq === null) return;
+    if (avgBeat === null && beatFreq === null) return;
     const f1val = mode === "internal" ? freq1 : (micRefEnabled ? micRefFreq : 0);
     const f2val = mode === "internal" ? freq2 : 0;
-    setLog((prev) => [...prev, { time: timestamp(), beat: beatFreq, f1: f1val, f2: f2val, mode: mode === "mic" ? (micRefEnabled ? "mic+ref" : "mic") : "internal" }]);
+    setLog((prev) => [...prev, {
+      time: timestamp(),
+      beat: avgBeat !== null ? avgBeat : beatFreq,
+      sigma: beatSigma !== null ? beatSigma : 0,
+      n: sampleCount,
+      tau: integrationTime,
+      f1: f1val,
+      f2: f2val,
+      mode: mode === "mic" ? (micRefEnabled ? "mic+ref" : "mic") : "internal"
+    }]);
   };
 
   // Export CSV
   const exportCSV = () => {
     if (log.length === 0) return;
-    const header = "timestamp,beat_frequency_Hz,f1_Hz,f2_Hz,mode\n";
-    const rows = log.map((r) => `${r.time},${r.beat.toFixed(3)},${r.f1.toFixed(1)},${r.f2.toFixed(1)},${r.mode}`).join("\n");
+    const header = "timestamp,beat_avg_Hz,uncertainty_Hz,samples,integration_s,f1_Hz,f2_Hz,mode\n";
+    const rows = log.map((r) => `${r.time},${r.beat.toFixed(3)},${r.sigma.toFixed(3)},${r.n},${r.tau},${r.f1.toFixed(1)},${r.f2.toFixed(1)},${r.mode}`).join("\n");
     const blob = new Blob([header + rows], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -467,6 +510,16 @@ export default function BeatLab() {
 
   return (
     <div style={{ background: C.bg, color: C.text, minHeight: "100vh", fontFamily: "'Source Serif 4', Georgia, serif" }}>
+      {/* ─── Nav ─── */}
+      <div style={{ background: C.slate900, padding: "6px 20px", display: "flex", gap: 16, fontSize: 11, fontFamily: "'JetBrains Mono', monospace" }}>
+        <a href="../index.html" style={{ color: C.slate400, textDecoration: "none" }}>Home</a>
+        <a href="../observe/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Observe</a>
+        <a href="index.html" style={{ color: C.slate400, textDecoration: "none" }}>Build</a>
+        <a href="../simulate/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Simulate</a>
+        <a href="../explore/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Explore</a>
+        <a href="../teachers/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Teachers</a>
+      </div>
+
       {/* ─── Header ─── */}
       <div style={{ background: C.surface, borderBottom: `1px solid ${C.panelBorder}`, padding: "12px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
@@ -558,20 +611,73 @@ export default function BeatLab() {
             )}
           </div>
 
+          {/* ─── Integration time ─── */}
+          <div style={{ marginTop: 20 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.06em", color: C.textDim }}>Integration Time</span>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: C.text }}>{integrationTime}s</span>
+            </div>
+            <div style={{ display: "flex", gap: 4 }}>
+              {[0.5, 1, 2, 5, 10, 30].map((t) => (
+                <button key={t} onClick={() => { setIntegrationTime(t); sampleBufRef.current = []; }}
+                  style={{ flex: 1, padding: "5px 0", fontSize: 10, fontFamily: "'JetBrains Mono', monospace",
+                    background: integrationTime === t ? C.amber : C.surface,
+                    color: integrationTime === t ? C.bg : C.textDim,
+                    border: `1px solid ${integrationTime === t ? C.amber : C.panelBorder}`,
+                    borderRadius: 3, cursor: "pointer" }}>
+                  {t}s
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* ─── Beat readout ─── */}
-          <div style={{ marginTop: 24, padding: 16, background: C.surface, border: `1px solid ${C.panelBorder}`, borderRadius: 4, textAlign: "center" }}>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", color: C.textDim, marginBottom: 4 }}>Beat Frequency</div>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 32, fontWeight: 700, color: beatFreq !== null && beatFreq > 0.01 ? C.green : C.textDim }}>
-              {playing && beatFreq !== null ? formatFreq(beatFreq) : "—"}
+          <div style={{ marginTop: 16, padding: 16, background: C.surface, border: `1px solid ${C.panelBorder}`, borderRadius: 4, textAlign: "center" }}>
+            {/* Averaged value */}
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", color: C.textDim, marginBottom: 4 }}>
+              Beat Frequency (avg {integrationTime}s)
+            </div>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 32, fontWeight: 700, color: avgBeat !== null && avgBeat > 0.01 ? C.green : C.textDim }}>
+              {playing && avgBeat !== null ? formatFreq(avgBeat) : "—"}
               <span style={{ fontSize: 14, fontWeight: 400, color: C.textDim, marginLeft: 4 }}>Hz</span>
             </div>
+
+            {/* Uncertainty */}
+            {playing && beatSigma !== null && sampleCount > 1 && (
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 14, color: C.amberLight, marginTop: 4 }}>
+                &plusmn; {formatFreq(beatSigma)} Hz
+                <span style={{ fontSize: 10, color: C.textDim, marginLeft: 6 }}>({sampleCount} samples)</span>
+              </div>
+            )}
+
+            {/* Instantaneous */}
+            {playing && beatFreq !== null && (
+              <div style={{ fontSize: 11, color: C.textDim, marginTop: 8, borderTop: `1px solid ${C.panelBorder}`, paddingTop: 8 }}>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>instantaneous: {formatFreq(beatFreq)} Hz</span>
+              </div>
+            )}
+
             {mode === "internal" && (
-              <div style={{ fontSize: 11, color: C.textDim, marginTop: 4 }}>|f₂ − f₁| = {Math.abs(freq2 - freq1).toFixed(1)} Hz (exact)</div>
+              <div style={{ fontSize: 11, color: C.textDim, marginTop: 4 }}>|f&#8322; &minus; f&#8321;| = {Math.abs(freq2 - freq1).toFixed(1)} Hz (exact)</div>
             )}
           </div>
 
+          {/* ─── Precision vs integration ─── */}
+          {playing && sampleCount > 1 && beatSigma !== null && (
+            <div style={{ marginTop: 8, padding: 10, background: "rgba(45,212,160,0.06)", border: `1px solid rgba(45,212,160,0.15)`, borderRadius: 4, fontSize: 11, fontFamily: "'JetBrains Mono', monospace", color: C.textDim, lineHeight: 1.6 }}>
+              <div style={{ color: C.green, fontWeight: 600, marginBottom: 2, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em" }}>Precision</div>
+              <div>&#963; = {formatFreq(beatSigma)} Hz over {integrationTime}s</div>
+              <div>Relative: {avgBeat > 0.01 ? (beatSigma / avgBeat * 100).toFixed(2) : "—"}%</div>
+              {integrationTime < 30 && (
+                <div style={{ marginTop: 4, fontSize: 10, color: C.slate400 }}>
+                  Tip: increase integration time to reduce uncertainty. At {integrationTime * 4}s you would expect roughly &frac12; this &#963;.
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Record */}
-          <button onClick={record} disabled={beatFreq === null} style={{ ...btnStyle(false), width: "100%", marginTop: 12, opacity: beatFreq !== null ? 1 : 0.4 }}>
+          <button onClick={record} disabled={avgBeat === null && beatFreq === null} style={{ ...btnStyle(false), width: "100%", marginTop: 12, opacity: (avgBeat !== null || beatFreq !== null) ? 1 : 0.4 }}>
             ● Record Measurement
           </button>
 
@@ -622,23 +728,23 @@ export default function BeatLab() {
               <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: "'JetBrains Mono', monospace", fontSize: 11 }}>
                 <thead>
                   <tr style={{ color: C.textDim, borderBottom: `1px solid ${C.panelBorder}` }}>
-                    <th style={{ textAlign: "left", padding: "4px 8px", fontWeight: 500 }}>#</th>
-                    <th style={{ textAlign: "left", padding: "4px 8px", fontWeight: 500 }}>Time</th>
-                    <th style={{ textAlign: "right", padding: "4px 8px", fontWeight: 500 }}>Beat (Hz)</th>
-                    <th style={{ textAlign: "right", padding: "4px 8px", fontWeight: 500 }}>f₁</th>
-                    <th style={{ textAlign: "right", padding: "4px 8px", fontWeight: 500 }}>f₂</th>
-                    <th style={{ textAlign: "center", padding: "4px 8px", fontWeight: 500 }}>Mode</th>
+                    <th style={{ textAlign: "left", padding: "4px 6px", fontWeight: 500 }}>#</th>
+                    <th style={{ textAlign: "left", padding: "4px 6px", fontWeight: 500 }}>Time</th>
+                    <th style={{ textAlign: "right", padding: "4px 6px", fontWeight: 500 }}>Beat (Hz)</th>
+                    <th style={{ textAlign: "right", padding: "4px 6px", fontWeight: 500 }}>&plusmn; (Hz)</th>
+                    <th style={{ textAlign: "right", padding: "4px 6px", fontWeight: 500 }}>&tau;</th>
+                    <th style={{ textAlign: "right", padding: "4px 6px", fontWeight: 500 }}>n</th>
                   </tr>
                 </thead>
                 <tbody>
                   {log.map((r, i) => (
                     <tr key={i} style={{ borderBottom: `1px solid ${C.grid}` }}>
-                      <td style={{ padding: "3px 8px", color: C.textDim }}>{i + 1}</td>
-                      <td style={{ padding: "3px 8px" }}>{r.time.slice(11)}</td>
-                      <td style={{ padding: "3px 8px", textAlign: "right", color: C.green }}>{r.beat.toFixed(3)}</td>
-                      <td style={{ padding: "3px 8px", textAlign: "right" }}>{r.f1.toFixed(1)}</td>
-                      <td style={{ padding: "3px 8px", textAlign: "right" }}>{r.f2.toFixed(1)}</td>
-                      <td style={{ padding: "3px 8px", textAlign: "center", color: C.textDim }}>{r.mode}</td>
+                      <td style={{ padding: "3px 6px", color: C.textDim }}>{i + 1}</td>
+                      <td style={{ padding: "3px 6px" }}>{r.time.slice(11)}</td>
+                      <td style={{ padding: "3px 6px", textAlign: "right", color: C.green }}>{r.beat.toFixed(3)}</td>
+                      <td style={{ padding: "3px 6px", textAlign: "right", color: C.amberLight }}>{r.sigma.toFixed(3)}</td>
+                      <td style={{ padding: "3px 6px", textAlign: "right", color: C.textDim }}>{r.tau}s</td>
+                      <td style={{ padding: "3px 6px", textAlign: "right", color: C.textDim }}>{r.n}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -649,8 +755,8 @@ export default function BeatLab() {
       </div>
 
       {/* ─── Footer ─── */}
-      <div style={{ borderTop: `1px solid ${C.panelBorder}`, padding: "8px 20px", fontSize: 11, color: C.textDim, fontFamily: "'JetBrains Mono', monospace", display: "flex", justifyContent: "space-between" }}>
-        <span>Clock School — What Is a Clock? · Beat Lab v0.1</span>
+      <div style={{ borderTop: `1px solid ${C.panelBorder}`, padding: "8px 20px", fontSize: 11, color: C.textDim, fontFamily: "'JetBrains Mono', monospace", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+        <span><a href="../index.html" style={{ color: C.slate400, textDecoration: "none" }}>Clock School</a> — What Is a Clock? · Beat Lab v0.1</span>
         <span>Web Audio API · Educational use · Not metrology-grade timing</span>
       </div>
     </div>

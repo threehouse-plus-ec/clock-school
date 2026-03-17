@@ -446,6 +446,16 @@ function SkyCompanion() {
 
   return (
     <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Source Serif 4', Georgia, serif", color: C.text }}>
+      {/* Nav */}
+      <div style={{ background: "#111827", padding: "6px 20px", display: "flex", gap: 16, fontSize: 11, fontFamily: "'JetBrains Mono', monospace" }}>
+        <a href="../index.html" style={{ color: C.slate400, textDecoration: "none" }}>Home</a>
+        <a href="index.html" style={{ color: C.slate400, textDecoration: "none" }}>Observe</a>
+        <a href="../build/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Build</a>
+        <a href="../simulate/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Simulate</a>
+        <a href="../explore/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Explore</a>
+        <a href="../teachers/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Teachers</a>
+      </div>
+
       {/* Header */}
       <div style={{ background: C.slate900, color: "#fff", padding: "16px 20px" }}>
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
@@ -535,7 +545,7 @@ function SkyCompanion() {
 
       {/* Footer */}
       <div style={{ borderTop: `1px solid ${C.panelBorder}`, padding: "12px 20px", fontSize: 11, color: C.textDim, textAlign: "center", fontFamily: "'JetBrains Mono', monospace" }}>
-        Clock School — What Is a Clock? · Sky Companion v0.1 · Astronomical calculations are approximate (Spencer 1971, synodic month) · Not a precision ephemeris
+        <a href="../index.html" style={{ color: C.textDim, textDecoration: "none" }}>Clock School</a> — What Is a Clock? · Sky Companion v0.1 · Astronomical calculations are approximate (Spencer 1971, synodic month) · Not a precision ephemeris
       </div>
     </div>
   );
