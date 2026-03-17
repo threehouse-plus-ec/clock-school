@@ -43,11 +43,11 @@
 
   <p><strong>Microphone mode:</strong> The browser analyses audio from your device microphone. Feed in two tones from speakers, tuning forks, or external signal generators. The same analysis chain measures the beat frequency from real signals.</p>
 
-  <h2>Tier 1B &mdash; External Oscillator Lab</h2>
+  <h2>Tier 1B / 1C &mdash; Hardware Oscillator Comparison</h2>
 
-  <p>Tier 1B uses physical electronic oscillators: a DDS (digitally synthesised frequency), a VCO (voltage-controlled oscillator), and optionally a GPS-disciplined 10 MHz reference. The Beat Lab browser interface serves as the analysis and logging front end &mdash; the same tool, now connected to real hardware.</p>
+  <p>The hardware tier uses two off-the-shelf modules: an XR2206 function generator kit (~&euro;4, the free-running oscillator) and a reference source. In <strong>Tier 1B</strong> (~&euro;14 total), the reference is an AD9833 DDS module driven by an Arduino. In <strong>Tier 1C</strong> (~&euro;182 total), the reference is a Leo Bodnar LBE-1420 GPS-disciplined oscillator &mdash; an atomic clock reference. No breadboard, no soldering, no mixer hardware. Both signals feed into the laptop sound card; Beat Lab does the comparison in software.</p>
 
-  <p><strong>Status:</strong> The constrained-access hardware prototype is in design. See the <a href="https://github.com/clock-school/clock-school/blob/main/docs/blueprint.md">blueprint</a> for the specification and bill of materials plan.</p>
+  <p>See the <a href="https://github.com/clock-school/clock-school/blob/main/hardware/bom/tier-1-hardware-spec.md">full hardware specification</a> for the bill of materials, frequency plan, and exercise sequence.</p>
 
   <h2>Conceptual Bridge</h2>
 

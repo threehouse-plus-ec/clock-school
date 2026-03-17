@@ -18,7 +18,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
   <script type="text/babel">
-// (imports provided by UMD globals)
 const { useState, useRef, useEffect, useCallback } = React;
 
 // ─── Constants ───
@@ -53,7 +52,7 @@ const C = {
 
 // ─── Utility ───
 function formatFreq(f) {
-  return f < 10 ? f.toFixed(2) : f < 100 ? f.toFixed(1) : f.toFixed(0);
+  return f < 1 ? f.toFixed(3) : f < 10 ? f.toFixed(2) : f.toFixed(1);
 }
 
 function timestamp() {
@@ -231,7 +230,7 @@ function FreqControl({ label, freq, setFreq, color }) {
     <div style={{ marginBottom: 12 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
         <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: C.textDim }}>{label}</span>
-        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 18, fontWeight: 600, color }}>{formatFreq(freq)} <span style={{ fontSize: 11, color: C.textDim }}>Hz</span></span>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 18, fontWeight: 600, color }}>{freq.toFixed(1)} <span style={{ fontSize: 11, color: C.textDim }}>Hz</span></span>
       </div>
       <input
         type="range" min={MIN_FREQ} max={MAX_FREQ} step={0.1} value={freq}
@@ -273,6 +272,24 @@ function BeatLab() {
   const specCanvasRef = useRef(null);
   const animRef = useRef(null);
   const beatFreqRef = useRef(0);
+  const canvasSizedRef = useRef(false);
+
+  // Size canvases to fit their containers — called once and on resize
+  const sizeCanvases = useCallback(() => {
+    const wc = waveCanvasRef.current;
+    const sc = specCanvasRef.current;
+    if (wc) { wc.width = wc.offsetWidth; wc.height = wc.offsetHeight; }
+    if (sc) { sc.width = sc.offsetWidth; sc.height = sc.offsetHeight; }
+    canvasSizedRef.current = true;
+  }, []);
+
+  // Attach resize observer to keep canvases stable
+  useEffect(() => {
+    const ro = new ResizeObserver(() => { sizeCanvases(); });
+    if (waveCanvasRef.current) ro.observe(waveCanvasRef.current.parentElement);
+    if (specCanvasRef.current) ro.observe(specCanvasRef.current.parentElement);
+    return () => ro.disconnect();
+  }, [sizeCanvases]);
 
   // Update osc frequencies live
   useEffect(() => {
@@ -290,37 +307,33 @@ function BeatLab() {
     const sc = specCanvasRef.current;
     const an = analyserRef.current;
     const sr = audioCtxRef.current ? audioCtxRef.current.sampleRate : 44100;
+
+    // Size canvases on first frame if not yet done
+    if (!canvasSizedRef.current) sizeCanvases();
+
     if (wc && an) {
-      // Size canvas buffer to match CSS layout (1:1, no DPI scaling for performance)
-      if (wc.width !== wc.offsetWidth || wc.height !== wc.offsetHeight) {
-        wc.width = wc.offsetWidth;
-        wc.height = wc.offsetHeight;
-      }
       drawWaveform(wc, an, beatFreqRef, sr);
     }
     if (sc && an) {
-      if (sc.width !== sc.offsetWidth || sc.height !== sc.offsetHeight) {
-        sc.width = sc.offsetWidth;
-        sc.height = sc.offsetHeight;
-      }
       drawSpectrum(sc, an, sr);
     }
-    // Beat estimation
+    // Beat estimation — runs every frame
     if (an) {
       if (mode === "internal") {
         const b = Math.abs(freq2 - freq1);
-        setBeatFreq(b);
         beatFreqRef.current = b;
+        setBeatFreq(b);
       } else {
         const est = estimateBeatFromFFT(an, sr);
         if (est !== null) {
-          setBeatFreq(est);
           beatFreqRef.current = est;
+          setBeatFreq(est);
         }
+        // If no estimate found, keep displaying last known value (already in state)
       }
     }
     animRef.current = requestAnimationFrame(animate);
-  }, [mode, freq1, freq2]);
+  }, [mode, freq1, freq2, sizeCanvases]);
 
   // Start audio
   const start = useCallback(async () => {
@@ -510,7 +523,7 @@ function BeatLab() {
               <span style={{ fontSize: 14, fontWeight: 400, color: C.textDim, marginLeft: 4 }}>Hz</span>
             </div>
             {mode === "internal" && (
-              <div style={{ fontSize: 11, color: C.textDim, marginTop: 4 }}>|f₂ − f₁| = {formatFreq(Math.abs(freq2 - freq1))} Hz (exact)</div>
+              <div style={{ fontSize: 11, color: C.textDim, marginTop: 4 }}>|f₂ − f₁| = {Math.abs(freq2 - freq1).toFixed(1)} Hz (exact)</div>
             )}
           </div>
 
