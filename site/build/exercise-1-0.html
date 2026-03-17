@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise 1.0: Two Speakers, One Beat — Clock School</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html">Home</a>
+  <a href="../observe/index.html">Observe</a>
+  <a href="../build/index.html">Build</a>
+  <a href="../simulate/index.html">Simulate</a>
+  <a href="../explore/index.html">Explore</a>
+  <a href="../concepts/index.html">Concepts</a>
+  <a href="../teachers/index.html">Teachers</a>
+  <a href="https://github.com/Threehouse-plus-EC/clock-school">GitHub</a>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(232,160,32,0.8); margin-bottom: 8px;">Tier 1 &middot; Build</div>
+    <h1>Two Speakers, One Beat</h1>
+    <p class="subtitle">Exercise 1.0 &mdash; Hear the comparison. No laptop, no screen, no software.</p>
+  </div>
+</div>
+
+<div class="content">
+
+  <h2>What You Need</h2>
+
+  <p>Two oscillators, two speakers, and your ears. That is the entire measurement chain.</p>
+
+  <p><strong>Reference oscillator:</strong> An AD9833 DDS module with Arduino (Tier 1B, set to 440 Hz) or a Leo Bodnar LBE-1420 GPSDO (Tier 1C, programmed to 440.000 Hz). Connected to a speaker or piezoelectric disc.</p>
+
+  <p><strong>Free-running oscillator:</strong> An XR2206 function generator, set to approximately 440 Hz by its frequency potentiometer. Connected to a second speaker or piezo.</p>
+
+  <p><strong>Speaker options:</strong> A PAM8403 stereo amplifier module (~&euro;1, USB-powered, recommended) with two small speakers, or two piezoelectric discs wired directly to the oscillator outputs (minimum cost, harsher sound). See the <a href="https://github.com/Threehouse-plus-EC/clock-school/blob/main/hardware/bom/tier-1-hardware-spec.md">hardware specification</a> for details.</p>
+
+  <p>Place the two speakers 50&ndash;100 cm apart, facing you.</p>
+
+  <h2>What You Do</h2>
+
+  <p><strong>1. Listen.</strong> Power both oscillators. If both frequencies are identical, you hear a steady tone. If they differ slightly, you hear a pulsing &mdash; the amplitude rises and falls in a slow rhythm. That pulsing is the <em>beat note</em>.</p>
+
+  <p><strong>2. Count.</strong> Count the number of pulses in 10 seconds. Divide by 10. That is the beat frequency in hertz &mdash; the frequency difference between the two oscillators. Use a stopwatch or count &ldquo;one-Mississippi, two-Mississippi&rdquo; if no stopwatch is available.</p>
+
+  <p><strong>3. Tune towards zero-beat.</strong> Slowly adjust the XR2206 frequency potentiometer. The beat slows as the frequencies converge. Can you make the pulsing disappear entirely? That is <em>zero-beat</em> &mdash; the two oscillators are at the same frequency.</p>
+
+  <p><strong>4. Sweep through zero-beat.</strong> Continue turning the potentiometer past zero-beat in the same direction. The beat disappears, then reappears. At the moment of silence, the frequencies were equal. On which side is the XR2206 higher than the reference?</p>
+
+  <p><strong>5. Observe drift.</strong> Set the beat to approximately 2 Hz (two pulses per second). Do not touch the potentiometer. Hold still for one minute. Does the beat rate stay constant, or does it change? Which direction does it drift?</p>
+
+  <p><strong>6. Find the counting limit.</strong> Increase the frequency difference until you can no longer count individual pulses. What do you hear instead? (First roughness, then a distinct low tone.) At what approximate beat frequency does counting become unreliable?</p>
+
+  <h2>What You Are Learning</h2>
+
+  <p>This is the same experiment as Tier 0 (Three Clocks That Disagree), translated into electronics. In Tier 0, you compared the Sun, a pendulum, and a household clock by eye and notebook. Here, you compare two electronic oscillators by ear. The invariant is the same: <em>a clock is a comparison between two periodic processes.</em></p>
+
+  <p>The beat note encodes the frequency difference. Your ear detects it. Your counting quantifies it. No instrument is needed beyond your body and a notebook. When you move to <a href="beat-lab.html">Beat Lab</a> in the next exercise, the software will measure the same quantity &mdash; and you will be able to compare its precision to your ear&rsquo;s.</p>
+
+  <p>The sound you hear may be rough or buzzy. This is because the oscillators produce square waves or distorted sine waves, which contain harmonics (multiples of the fundamental frequency). The beat you are counting corresponds to the frequency difference of the fundamentals. The roughness is from the harmonics &mdash; it is real physics, not a malfunction.</p>
+
+  <h2>Your Notebook</h2>
+
+  <div class="principle">
+    <strong>Exercise 1.0 &middot; Date: ___</strong><br><br>
+    Reference frequency (set): ___ Hz<br>
+    Beat count in 10 seconds: ___<br>
+    Beat frequency (count &divide; 10): ___ Hz<br>
+    Zero-beat achieved? (yes / no / almost): ___<br>
+    Drift observed over 1 min at ~2 Hz beat? (steady / drifting / direction): ___<br>
+    Counting limit (approximate beat frequency where counting fails): ___ Hz<br>
+    Notes (sound quality, room conditions, anything unusual): ___<br>
+  </div>
+
+  <p><strong>Notebook questions:</strong></p>
+
+  <p>&rarr; How precisely can your ear determine the beat frequency? Estimate your uncertainty in Hz.</p>
+  <p>&rarr; At what beat frequency does counting become unreliable? What perceptual mode replaces it?</p>
+  <p>&rarr; How does the precision of your ear compare to what Beat Lab measures? (Answer after completing Exercise 1.1.)</p>
+
+  <h2>GPS-Disciplined Acoustic Oscillator (Tier 1C Only)</h2>
+
+  <p>If you have a Leo Bodnar LBE-1420 GPSDO, try this after the main exercise:</p>
+
+  <p>Set the GPSDO to 440.000 Hz and connect it to a speaker. The electrical signal driving this speaker is stable to parts in 10<sup>12</sup>, traceable to GPS caesium atomic time. The sound you hear is a demonstration of that signal &mdash; the frequency is set by the electrical reference, but the acoustic output is coloured by the speaker&rsquo;s resonance, the room&rsquo;s acoustics, and the spatial interference pattern of sound waves. The precision is in the signal, not in the sound.</p>
+
+  <p>Try 432 Hz. Try 1000 Hz (the standard scientific test tone). Try 1 Hz &mdash; can you see the speaker cone move?</p>
+
+  <h2>Going Further</h2>
+
+  <p>Now open <a href="beat-lab.html">Beat Lab</a> and repeat the comparison with software measurement. Does the screen agree with your ear? That is Exercise 1.1.</p>
+
+  <h2>References</h2>
+
+  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+    W. J. Riley, <em>Handbook of Frequency Stability Analysis</em>, NIST SP 1065, 2008. <a href="https://www.nist.gov/publications/handbook-frequency-stability-analysis">NIST</a><br>
+    D. W. Allan, N. Ashby, C. C. Hodge, <em>The Science of Timekeeping</em>, HP Application Note 1289, 1997. <a href="https://www.allanstime.com/Publications/DWA/Science_Timekeeping.pdf">PDF</a><br>
+    R. Plomp, &ldquo;Beats of mistuned consonances,&rdquo; <em>J. Acoust. Soc. Am.</em> <strong>42</strong>, 462 (1967). <a href="https://doi.org/10.1121/1.1910602">DOI</a><br>
+    Leo Bodnar Electronics, <em>LBE-1420 GPSDO Datasheet</em>, v1.1, 2025. <a href="https://leobodnar.com/files/datasheets/LBE-1420-Datasheet-DRAFT-17-01-2025.pdf">PDF</a>
+  </p>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <strong>What Is a Clock?</strong> &mdash; An Open Science School.
+    <div class="footer-links">
+      <a href="https://github.com/Threehouse-plus-EC/clock-school">Repository</a>
+      <a href="https://github.com/Threehouse-plus-EC/clock-school/blob/main/CONTRIBUTING.md">Contribute</a>
+      <a href="https://github.com/Threehouse-plus-EC/clock-school/blob/main/LICENSE-TEXT.md">Licence</a>
+    </div>
+    <div class="footer-licence">
+      Text: CC BY-SA 4.0 &middot; Code: MIT
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

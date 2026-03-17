@@ -29,7 +29,20 @@
 
 <div class="content">
 
-  <p>In Tier 0 you compared the Sun, a pendulum, and a household clock by observation and notebook. In Tier 1 you compare electronic oscillators &mdash; first in the browser, then with physical hardware.</p>
+  <p>In Tier 0 you compared the Sun, a pendulum, and a household clock by observation and notebook. In Tier 1 you compare electronic oscillators &mdash; first by ear, then with software, then with progressively more precise hardware. The comparison is first directly heard, then conditionally inferred beyond direct perception, and finally measured by instrumented conversion. The order is intentional.</p>
+
+  <h2>Tier 1.0 &mdash; Two Speakers, One Beat</h2>
+
+  <div class="tier-grid">
+    <a class="tier-card" href="exercise-1-0.html">
+      <div class="tier-label">Exercise 1.0</div>
+      <h3>Two Speakers, One Beat</h3>
+      <p>Two oscillators, two speakers, your ears. Hear the beat note. Count the pulses. Find zero-beat. No laptop, no screen, no software.</p>
+      <div class="tier-access">Speakers + oscillators &middot; Ear only</div>
+    </a>
+  </div>
+
+  <p>This is the acoustic entry point. The student hears the comparison directly &mdash; the same beat-note physics that every subsequent exercise measures digitally. Exercise 1.0 requires no laptop. The ear is the measurement instrument.</p>
 
   <h2>Tier 1A &mdash; Browser Oscillator Lab</h2>
 
@@ -37,26 +50,34 @@
     <a class="tier-card" href="beat-lab.html">
       <div class="tier-label">Browser App</div>
       <h3>Beat Lab</h3>
-      <p>Generate two tones, observe the beat pattern, measure the frequency difference. Use internal oscillators or your device microphone with real external signals.</p>
+      <p>Generate two tones, observe the beat pattern, measure the frequency difference. Use internal oscillators or your device microphone with real external signals. Integration time control with uncertainty estimates.</p>
       <div class="tier-access">Browser &middot; No install &middot; No hardware required</div>
     </a>
   </div>
 
-  <p>Beat Lab runs entirely in the browser using the Web Audio API. It has two modes:</p>
-
-  <p><strong>Internal mode:</strong> The browser generates two sine tones. You control the frequencies, hear the beat, see the waveform and spectrum, and log measurements. This is where everyone starts.</p>
-
-  <p><strong>Microphone mode:</strong> The browser analyses audio from your device microphone. Feed in two tones from speakers, tuning forks, or external signal generators. The same analysis chain measures the beat frequency from real signals.</p>
+  <p>Beat Lab runs entirely in the browser. In <strong>internal mode</strong>, the browser generates two tones and you measure the beat. In <strong>microphone mode</strong>, the browser analyses audio from your device mic &mdash; including the speakers from Exercise 1.0. The software confirms and extends what your ear detected.</p>
 
   <h2>Tier 1B / 1C &mdash; Hardware Oscillator Comparison</h2>
 
-  <p>The hardware tier uses two off-the-shelf modules: an XR2206 function generator kit (~&euro;4, the free-running oscillator) and a reference source. In <strong>Tier 1B</strong> (~&euro;14 total), the reference is an AD9833 DDS module driven by an Arduino. In <strong>Tier 1C</strong> (~&euro;182 total), the reference is a Leo Bodnar LBE-1420 GPS-disciplined oscillator &mdash; an atomic clock reference. No breadboard, no soldering, no mixer hardware. Both signals feed into the laptop sound card; Beat Lab does the comparison in software.</p>
+  <p>The hardware tier uses two off-the-shelf modules: an XR2206 function generator kit (~&euro;4, the free-running oscillator) and a reference source. In <strong>Tier 1B</strong> (~&euro;17 total with speakers), the reference is an AD9833 DDS module. In <strong>Tier 1C</strong> (~&euro;185 total), the reference is a Leo Bodnar LBE-1420 GPS-disciplined oscillator &mdash; traceable to atomic time. Both signals drive speakers (heard) and feed into the sound card (measured).</p>
 
-  <p>See the <a href="https://github.com/Threehouse-plus-EC/clock-school/blob/main/hardware/bom/tier-1-hardware-spec.md">full hardware specification</a> for the bill of materials, frequency plan, and exercise sequence.</p>
+  <p>See the <a href="https://github.com/Threehouse-plus-EC/clock-school/blob/main/hardware/bom/tier-1-hardware-spec.md">hardware specification</a> for the bill of materials and exercise sequence.</p>
+
+  <h2>Three Frequency Regimes</h2>
+
+  <p>The same kit supports three frequency regimes, each teaching something the others cannot:</p>
+
+  <p><strong>Regime 1 &mdash; Acoustic (440 Hz):</strong> Both oscillators and the beat are audible. The ear is the detector. This is Exercises 1.0 and 1.1.</p>
+
+  <p><strong>Regime 2 &mdash; Ultrasonic (25&ndash;40 kHz, provisional):</strong> The oscillators are above hearing, but the beat may be audible through nonlinear mixing in the speaker or microphone. The comparison separates from the source. Status: prototype-gated.</p>
+
+  <p><strong>Regime 3 &mdash; RF (10 MHz, Tier 1C advanced):</strong> The oscillators require a physical mixer to bring the beat down to audio band. This is how real frequency metrology works. Requires GPSDO + crystal oscillator module.</p>
+
+  <p>For the full concept, see the <a href="https://github.com/Threehouse-plus-EC/clock-school/blob/main/docs/speaker-driver-concept.md">speaker driver and three-regime concept note</a>.</p>
 
   <h2>Conceptual Bridge</h2>
 
-  <p>In Tier 0, the pendulum is free-running, the mechanical clock is regulated, and the Sun is the reference. In Tier 1, the VCO is free-running, the DDS is programmable, and the GPSDO is the reference disciplined to an atomic standard via satellite. Same logic, higher bandwidth, electronic rather than mechanical.</p>
+  <p>In Tier 0, the pendulum is free-running, the mechanical clock is regulated, and the Sun is the reference. In Tier 1, the VCO is free-running, the DDS is programmable, and the GPSDO is disciplined to an atomic standard via satellite. Same logic, higher bandwidth, electronic rather than mechanical.</p>
 
   <h2>Going Further</h2>
 

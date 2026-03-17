@@ -281,5 +281,26 @@ Both modules operate at low DC voltages (5V USB, 9V battery). No hazardous volta
 
 ---
 
-*Clock School — What Is a Clock? · Tier 1 Hardware Specification · v0.2*
+## Speaker Driver (standard component)
+
+Both oscillators should drive speakers or piezoelectric elements so the beat is audible before it is measured digitally. See the [speaker driver concept note](../../docs/speaker-driver-concept.md) for details, safety notes, and the three-regime frequency progression.
+
+**Recommended:** PAM8403 stereo class-D amplifier module (~€1.50) + two small speakers (~€0.50 each). USB 5V powered. One channel per oscillator. Volume control on board.
+
+**Fallback:** Two piezoelectric discs (27 mm, ~€0.30 each), wired directly to oscillator outputs.
+
+---
+
+## References
+
+1. W. J. Riley, *Handbook of Frequency Stability Analysis*, NIST SP 1065, 2008. [NIST](https://www.nist.gov/publications/handbook-frequency-stability-analysis)
+2. D. W. Allan, N. Ashby, C. C. Hodge, *The Science of Timekeeping*, HP Application Note 1289, 1997. [PDF](https://www.allanstime.com/Publications/DWA/Science_Timekeeping.pdf)
+3. Leo Bodnar Electronics, *LBE-1420 GPSDO Datasheet*, v1.1, 2025. [PDF](https://leobodnar.com/files/datasheets/LBE-1420-Datasheet-DRAFT-17-01-2025.pdf)
+4. Exar Corporation, *XR2206 Monolithic Function Generator Datasheet*. [Datasheet](https://www.alldatasheet.com/datasheet-pdf/view/48088/EXAR/XR2206.html)
+5. Analog Devices, *AD9833 Programmable Waveform Generator Datasheet*, Rev. E. [Product page](https://www.analog.com/en/products/ad9833.html)
+6. U. Warring, *Causal Clock Unification Framework*, Zenodo v1.0.0. [DOI: 10.5281/zenodo.17948436](https://doi.org/10.5281/zenodo.17948436)
+
+---
+
+*Clock School — What Is a Clock? · Tier 1 Hardware Specification · v0.3*
 *CC BY-SA 4.0 · Ulrich Warring and contributors*
