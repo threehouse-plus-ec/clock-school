@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+
 <div class="topbar">
   <a href="../index.html">Home</a>
   <a href="../observe/index.html">Observe</a>
@@ -17,15 +18,125 @@
   <a href="../teachers/index.html">Teachers</a>
   <a href="https://github.com/Threehouse-plus-EC/clock-school">GitHub</a>
 </div>
+
 <div class="hero">
   <div class="hero-inner">
     <h1>Concepts</h1>
-    <p class="subtitle">This section is under development.</p>
+    <p class="subtitle">Ideas that appear in every tier. The same physics, different tools.</p>
   </div>
 </div>
+
 <div class="content">
-  <p>This section is being built. Return to the <a href="../index.html">homepage</a> for the current state of the project, or see the <a href="https://github.com/Threehouse-plus-EC/clock-school/blob/main/docs/blueprint.md">blueprint</a> for what this section will contain.</p>
+
+  <p>These concepts recur throughout the programme. Each tier engages them at a level appropriate to its tools and precision. This page connects the threads.</p>
+
+  <!-- ── Periodicity ── -->
+  <h2 id="periodicity">Periodicity</h2>
+  <p><em>What repeats, and how reliably?</em></p>
+  <p>Every clock rests on something periodic &mdash; a process that repeats in a way stable enough to count against. The question is never &ldquo;does it repeat perfectly?&rdquo; (nothing does) but &ldquo;how well does it repeat, and how do we know?&rdquo;</p>
+  <table>
+    <thead><tr><th>Tier</th><th>Periodic process</th><th>What limits its regularity</th></tr></thead>
+    <tbody>
+      <tr><td>0 &middot; Observe</td><td>Sun&rsquo;s apparent motion, pendulum swing, clock tick</td><td>Equation of time, temperature, battery</td></tr>
+      <tr><td>1 &middot; Build</td><td>Electronic oscillation (DDS, VCO, GPSDO)</td><td>Crystal ageing, temperature, voltage noise</td></tr>
+      <tr><td>2 &middot; Simulate</td><td>Numerical oscillator with injected noise model</td><td>White, flicker, random-walk frequency noise</td></tr>
+      <tr><td>3 &middot; Explore</td><td>Atomic transition, Earth rotation, pulsar spin</td><td>Quantum projection noise, tidal friction, timing noise</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── Comparison ── -->
+  <h2 id="comparison">Comparison</h2>
+  <p><em>A clock is an operational comparison between periodic processes.</em></p>
+  <p>This is the programme&rsquo;s invariant principle. No tier defines a clock by its mechanism alone. Every tier defines it by comparing one periodic process to another and extracting information from the difference.</p>
+  <table>
+    <thead><tr><th>Tier</th><th>What is compared</th><th>How the difference is observed</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>Sun vs pendulum vs household clock</td><td>Notebook entries, visual inspection</td></tr>
+      <tr><td>1</td><td>VCO vs DDS or GPSDO</td><td>Beat note (ear), then FFT (Beat Lab)</td></tr>
+      <tr><td>2</td><td>Simulated oscillators in a network</td><td>Allan deviation, closure residuals</td></tr>
+      <tr><td>3</td><td>Atomic clocks, UT1, pulsars</td><td>UTC &minus; UTC(k), UT1 &minus; UTC, timing residuals</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── Reference vs free-running ── -->
+  <h2 id="reference">Reference vs Free-Running</h2>
+  <p><em>Which clock do you trust, and why?</em></p>
+  <p>A &ldquo;reference&rdquo; is not an absolute &mdash; it is the oscillator you choose to trust for the duration of the comparison. That choice is always justified by prior knowledge about stability, not by any inherent property of the oscillator itself.</p>
+  <table>
+    <thead><tr><th>Tier</th><th>Reference</th><th>Free-running</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>Sun (slow, predictable drift)</td><td>Pendulum (temperature-sensitive)</td></tr>
+      <tr><td>1</td><td>DDS crystal (ppm) or GPSDO (10<sup>&minus;12</sup>)</td><td>XR2206 VCO (drifts visibly)</td></tr>
+      <tr><td>2</td><td>Injected &ldquo;true&rdquo; frequency (known ground truth)</td><td>Simulated noisy oscillator</td></tr>
+      <tr><td>3</td><td>TAI ensemble, GPS system time</td><td>Individual lab clock UTC(k), UT1</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── Synchronisation ── -->
+  <h2 id="synchronisation">Synchronisation</h2>
+  <p><em>How are clocks aligned initially, and what does &ldquo;aligned&rdquo; mean?</em></p>
+  <p>Synchronisation crosses tiers with changing character. At Tier 0, it is notebook-mediated: the student carries information between the sundial and the pendulum by walking and writing. At Tier 1, it is signal-mediated: a PPS pulse from GPS. At Tier 2, it is algorithmic: ensemble time-scale computation. The progression moves from human coordination to electronic to mathematical &mdash; from logical to metrological synchronisation.</p>
+
+  <!-- ── Stability vs accuracy ── -->
+  <h2 id="stability-accuracy">Stability vs Accuracy</h2>
+  <p><em>A clock can be stable without being accurate, and accurate without being stable.</em></p>
+  <p><strong>Stability</strong> is how well a clock repeats &mdash; how consistent successive measurements are. <strong>Accuracy</strong> is how close those measurements are to a defined standard. A pendulum that swings at exactly the same rate every day is stable, even if that rate is slightly wrong. A GPS PPS pulse is accurate (traceable to caesium) but may jitter at the nanosecond level.</p>
+  <p>This distinction is central to metrology and appears at every tier. The Allan deviation (&sigma;<sub>y</sub>(&tau;)) characterises stability; calibration against a primary standard characterises accuracy.</p>
+
+  <!-- ── Drift and noise ── -->
+  <h2 id="drift-noise">Drift and Noise</h2>
+  <p><em>What changes slowly, and what fluctuates?</em></p>
+  <table>
+    <thead><tr><th>Tier</th><th>Drift (systematic, slow)</th><th>Noise (random, fast)</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>Equation of time (~minutes over months)</td><td>Observer reaction time (~0.5 s)</td></tr>
+      <tr><td>1</td><td>VCO temperature drift (~Hz/&deg;C)</td><td>Oscillator phase noise</td></tr>
+      <tr><td>2</td><td>Simulated random-walk frequency</td><td>Simulated white/flicker frequency</td></tr>
+      <tr><td>3</td><td>Pulsar spin-down, tidal deceleration</td><td>Interstellar medium dispersion, receiver noise</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── Systematic vs random ── -->
+  <h2 id="systematic-random">Systematic vs Random Deviation</h2>
+  <p><em>Can you tell them apart with your data?</em></p>
+  <p>A systematic deviation shifts all measurements in the same direction. A random deviation scatters them. With enough observations over enough time, the two become distinguishable &mdash; but in a short dataset, a systematic drift can masquerade as noise or vice versa. This is why Experiment 0.1 requires 7&ndash;14 days, not one afternoon.</p>
+
+  <!-- ── Comparison networks ── -->
+  <h2 id="networks">Comparison Networks</h2>
+  <p><em>What does a third clock add that two clocks cannot provide?</em></p>
+  <p>Two clocks can measure their frequency difference. Three clocks can check for consistency: if A&ndash;B, B&ndash;C, and C&ndash;A don&rsquo;t satisfy triangular closure (their sum should be zero), something is wrong &mdash; and the residual localises the fault. Every additional clock adds constraints, rapidly over-determining the system.</p>
+  <table>
+    <thead><tr><th>Tier</th><th>Network</th><th>Closure test</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>Sun + pendulum + household clock</td><td>Do all three agree on noon?</td></tr>
+      <tr><td>1</td><td>DDS + VCO (+ GPSDO if available)</td><td>Two or three pairwise beats</td></tr>
+      <tr><td>2</td><td>Simulated N-clock networks</td><td>Triangular closure residuals</td></tr>
+      <tr><td>3</td><td>TAI ensemble, VLBI baselines, pulsar timing arrays</td><td>Global closure of time-transfer links</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── Local vs distant ── -->
+  <h2 id="local-distant">Local vs Distant Comparison</h2>
+  <p><em>How does distance constrain what you can learn?</em></p>
+  <p>When two clocks are in the same room, comparison is essentially instantaneous. When they are separated by kilometres or light-years, the signal carrying comparison information takes time to propagate. This geometric constraint &mdash; formalised in Tier 2 as the parameter &eta;(&tau;) = L<sub>comparison</sub> / (c&tau;) &mdash; sets a boundary on what comparisons are physically possible at what precision.</p>
+
+  <!-- ── Causal baselines ── -->
+  <h2 id="causal-baselines">Causal Baselines and Geometry</h2>
+  <p><em>The boundary condition L &le; c&tau;.</em></p>
+  <p>Any phase comparison between two clocks separated by distance L must satisfy L &le; cT, where T is the comparison interval and c is the speed of signal propagation. This is not a law of clock physics &mdash; it is a boundary condition that all clocks must respect. In Tier 0, it is trivially satisfied (the garden is small). In Tier 1, it is negligible (electronic signals cross a bench in nanoseconds). In Tier 2, it is formalised as the &eta;(&tau;) parameter. In Tier 3, it becomes the central design constraint for continental and interstellar clock networks.</p>
+  <p>This framework is developed in: U. Warring, <em>Causal Clock Unification Framework</em>, Zenodo v1.0.0, DOI: <a href="https://doi.org/10.5281/zenodo.17948436">10.5281/zenodo.17948436</a>. It is under local stewardship and has not received broad community endorsement. Students are encouraged to test where it holds and where it breaks.</p>
+
+  <h2>Further Reading</h2>
+  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.8;">
+    W. J. Riley, <em>Handbook of Frequency Stability Analysis</em>, NIST SP 1065, 2008. <a href="https://www.nist.gov/publications/handbook-frequency-stability-analysis">NIST</a><br>
+    D. W. Allan, N. Ashby, C. C. Hodge, <em>The Science of Timekeeping</em>, HP Application Note 1289, 1997. <a href="https://www.allanstime.com/Publications/DWA/Science_Timekeeping.pdf">PDF</a><br>
+    D. S. Sivia and J. Skilling, <em>Data Analysis: A Bayesian Tutorial</em>, 2nd ed., Oxford, 2006.<br>
+    F. Riehle, <em>Frequency Standards: Basics and Applications</em>, Wiley-VCH, 2004.<br>
+    J. Levine, &ldquo;Introduction to time and frequency metrology,&rdquo; <em>Rev. Sci. Instrum.</em> <strong>70</strong>, 2567 (1999). <a href="https://doi.org/10.1063/1.1149844">DOI</a>
+  </p>
+
 </div>
+
 <footer>
   <div class="footer-inner">
     <strong>What Is a Clock?</strong> &mdash; An Open Science School.
@@ -39,5 +150,6 @@
     </div>
   </div>
 </footer>
+
 </body>
 </html>

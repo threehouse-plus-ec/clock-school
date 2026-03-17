@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teachers — Clock School</title>
+  <title>For Teachers — Clock School</title>
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+
 <div class="topbar">
   <a href="../index.html">Home</a>
   <a href="../observe/index.html">Observe</a>
@@ -17,15 +18,130 @@
   <a href="../teachers/index.html">Teachers</a>
   <a href="https://github.com/Threehouse-plus-EC/clock-school">GitHub</a>
 </div>
+
 <div class="hero">
   <div class="hero-inner">
-    <h1>Teachers</h1>
-    <p class="subtitle">This section is under development.</p>
+    <h1>For Teachers</h1>
+    <p class="subtitle">Guidance for schools, clubs, universities, and self-learners.</p>
   </div>
 </div>
+
 <div class="content">
-  <p>This section is being built. Return to the <a href="../index.html">homepage</a> for the current state of the project, or see the <a href="https://github.com/Threehouse-plus-EC/clock-school/blob/main/docs/blueprint.md">blueprint</a> for what this section will contain.</p>
+
+  <h2>The Core Principle</h2>
+
+  <p>This programme teaches one idea: <strong>a clock is a comparison between periodic processes.</strong> Everything else &mdash; the exercises, the hardware, the software &mdash; serves that idea. If your students understand that disagreement between clocks is data, not failure, the programme has succeeded.</p>
+
+  <p>The pedagogical order matters: <strong>observation first, then measurement, then analysis.</strong> Students should always record what they see (or hear) before looking at what the software says. The eye, the ear, and the notebook come before the screen.</p>
+
+  <h2>Choosing a Tier</h2>
+
+  <p>You do not need to start at Tier 0 or complete every tier. Each tier is self-contained. Choose based on your students&rsquo; age, your resources, and your goals.</p>
+
+  <table>
+    <thead><tr><th>Tier</th><th>Ages</th><th>Time</th><th>Requirements</th><th>Best for</th></tr></thead>
+    <tbody>
+      <tr><td>0 &middot; Observe</td><td>10+</td><td>2&ndash;3 weeks</td><td>Stick, string, clock, notebook</td><td>Schools, science clubs, home learners</td></tr>
+      <tr><td>1.0 &middot; Two Speakers</td><td>13+</td><td>1&ndash;2 hours</td><td>Two oscillators, two speakers</td><td>Physics classes, maker spaces</td></tr>
+      <tr><td>1A &middot; Beat Lab</td><td>13+</td><td>1&ndash;2 hours</td><td>Laptop with browser</td><td>Any classroom with computers</td></tr>
+      <tr><td>1B/1C &middot; Hardware</td><td>15+</td><td>3&ndash;6 hours</td><td>Kit components (~&euro;17&ndash;185)</td><td>Physics labs, university courses</td></tr>
+      <tr><td>2 &middot; Simulate</td><td>18+</td><td>20&ndash;40 hours</td><td>Laptop with Python</td><td>University physics, self-study</td></tr>
+      <tr><td>3 &middot; Explore</td><td>20+</td><td>Open-ended</td><td>Public datasets</td><td>Research projects, M.Sc. work</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Running Tier 0 with a Class</h2>
+
+  <h3>Preparation (15 minutes)</h3>
+  <p>Each student (or pair) needs: a straight stick (~1 m), string and a weight for a pendulum, access to a clock, and a notebook. No other materials. If you have 30 students, you need 15&ndash;30 sticks and 15&ndash;30 pieces of string. Cost: essentially zero.</p>
+
+  <h3>The Experiment (7&ndash;14 days)</h3>
+  <p>Students take three measurements each day around midday: shadow-shortest time, pendulum count in 60 seconds, and clock reading at solar noon. They record everything in their notebooks. You do not need to supervise every measurement &mdash; the experiment is designed for independent daily observation.</p>
+
+  <h3>What to Look For</h3>
+  <p>After one week, ask students to tabulate their readings and look for patterns. The key questions are: do the three clocks agree? If not, what kind of disagreement is it &mdash; random scatter or a systematic drift? Can they identify the equation of time (the seasonal drift between solar noon and clock noon)?</p>
+
+  <h3>Common Issues</h3>
+  <p><strong>Cloudy days:</strong> Shadow measurement is impossible when the Sun is hidden. Students should record &ldquo;cloudy &mdash; no measurement&rdquo; rather than guessing. Missing data is part of science.</p>
+  <p><strong>Inconsistent pendulum counts:</strong> This usually comes from inconsistent timing or variable swing amplitude. Ask students to use a longer count (100 swings instead of 60 seconds) for better precision.</p>
+  <p><strong>Students think they did it wrong:</strong> The clocks <em>should</em> disagree. If a student finds that solar noon is at 12:17 instead of 12:00, that is a real measurement of the equation of time plus the longitude offset from the time-zone meridian. Celebrate it.</p>
+
+  <h3>The Sky Companion</h3>
+  <p>After students have recorded at least one observation, they can use the <a href="../observe/sky-companion.html">Sky Companion</a> browser tool to compare their data with the expected sky. The tool is designed to show the model prediction only after the student has entered their own observation &mdash; observation first, then comparison.</p>
+
+  <h2>Running Tier 1.0 in a Classroom</h2>
+
+  <h3>What You Need</h3>
+  <p>One pair of oscillators and one pair of speakers per group (2&ndash;4 students). For 30 students: 8&ndash;15 kits. At ~&euro;17 per kit (Tier 1B with PAM8403 speakers), total cost is ~&euro;130&ndash;250 for a full classroom. One GPSDO (Tier 1C, ~&euro;185) shared by all groups is ideal but not required.</p>
+
+  <h3>Time Required</h3>
+  <p>Exercise 1.0 (two speakers, one beat) takes 30&ndash;60 minutes. Exercise 1.1 (Beat Lab on laptop) takes another 30&ndash;60 minutes. Both can fit in a double period.</p>
+
+  <h3>Noise Management</h3>
+  <p>Multiple kits running simultaneously in one room will create overlapping beat notes. This is actually pedagogically interesting (what happens when you can&rsquo;t isolate your signal from the environment?), but it can be distracting. Options: stagger start times, use headphones for one channel, or move groups to different areas.</p>
+
+  <p>Keep speaker volumes at a comfortable conversational level. The PAM8403 amplifier can produce up to 85 dB at close range; set the volume to minimum before powering on, and increase gradually. See the <a href="https://github.com/Threehouse-plus-EC/clock-school/blob/main/docs/speaker-driver-concept.md">speaker driver concept note</a> for detailed safety guidance.</p>
+
+  <h2>Running Tier 1 Remotely</h2>
+
+  <p>Clock School is designed for distributed use. A student anywhere in the world can:</p>
+
+  <p><strong>Tier 1A (Beat Lab):</strong> Open the <a href="../build/beat-lab.html">Beat Lab</a> page in a browser. No installation, no download, no account. The internal-mode exercises work immediately. The microphone-mode exercises work with any external audio source.</p>
+
+  <p><strong>Tier 1B (hardware):</strong> Source the components from AliExpress (~&euro;17 total). Build the kit from the <a href="https://github.com/Threehouse-plus-EC/clock-school/blob/main/hardware/bom/tier-1-hardware-spec.md">hardware specification</a>. The specification includes a bill of materials, frequency plan, and exercise sequence. No supervision is strictly needed &mdash; the exercises are self-guided &mdash; but a remote supervisor who can answer questions by email or chat significantly improves the experience.</p>
+
+  <p><strong>Tier 1C (GPSDO):</strong> If a GPSDO is available at the student&rsquo;s institution, it can serve multiple students in rotation. If not, Tier 1B provides the same exercises at lower reference quality. The GPSDO upgrade is meaningful but not essential for the core comparison experience.</p>
+
+  <h2>Assessment (Optional)</h2>
+
+  <p>This programme carries no institutional credit. It does not prescribe grades, exams, or certificates. But if you want to assess student work, here are some approaches:</p>
+
+  <p><strong>Notebook review:</strong> The notebook is the primary deliverable at every tier. A complete notebook contains: date and conditions for each observation, raw measurements, tabulated data, and the student&rsquo;s own interpretation. Quality of reasoning matters more than precision of results.</p>
+
+  <p><strong>Beat Lab CSV:</strong> The data log exported from Beat Lab provides a timestamped record of measurements with uncertainties. A student who has recorded 20+ measurements at different integration times and can explain why the uncertainty decreases with longer averaging has demonstrated genuine understanding.</p>
+
+  <p><strong>Presentation:</strong> Ask students to explain, in their own words, why their three clocks (Tier 0) or two oscillators (Tier 1) disagreed. What was systematic? What was random? Which clock was &ldquo;better&rdquo; and how did they decide?</p>
+
+  <p><strong>What not to assess:</strong> Do not assess on numerical precision. A student who estimates a 3.2 Hz beat by ear and finds 3.15 Hz in Beat Lab has done excellent science. Do not penalise the 0.05 Hz difference &mdash; explain why it exists.</p>
+
+  <h2>Adapting for Different Contexts</h2>
+
+  <h3>Primary Schools (ages 10&ndash;12)</h3>
+  <p>Use Tier 0 only. Focus on the notebook and the experience of daily observation. The equation of time is too advanced to derive but can be observed: &ldquo;solar noon moves &mdash; why?&rdquo; The Moon phase observation is accessible and engaging. Consider running the experiment as a class project over two weeks, with a wall chart tracking everyone&rsquo;s data.</p>
+
+  <h3>Secondary Schools (ages 13&ndash;17)</h3>
+  <p>Tier 0 + Tier 1.0 + Tier 1A. The acoustic beat experiment (Exercise 1.0) is the highlight &mdash; students hear physics. Beat Lab provides the quantitative follow-up. If time permits, the integration-time exercise (watching uncertainty decrease with longer averaging) is an excellent introduction to statistical reasoning.</p>
+
+  <h3>Universities</h3>
+  <p>Tier 1B/1C + Tier 2. The hardware kit and the numerical lab provide a coherent two-part course: measure first, then model. The Tier 2 material is based on the <a href="https://github.com/adv-labs-ufr/numerical_clock_networks">Numerical Clock Networks</a> lab at the University of Freiburg and includes a full framework, tutorial, and lab sequence.</p>
+
+  <h3>Science Clubs and Maker Spaces</h3>
+  <p>Tier 1.0 and 1B are ideal. The kit is cheap, the build is fast (no soldering), and the result is immediately satisfying &mdash; you hear the physics. The GPS-referenced tuning fork (Tier 1C) is an excellent demonstration piece for open days and science fairs.</p>
+
+  <h3>Self-Learners</h3>
+  <p>Start with <a href="../observe/experiment-01.html">Experiment 0.1</a>. A stick, a string, and a notebook. Continue through the tiers at your own pace. Everything is self-guided. The <a href="../concepts/index.html">Concepts</a> page provides the connecting thread.</p>
+
+  <h2>Contributing Teaching Notes</h2>
+
+  <p>If you have used this material with a class, club, or individual student, your experience is valuable. We welcome:</p>
+
+  <p>&mdash; Field reports: what worked, what didn&rsquo;t, what surprised you.<br>
+  &mdash; Adaptations: how you modified an exercise for your context.<br>
+  &mdash; Student work: anonymised notebooks, data logs, or presentations (with permission).<br>
+  &mdash; Translations: the programme is written in English but should be accessible worldwide.</p>
+
+  <p>See the <a href="https://github.com/Threehouse-plus-EC/clock-school/blob/main/CONTRIBUTING.md">contribution guidelines</a> for details.</p>
+
+  <h2>References</h2>
+  <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.8;">
+    D. W. Allan, N. Ashby, C. C. Hodge, <em>The Science of Timekeeping</em>, HP Application Note 1289, 1997. <a href="https://www.allanstime.com/Publications/DWA/Science_Timekeeping.pdf">PDF</a> &mdash; Excellent general introduction, accessible to advanced secondary students.<br>
+    W. J. Riley, <em>Handbook of Frequency Stability Analysis</em>, NIST SP 1065, 2008. <a href="https://www.nist.gov/publications/handbook-frequency-stability-analysis">NIST</a> &mdash; Technical reference for Allan deviation and stability measures.<br>
+    D. S. Sivia and J. Skilling, <em>Data Analysis: A Bayesian Tutorial</em>, 2nd ed., Oxford, 2006. &mdash; Recommended for Tier 2 Bayesian exercises.<br>
+    U. Warring, <em>Causal Clock Unification Framework</em>, Zenodo v1.0.0. <a href="https://doi.org/10.5281/zenodo.17948436">DOI</a> &mdash; The organising framework for the programme.
+  </p>
+
 </div>
+
 <footer>
   <div class="footer-inner">
     <strong>What Is a Clock?</strong> &mdash; An Open Science School.
@@ -39,5 +155,6 @@
     </div>
   </div>
 </footer>
+
 </body>
 </html>
