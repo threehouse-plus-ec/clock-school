@@ -312,6 +312,23 @@ These items are not included with any device and must be ordered separately.
 
 **Note:** The LBE-1420 (250 mA) is USB-C powered. The 1014D is USB powered (5V/2A adapter included). The 2C53P is USB-C powered (charging at 5V/2A). A dual-port USB power adapter or a power bank with two USB outputs can run the GPSDO and either oscilloscope simultaneously.
 
+### Soldering Iron (optional)
+
+Not required for breadboard assembly of the VCXO (no soldering needed). Recommended if the VCXO circuit will be moved to a permanent perfboard, or if the kit will serve as a general-purpose electronics workstation.
+
+| Item | Purpose | Qty | Approx. price | Source |
+|---|---|---|---|---|
+| FNIRSI HS-02B soldering iron (standard package, 1 tip, without adapter) | USB-C powered, 100W, 2s heat-up, 100–450°C, 0.96" display, sleep/auto-off | 1 | ~€27 | [FNIRSI official](https://www.fnirsi.com/products/hs-02), [AliExpress](https://www.aliexpress.com/item/1005006655028971.html), [Amazon](https://www.amazon.com/dp/B0DYXN6X62) |
+| Solder wire (0.8 mm, 63/37 Sn-Pb, rosin core, 50 g) | Leaded solder — easier to work with for beginners | 1 | ~€3 | [AliExpress](https://www.aliexpress.com/w/wholesale-solder-wire-0.8mm-63-37.html) |
+| Solder wick (2.5 mm desoldering braid) | For correcting mistakes | 1 | ~€1 | Any |
+| **Subtotal (soldering option)** | | | **~€31** | |
+
+**Why the HS-02B:** It is USB-C powered (PD/QC protocol) — the same power bank and cables that power the GPSDO and oscilloscope also power the soldering iron. No separate mains-voltage soldering station needed. The iron heats to working temperature in 2–3 seconds, has preset temperature groups, and fits in a small tool bag. The 100W adapter included with the 1014D can also power the iron directly. Tom's Hardware rated it "solid hardware, good software, and a low price" ([review](https://www.tomshardware.com/maker-stem/fnirsi-hs-02-review)).
+
+**HS-02A vs HS-02B:** The HS-02A uses longer tips (9 cm, F245 series) and has 6 tips included in the full kit. The HS-02B uses shorter tips (210 series) and includes 3 tips. For through-hole breadboard-to-perfboard work, either is adequate. The HS-02B is slightly cheaper and heats ~1 second faster.
+
+**If a soldering iron is already available** at the host institution, this item can be skipped entirely.
+
 ### GPS Antenna Placement
 
 The LBE-1420 includes a magnetic-base active GPS antenna with 5 m cable (SMA male). For reliable GPS lock:
@@ -349,11 +366,13 @@ The LBE-1420 includes a magnetic-base active GPS antenna with 5 m cable (SMA mal
 | **Power** | USB power bank + spare cable (mains adapter included with 1014D) | ~€10 |
 | **Breadboard and prototyping** | Breadboard + jumper wires + cutters | ~€5.50 |
 | **GPS antenna extension** | Only if 5 m cable insufficient | €0–5 |
+| **Soldering iron (optional)** | FNIRSI HS-02B + solder + wick | ~€31 |
 | | | |
-| **Subtotal** | | **~€355–375** |
+| **Subtotal (without soldering iron)** | | **~€355–375** |
+| **Subtotal (with soldering iron)** | | **~€386–406** |
 | **Shipping estimate** | UK + China to destination | ~€15–30 |
-| **Customs estimate (varies by country)** | 15–30% on declared value | ~€55–110 |
-| **Total landed estimate** | | **~€430–510** |
+| **Customs estimate (varies by country)** | 15–30% on declared value | ~€55–120 |
+| **Total landed estimate** | Without iron: **~€430–510** / With iron: **~€460–550** |
 
 ### Option B — With FNIRSI 2C53P (portable alternative)
 
@@ -367,11 +386,13 @@ The LBE-1420 includes a magnetic-base active GPS antenna with 5 m cable (SMA mal
 | **Power** | USB-C adapter + power bank + spare cable | ~€13 |
 | **Breadboard and prototyping** | Breadboard + jumper wires + cutters | ~€5.50 |
 | **GPS antenna extension** | Only if 5 m cable insufficient | €0–5 |
+| **Soldering iron (optional)** | FNIRSI HS-02B + solder + wick | ~€31 |
 | | | |
-| **Subtotal** | | **~€322–347** |
+| **Subtotal (without soldering iron)** | | **~€322–347** |
+| **Subtotal (with soldering iron)** | | **~€353–378** |
 | **Shipping estimate** | UK + China to destination | ~€15–30 |
-| **Customs estimate (varies by country)** | 15–30% on declared value | ~€50–100 |
-| **Total landed estimate** | | **~€390–475** |
+| **Customs estimate (varies by country)** | 15–30% on declared value | ~€50–115 |
+| **Total landed estimate** | Without iron: **~€390–475** / With iron: **~€420–520** |
 
 ---
 
@@ -402,9 +423,10 @@ The LBE-1420 includes a magnetic-base active GPS antenna with 5 m cable (SMA mal
 7. FNIRSI, *1014D Product Page*. [fnirsi.com](https://www.fnirsi.com/products/1014d)
 8. FNIRSI, *2C53P Product Page*. [fnirsi.com](https://www.fnirsi.com/products/2c53p)
 9. Elektor Magazine, *FNIRSI 1014D Digital Storage Oscilloscope Review*. [Elektor](https://www.elektormagazine.com/review/fnirsi-1014d-digital-storage-oscilloscope-review)
+10. Tom's Hardware, *FNIRSI HS-02 Review: Keep Soldering On!* [Tom's Hardware](https://www.tomshardware.com/maker-stem/fnirsi-hs-02-review)
 
 ---
 
 *Clock School — What Is a Clock?*
-*Starter Kit Specification v4 · March 2026*
+*Starter Kit Specification v5 · March 2026*
 *CC BY-SA 4.0*
