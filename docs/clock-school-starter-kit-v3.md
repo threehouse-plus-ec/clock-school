@@ -14,7 +14,8 @@ Three devices. One is GPS-disciplined (the atomic reference). One is a free-runn
 |---|---|---|---|
 | Leo Bodnar LBE-1420 GPSDO | Atomic reference | ~10⁻¹² (GPS-disciplined) | ~€170 |
 | 10 MHz VCXO (breadboard kit) | Free-running VCO | ~10⁻⁴ to 10⁻³ (temperature-dependent) | ~€4 |
-| FNIRSI 2C53P | Oscilloscope + multimeter + DDS generator | ~10⁻⁵ (crystal-referenced DDS) | ~€120 |
+| FNIRSI 1014D (default) | Oscilloscope + DDS generator | ~10⁻⁵ (crystal-referenced DDS) | ~€145 |
+| FNIRSI 2C53P (portable alt.) | Oscilloscope + multimeter + DDS generator | ~10⁻⁵ (crystal-referenced DDS) | ~€120 |
 
 The three-way comparison — atomic reference vs crystal VCO vs DDS — forms a minimal clock network. Triangular closure (does the sum of pairwise differences equal zero?) is testable on this bench.
 
@@ -114,19 +115,62 @@ No complete 10 MHz VCXO kit exists as a consumer product. This is assembled from
 
 ---
 
-## 3. Oscilloscope / Multimeter / Signal Generator — FNIRSI 2C53P
+## 3. Oscilloscope / Signal Generator
 
-### Principle
+Two options are presented. The FNIRSI 1014D is the recommended default for bench use. The FNIRSI 2C53P is the portable alternative for field deployments and demonstrations.
 
-The FNIRSI 2C53P is a handheld 3-in-1 instrument combining a dual-channel digital oscilloscope, a true RMS multimeter, and a DDS (direct digital synthesis) signal generator. In the Clock School context, it serves three roles simultaneously:
+### Option A (Default) — FNIRSI 1014D
 
-**As oscilloscope:** Captures the GPSDO output on Channel 1 and the VCXO output on Channel 2. The 50 MHz bandwidth and 250 MSa/s sampling rate are sufficient to display 10 MHz square waves cleanly (fundamental + first two harmonics). The built-in FFT function can extract the beat frequency directly from the captured waveforms.
+#### Principle
 
-**As multimeter:** Measures supply voltages, checks continuity during breadboard assembly, and verifies the varicap control voltage.
+The FNIRSI 1014D is a benchtop 2-in-1 instrument combining a dual-channel digital oscilloscope with a DDS signal generator. Its 100 MHz bandwidth and 1 GSa/s sampling rate capture 10 MHz square waves with harmonics up to the 5th, providing rich waveform detail for Regime 3. The 7" display is large enough for teaching demonstrations to small groups. The built-in 1 GB storage holds up to 1000 waveform captures, exportable via USB — useful for documenting measurements and building Allan deviation datasets in Tier 2.
 
-**As signal generator:** The built-in DDS outputs sine waves up to 10 MHz and other waveforms up to 5 MHz. This serves as a third oscillator — crystal-referenced, stable to ~10⁻⁵, intermediate between the GPSDO and the VCXO. With three oscillators, triangular closure becomes testable.
+**As oscilloscope:** Captures the GPSDO output on Channel 1 and the VCXO output on Channel 2. The 100 MHz bandwidth displays 10 MHz signals cleanly with visible harmonic structure. The math functions (CH1−CH2, FFT) can extract beat frequency directly.
 
-### Specifications
+**As signal generator:** The built-in DDS outputs 14 waveforms. It serves as a third oscillator — crystal-referenced, stable to ~10⁻⁵, intermediate between the GPSDO and the VCXO. With three oscillators, triangular closure becomes testable. The unique "chopping" feature can capture and replay arbitrary waveform segments.
+
+**No built-in multimeter.** A separate multimeter (~€10–20) is needed for voltage checks and continuity testing during breadboard assembly.
+
+**No built-in battery.** The 1014D is powered via USB 5V/2A. A USB power bank (already in the accessories list) provides portable operation for ~5 hours.
+
+#### Specifications
+
+| Parameter | Value |
+|---|---|
+| Oscilloscope channels | 2 |
+| Bandwidth | 100 MHz × 2 |
+| Sampling rate | 1 GSa/s |
+| Vertical sensitivity | 50 mV/div – 100 V/div |
+| Max input voltage | ±400V peak |
+| Math functions | +, −, ×, ÷, FFT |
+| Trigger modes | Auto, normal, single |
+| Display | 7" TFT LCD, 800×480, high contrast |
+| Storage | 1 GB (1000 screenshots + 1000 waveform sets) |
+| Signal generator | 14 waveforms + chopping, 2.5 Vpp, frequency step 1 Hz |
+| Data export | USB to PC |
+| Power | USB 5V/2A (adapter included) |
+| Dimensions | 310 × 145 × 70 mm, fold-out stand |
+| Included | 2× 100 MHz probes (1×/10× switchable), 1× P4100 100:1 HV probe, croc clip, USB cable, 5V/2A power adapter, manual |
+
+#### Product Links and Price
+
+- Manufacturer: [FNIRSI Technology](https://www.fnirsi.com)
+- Product page: [FNIRSI 1014D](https://www.fnirsi.com/products/1014d)
+- Elektor review: [Elektor Magazine](https://www.elektormagazine.com/review/fnirsi-1014d-digital-storage-oscilloscope-review)
+- Price: ~$159 USD / ~€145 (FNIRSI official store, AliExpress, or eBay)
+- Ships from: China (FNIRSI direct), or EU/US warehouse depending on seller
+
+**Note on claimed specifications:** Independent reviews (EEVBlog, Kerry Wong) have found that the 1014D's true ADC clock rate may be ~200 MHz rather than 1 GHz, with interpolation filling the gap. The effective bandwidth is closer to 30–50 MHz for clean square wave reproduction. For Clock School's 10 MHz Regime 3 work, this is adequate — the fundamental and first several harmonics are captured cleanly. The 1014D should not be treated as a calibration-grade instrument.
+
+### Option B (Portable Alternative) — FNIRSI 2C53P
+
+#### Principle
+
+The FNIRSI 2C53P is a handheld 3-in-1 instrument combining a dual-channel digital oscilloscope, a true RMS multimeter, and a DDS signal generator. It is battery-powered (4000 mAh, ~4 h runtime), fits in a bag, and integrates a multimeter — making it the better choice for field demonstrations, conference presentations, or deployments where no bench is available.
+
+The tradeoff: smaller screen (4.3" vs 7"), lower bandwidth (50 MHz vs 100 MHz), lower sampling rate (250 MSa/s vs 1 GSa/s). For Regime 3 at 10 MHz, 50 MHz bandwidth captures the fundamental cleanly but shows fewer harmonics than the 1014D.
+
+#### Specifications
 
 | Parameter | Value |
 |---|---|
@@ -144,15 +188,28 @@ The FNIRSI 2C53P is a handheld 3-in-1 instrument combining a dual-channel digita
 | Charging | USB-C, 5V/2A |
 | Included | 2× P6100 10:1 probes, croc clip probe, multimeter leads, USB-C cable, storage bag |
 
-### Product Links and Price
+#### Product Links and Price
 
-- Manufacturer: [FNIRSI Technology](https://www.fnirsi.com)
 - Product page: [FNIRSI 2C53P](https://www.fnirsi.com/products/2c53p)
 - Elektor review (of 2C53T, same architecture): [Elektor Magazine](https://www.elektormagazine.com/review/fnirsi-2c53t-50-mhz-two-channel-oscilloscope-multimeter-generator-review)
 - Price: ~$130 USD / ~€120 (FNIRSI official store, AliExpress, or eBay)
-- Ships from: China (FNIRSI direct), or EU/US warehouse depending on seller
 
-**Note:** The 2C53T (handheld, same oscilloscope specs) has only a 50 kHz signal generator — insufficient for Regime 3. The 2C53P's 10 MHz DDS is the reason to choose the P model.
+**Note:** The 2C53T (same form factor) has only a 50 kHz signal generator — insufficient for Regime 3. The 2C53P's 10 MHz DDS is the reason to choose the P model.
+
+### Comparison Summary
+
+| Feature | 1014D (default) | 2C53P (portable) |
+|---|---|---|
+| Bandwidth | 100 MHz | 50 MHz |
+| Sampling rate | 1 GSa/s | 250 MSa/s |
+| Display | 7" LCD | 4.3" touchscreen |
+| Multimeter | No (separate required) | Yes (built-in) |
+| Battery | No (USB powered) | Yes (4 h) |
+| Signal gen. max freq | ~10 MHz | 10 MHz (sine) |
+| Storage | 1 GB, 1000 waveforms | Screenshots, USB export |
+| Probes included | 2× 100 MHz + 1× HV | 2× P6100 + croc + DMM leads |
+| Price | ~€145 | ~€120 |
+| Best for | Bench, teaching, detailed analysis | Field, demos, portability |
 
 ---
 
@@ -160,13 +217,15 @@ The FNIRSI 2C53P is a handheld 3-in-1 instrument combining a dual-channel digita
 
 ### Regime 1 — Acoustic (440 Hz)
 
-GPSDO programmed to 440.000 Hz → speaker (via SMA-to-croc adapter). VCXO not used (below crystal oscillator range). 2C53P DDS set to ~440 Hz → second speaker. Beat audible. Scope shows both waveforms.
+GPSDO programmed to 440.000 Hz → speaker (via SMA-to-croc adapter). VCXO not used (below crystal oscillator range). Scope DDS set to ~440 Hz → second speaker. Beat audible. Scope shows both waveforms.
 
-For Regime 1, the 2C53P's DDS replaces the VCXO as the free-running source (the DDS is stable but can be deliberately offset). The VCXO enters at Regime 3.
+For Regime 1, the scope's DDS replaces the VCXO as the free-running source (the DDS is stable but can be deliberately offset). The VCXO enters at Regime 3.
 
 ### Regime 3 — RF (10 MHz)
 
-GPSDO programmed to 10.000000 MHz → oscilloscope Channel 1 (via SMA-to-BNC adapter). VCXO output (~10 MHz, drifting) → oscilloscope Channel 2 (via wire or BNC pigtail). The scope triggers on Channel 1 and the VCXO waveform drifts across the screen — visible proof of frequency offset. The 2C53P's DDS at 10 MHz provides a third comparison point.
+GPSDO programmed to 10.000000 MHz → oscilloscope Channel 1 (via SMA-to-BNC adapter or cable). VCXO output (~10 MHz, drifting) → oscilloscope Channel 2 (via wire or BNC pigtail). The scope triggers on Channel 1 and the VCXO waveform drifts across the screen — visible proof of frequency offset. The scope's DDS at 10 MHz provides a third comparison point.
+
+With the 1014D, the 100 MHz bandwidth shows the 10 MHz fundamental and harmonics up to the 5th; with the 2C53P, the 50 MHz bandwidth captures the fundamental cleanly with fewer harmonics visible.
 
 ### Three-Clock Network
 
@@ -174,7 +233,7 @@ GPSDO programmed to 10.000000 MHz → oscilloscope Channel 1 (via SMA-to-BNC ada
 |---|---|---|
 | GPSDO (10 MHz) | Scope CH1 | Reference (atomic) |
 | VCXO (10 MHz) | Scope CH2 | Free-running VCO (drifts) |
-| 2C53P DDS (10 MHz) | BNC generator output | Stable secondary (crystal) |
+| Scope DDS (10 MHz) | BNC generator output | Stable secondary (crystal) |
 
 Pairwise comparisons: GPSDO vs VCXO (large drift), GPSDO vs DDS (small drift), DDS vs VCXO (intermediate). If the three pairwise differences don't sum to zero, something is wrong — and the residual localises the fault. This is the seed of Tier 2.
 
@@ -189,7 +248,17 @@ Pairwise comparisons: GPSDO vs VCXO (large drift), GPSDO vs DDS (small drift), D
 - USB-C cable (power and configuration)
 - Pre-configured to 10 MHz output (reconfigurable via Windows utility)
 
-### FNIRSI 2C53P (ships from FNIRSI or AliExpress, China)
+### FNIRSI 1014D (default — ships from FNIRSI or AliExpress, China)
+
+- 1014D oscilloscope/signal generator unit
+- 2× 100 MHz oscilloscope probes (1×/10× switchable, BNC male)
+- 1× P4100 100:1 high-voltage probe
+- 1× crocodile clip cable (BNC)
+- USB cable (data export)
+- 5V/2A USB power adapter
+- User manual
+
+### FNIRSI 2C53P (portable alternative — ships from FNIRSI or AliExpress, China)
 
 - 2C53P instrument unit
 - 2× P6100 10:1 oscilloscope probes (BNC male)
@@ -215,7 +284,7 @@ These items are not included with any device and must be ordered separately.
 |---|---|---|---|---|
 | SMA male to BNC male cable (50 cm, 50Ω, RG58 or RG316) | Connects GPSDO SMA output to oscilloscope BNC input | 1 | ~€3 | [AliExpress](https://www.aliexpress.com/w/wholesale-SMA-male-BNC-male-cable-RG316.html), [eBay](https://www.ebay.com/sch/i.html?_nkw=SMA+male+BNC+male+cable+50cm) |
 | SMA male to croc clip cable (or SMA male to bare wire pigtail) | Connects GPSDO output to breadboard or speaker for Regime 1 | 1 | ~€2 | [AliExpress](https://www.aliexpress.com/w/wholesale-SMA-male-crocodile-clip-cable.html) |
-| BNC male to croc clip cable | Connects 2C53P signal generator BNC output to breadboard VCXO or speaker | 1 | incl. | Included with 2C53P (croc clip probe) |
+| BNC male to croc clip cable | Connects oscilloscope signal generator BNC output to breadboard or speaker | 1 | incl. | Included with both 1014D and 2C53P (croc clip probe/cable) |
 
 ### Attenuation
 
@@ -223,7 +292,7 @@ These items are not included with any device and must be ordered separately.
 |---|---|---|---|---|
 | SMA 20 dB attenuator (50Ω, inline) | Reduces GPSDO 3.3V CMOS output (+11 dBm) to safe oscilloscope input level when using 1× probe setting | 1 | ~€3 | [AliExpress](https://www.aliexpress.com/w/wholesale-SMA-attenuator-20dB.html), [eBay](https://www.ebay.com/sch/i.html?_nkw=SMA+20dB+attenuator+50+ohm) |
 
-**Note:** The 2C53P's input range extends to ±400V peak, and the GPSDO output is only 3.3V, so direct connection is safe electrically. However, at 1× probe ratio the 3.3V signal may overdrive the ADC at sensitive vertical settings. Using the 10:1 probe (included) avoids this entirely. The attenuator is optional but recommended for clean waveforms when connecting via SMA cable rather than probe.
+**Note:** Both oscilloscopes accept up to ±400V peak, and the GPSDO output is only 3.3V, so direct connection is safe electrically. However, at 1× probe ratio the 3.3V signal may overdrive the ADC at sensitive vertical settings. Using the 10:1 probe (included with both models) avoids this entirely. The attenuator is optional but recommended for clean waveforms when connecting via SMA-to-BNC cable rather than probe.
 
 ### Audio Output (Regime 1 — Speaker Driver)
 
@@ -241,7 +310,7 @@ These items are not included with any device and must be ordered separately.
 | USB power bank (5V, 10000 mAh+) | Field use without mains power | 1 | ~€8 | Any; locally available |
 | USB-C to USB-C cable (1 m) | Spare / second device power | 1 | ~€2 | Any |
 
-**Note:** Both the LBE-1420 (250 mA) and the 2C53P (charging at 5V/2A) are USB-C powered. A single dual-port USB power adapter or a power bank with two USB outputs can run both simultaneously.
+**Note:** The LBE-1420 (250 mA) is USB-C powered. The 1014D is USB powered (5V/2A adapter included). The 2C53P is USB-C powered (charging at 5V/2A). A dual-port USB power adapter or a power bank with two USB outputs can run the GPSDO and either oscilloscope simultaneously.
 
 ### GPS Antenna Placement
 
@@ -265,7 +334,28 @@ The LBE-1420 includes a magnetic-base active GPS antenna with 5 m cable (SMA mal
 
 ---
 
-## Revised Cost Summary
+## Cost Summary
+
+### Option A — With FNIRSI 1014D (default, benchtop)
+
+| Category | Items | Approx. cost |
+|---|---|---|
+| **Leo Bodnar LBE-1420 GPSDO** | Unit + included antenna + USB-C cable | ~€170 |
+| **FNIRSI 1014D** | Unit + 2 probes + HV probe + croc clip + USB + 5V adapter | ~€145 |
+| **Basic multimeter** | Required (1014D has no DMM); any 2000+ counts unit | ~€10–20 |
+| **10 MHz VCXO components** | 74HC04 + crystal + varicap + caps + resistors + pot | ~€1.50 |
+| **Cables and adapters** | SMA-BNC cable, SMA-croc cable, SMA attenuator | ~€8 |
+| **Audio output** | PAM8403 + 2 speakers + audio cable | ~€3 |
+| **Power** | USB power bank + spare cable (mains adapter included with 1014D) | ~€10 |
+| **Breadboard and prototyping** | Breadboard + jumper wires + cutters | ~€5.50 |
+| **GPS antenna extension** | Only if 5 m cable insufficient | €0–5 |
+| | | |
+| **Subtotal** | | **~€355–375** |
+| **Shipping estimate** | UK + China to destination | ~€15–30 |
+| **Customs estimate (varies by country)** | 15–30% on declared value | ~€55–110 |
+| **Total landed estimate** | | **~€430–510** |
+
+### Option B — With FNIRSI 2C53P (portable alternative)
 
 | Category | Items | Approx. cost |
 |---|---|---|
@@ -278,10 +368,10 @@ The LBE-1420 includes a magnetic-base active GPS antenna with 5 m cable (SMA mal
 | **Breadboard and prototyping** | Breadboard + jumper wires + cutters | ~€5.50 |
 | **GPS antenna extension** | Only if 5 m cable insufficient | €0–5 |
 | | | |
-| **Subtotal** | | **~€322** |
+| **Subtotal** | | **~€322–347** |
 | **Shipping estimate** | UK + China to destination | ~€15–30 |
-| **Customs estimate (varies by country)** | 15–30% on declared value | ~€50–95 |
-| **Total landed estimate** | | **~€390–450** |
+| **Customs estimate (varies by country)** | 15–30% on declared value | ~€50–100 |
+| **Total landed estimate** | | **~€390–475** |
 
 ---
 
@@ -309,10 +399,12 @@ The LBE-1420 includes a magnetic-base active GPS antenna with 5 m cable (SMA mal
 4. ElecCircuit, *Simple Crystal Oscillator Circuit Using TTL/CMOS*. [Article](https://www.eleccircuit.com/simple-crystal-oscillator-circuit/)
 5. Circuit Cellar, *A Look at Homemade TCXOs — Crystal Crafting*. [Article](https://circuitcellar.com/research-design-hub/a-look-at-homemade-tcxos-crystal-crafting/)
 6. Electronics Notes, *VCXO — Voltage Controlled Crystal Oscillator*. [Article](https://www.electronics-notes.com/articles/electronic_components/quartz-crystal-xtal/vcxo-voltage-controlled-crystal-xtal-oscillator.php)
-7. FNIRSI, *2C53P Product Page*. [fnirsi.com](https://www.fnirsi.com/products/2c53p)
+7. FNIRSI, *1014D Product Page*. [fnirsi.com](https://www.fnirsi.com/products/1014d)
+8. FNIRSI, *2C53P Product Page*. [fnirsi.com](https://www.fnirsi.com/products/2c53p)
+9. Elektor Magazine, *FNIRSI 1014D Digital Storage Oscilloscope Review*. [Elektor](https://www.elektormagazine.com/review/fnirsi-1014d-digital-storage-oscilloscope-review)
 
 ---
 
 *Clock School — What Is a Clock?*
-*Starter Kit Specification v3 · March 2026*
+*Starter Kit Specification v4 · March 2026*
 *CC BY-SA 4.0*
