@@ -180,29 +180,108 @@ Pairwise comparisons: GPSDO vs VCXO (large drift), GPSDO vs DDS (small drift), D
 
 ---
 
-## Accessories
+## Included with Each Device
 
-| Item | Qty | Approx. price | Notes |
-|---|---|---|---|
-| SMA male to BNC female adapter | 1 | ~€2 | Connects GPSDO SMA to scope BNC input |
-| BNC male-male cable (50 cm) | 1 | ~€3 | Or use included croc clip probes |
-| Small speaker (4–8Ω, 40 mm) | 1 | ~€0.50 | Regime 1 audible demonstration |
-| USB-C cable (spare) | 1 | ~€1 | Both devices are USB-C powered |
-| **Total accessories** | | **~€7** | |
+### LBE-1420 (ships from Leo Bodnar, UK)
+
+- LBE-1420 GPSDO unit (SMA female output, SMA female antenna port)
+- Active GPS antenna with magnetic base, 5 m cable, SMA male connector
+- USB-C cable (power and configuration)
+- Pre-configured to 10 MHz output (reconfigurable via Windows utility)
+
+### FNIRSI 2C53P (ships from FNIRSI or AliExpress, China)
+
+- 2C53P instrument unit
+- 2× P6100 10:1 oscilloscope probes (BNC male)
+- 1× crocodile clip probe (BNC male)
+- 1× multimeter probe set (banana plugs)
+- USB-C cable (charging and data export)
+- Storage bag
+- User manual
+
+### 10 MHz VCXO (self-sourced components)
+
+- See BOM in Section 2 above. No pre-packaged kit exists.
 
 ---
 
-## Cost Summary
+## Additional Accessories Required
 
-| Item | Price estimate |
-|---|---|
-| Leo Bodnar LBE-1420 GPSDO | ~€170 |
-| FNIRSI 2C53P | ~€120 |
-| 10 MHz VCXO breadboard kit | ~€4 |
-| Accessories | ~€7 |
-| **Subtotal** | **~€301** |
+These items are not included with any device and must be ordered separately.
 
-Shipping and import duties vary by destination. Budget 15–30% additional for customs in countries with significant import levies on electronics.
+### Cables and Adapters
+
+| Item | Purpose | Qty | Approx. price | Source |
+|---|---|---|---|---|
+| SMA male to BNC male cable (50 cm, 50Ω, RG58 or RG316) | Connects GPSDO SMA output to oscilloscope BNC input | 1 | ~€3 | [AliExpress](https://www.aliexpress.com/w/wholesale-SMA-male-BNC-male-cable-RG316.html), [eBay](https://www.ebay.com/sch/i.html?_nkw=SMA+male+BNC+male+cable+50cm) |
+| SMA male to croc clip cable (or SMA male to bare wire pigtail) | Connects GPSDO output to breadboard or speaker for Regime 1 | 1 | ~€2 | [AliExpress](https://www.aliexpress.com/w/wholesale-SMA-male-crocodile-clip-cable.html) |
+| BNC male to croc clip cable | Connects 2C53P signal generator BNC output to breadboard VCXO or speaker | 1 | incl. | Included with 2C53P (croc clip probe) |
+
+### Attenuation
+
+| Item | Purpose | Qty | Approx. price | Source |
+|---|---|---|---|---|
+| SMA 20 dB attenuator (50Ω, inline) | Reduces GPSDO 3.3V CMOS output (+11 dBm) to safe oscilloscope input level when using 1× probe setting | 1 | ~€3 | [AliExpress](https://www.aliexpress.com/w/wholesale-SMA-attenuator-20dB.html), [eBay](https://www.ebay.com/sch/i.html?_nkw=SMA+20dB+attenuator+50+ohm) |
+
+**Note:** The 2C53P's input range extends to ±400V peak, and the GPSDO output is only 3.3V, so direct connection is safe electrically. However, at 1× probe ratio the 3.3V signal may overdrive the ADC at sensitive vertical settings. Using the 10:1 probe (included) avoids this entirely. The attenuator is optional but recommended for clean waveforms when connecting via SMA cable rather than probe.
+
+### Audio Output (Regime 1 — Speaker Driver)
+
+| Item | Purpose | Qty | Approx. price | Source |
+|---|---|---|---|---|
+| PAM8403 stereo class-D amplifier module | Drives two small speakers from oscillator outputs | 1 | ~€1.50 | [AliExpress](https://www.aliexpress.com/w/wholesale-PAM8403-amplifier-module.html) |
+| Small speakers, 4–8Ω, 28–40 mm | Audible beat note output | 2 | ~€0.50 each | [AliExpress](https://www.aliexpress.com/w/wholesale-small-speaker-8ohm-40mm.html) |
+| 3.5 mm audio cable, male-male (30 cm) | Signal input to PAM8403 (if using its 3.5 mm jack input) | 1 | ~€0.50 | Any |
+
+### Power
+
+| Item | Purpose | Qty | Approx. price | Source |
+|---|---|---|---|---|
+| USB-C power adapter (5V, 2A or higher) | Mains power for both devices (both are USB-C) | 1 | ~€3 | Any; locally available |
+| USB power bank (5V, 10000 mAh+) | Field use without mains power | 1 | ~€8 | Any; locally available |
+| USB-C to USB-C cable (1 m) | Spare / second device power | 1 | ~€2 | Any |
+
+**Note:** Both the LBE-1420 (250 mA) and the 2C53P (charging at 5V/2A) are USB-C powered. A single dual-port USB power adapter or a power bank with two USB outputs can run both simultaneously.
+
+### GPS Antenna Placement
+
+The LBE-1420 includes a magnetic-base active GPS antenna with 5 m cable (SMA male). For reliable GPS lock:
+
+- Place the antenna on a metal surface (e.g. window frame, filing cabinet) near a window with clear sky view, or outdoors.
+- GPS acquisition takes ~30 seconds with a clear view, longer indoors or with obstructed sky.
+- If the included 5 m cable is too short to reach a window, a longer replacement antenna cable is available: [SDR-Kits replacement antenna](https://www.sdr-kits.net/LBE-1420-GPS-Clock) or any active GPS antenna with SMA male connector and 3.3V–5V power compatibility.
+
+| Item | Purpose | Qty | Approx. price | Source |
+|---|---|---|---|---|
+| GPS antenna extension (SMA male-female, 5–10 m, RG58) | Only if the included 5 m antenna cable is insufficient | 0–1 | ~€5 | [AliExpress](https://www.aliexpress.com/w/wholesale-SMA-extension-cable-GPS-RG58.html) |
+
+### Breadboard and Prototyping (for VCXO)
+
+| Item | Purpose | Qty | Approx. price | Source |
+|---|---|---|---|---|
+| Mini breadboard, 170 tie-points | VCXO circuit assembly | 1 | €1.50 | [AliExpress](https://www.aliexpress.com/w/wholesale-mini-breadboard-170.html) |
+| Jumper wire set, male-to-male, 20+ pcs | Breadboard wiring | 1 | €1.00 | Any |
+| Wire strippers / side cutters (small) | Component lead trimming | 1 | ~€3 | Any; likely available at host institution |
+
+---
+
+## Revised Cost Summary
+
+| Category | Items | Approx. cost |
+|---|---|---|
+| **Leo Bodnar LBE-1420 GPSDO** | Unit + included antenna + USB-C cable | ~€170 |
+| **FNIRSI 2C53P** | Unit + 2 probes + croc clip + multimeter leads + USB-C + bag | ~€120 |
+| **10 MHz VCXO components** | 74HC04 + crystal + varicap + caps + resistors + pot | ~€1.50 |
+| **Cables and adapters** | SMA-BNC cable, SMA-croc cable, SMA attenuator | ~€8 |
+| **Audio output** | PAM8403 + 2 speakers + audio cable | ~€3 |
+| **Power** | USB-C adapter + power bank + spare cable | ~€13 |
+| **Breadboard and prototyping** | Breadboard + jumper wires + cutters | ~€5.50 |
+| **GPS antenna extension** | Only if 5 m cable insufficient | €0–5 |
+| | | |
+| **Subtotal** | | **~€322** |
+| **Shipping estimate** | UK + China to destination | ~€15–30 |
+| **Customs estimate (varies by country)** | 15–30% on declared value | ~€50–95 |
+| **Total landed estimate** | | **~€390–450** |
 
 ---
 
