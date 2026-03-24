@@ -14,6 +14,8 @@ This school teaches how to make those comparisons carefully.
 
 - **Tier 0 — Observe:** [`site/observe/experiment-01.html`](site/observe/experiment-01.html) — Three Clocks That Disagree. A stick, a string, a clock, and a notebook.
 - **Project blueprint:** [`docs/blueprint.md`](docs/blueprint.md) — The full programme design (v0.3).
+- **Starter Kit:** [`docs/clock-school-starter-kit-v3.md`](docs/clock-school-starter-kit-v3.md) — Hardware specification for Tier 1C field deployment (GPSDO, VCXO, oscilloscope).
+- **Local Data Guide:** [`docs/local-data-collection-guide.md`](docs/local-data-collection-guide.md) — Environmental noise characterisation with open data and smartphone sensors.
 - **Homepage:** [`site/index.html`](site/index.html) — The public-facing entry point.
 
 ---
@@ -41,7 +43,7 @@ The programme has four tiers. Each preserves the same question while changing sc
 
 - **Blueprint:** Published (v0.3). See [`docs/blueprint.md`](docs/blueprint.md).
 - **Tier 0:** Seed material in development.
-- **Tier 1:** Constrained-access prototype (Tier 1a) in design. Optimised for low-cost, low-friction deployment under constrained infrastructure conditions.
+- **Tier 1:** Constrained-access prototype (Tier 1a) in design. Starter Kit (Tier 1C field deployment) published — see [`docs/clock-school-starter-kit-v3.md`](docs/clock-school-starter-kit-v3.md). Local environmental characterisation guide published — see [`docs/local-data-collection-guide.md`](docs/local-data-collection-guide.md). First deployment to AIMS-Cameroon in preparation.
 - **Tier 2:** Based on the [Numerical Clock Networks](https://github.com/adv-labs-ufr/numerical_clock_networks) lab (University of Freiburg). Adaptation underway.
 - **Tier 3:** Planned.
 

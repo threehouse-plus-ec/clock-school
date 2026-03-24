@@ -4,6 +4,8 @@
 
 **Endorsement Marker:** Local candidate framework under local stewardship. Stability claims refer to the electrical output of GPS-disciplined oscillators, not to student apparatus or acoustic signals.
 
+**Companion document:** Before connecting instruments, characterise the local noise environment — temperature, magnetic field, pressure. See the [Local Data Collection Guide](local-data-collection-guide.md), which uses open-access databases and smartphone sensors (phyphox) to build a noise budget for the deployment site.
+
 ---
 
 ## Architecture
@@ -38,7 +40,7 @@ The LBE-1420 is programmable: any output frequency from 450 Hz to 800 MHz (and h
 | Long-term stability | ~1×10⁻¹² (after GPS lock) |
 | Output level | 3.3V CMOS, 50Ω |
 | Connector | SMA female |
-| GPS antenna | Included (active patch, SMA) |
+| GPS antenna | **Included** (active patch, magnetic base, 5 m cable, SMA male) |
 | Power | USB-C, 5V |
 | Configuration | USB utility (Windows); settings retained |
 
@@ -213,6 +215,26 @@ The tradeoff: smaller screen (4.3" vs 7"), lower bandwidth (50 MHz vs 100 MHz), 
 
 ---
 
+## Connectors: SMA and BNC — A Short Primer
+
+This kit uses two types of RF connectors. Understanding them prevents confusion during setup.
+
+**BNC (Bayonet Neill–Concelman)** is the standard connector on oscilloscope inputs and probes. It is a push-and-twist bayonet lock, roughly 15 mm in diameter. All oscilloscope channels and the signal generator output use BNC.
+
+**SMA (SubMiniature version A)** is a smaller, threaded connector used on the GPSDO output and its GPS antenna port. It is roughly 6 mm in diameter and mates by screwing (do not over-tighten — finger-tight is sufficient for these signal levels).
+
+The kit requires one **SMA-to-BNC cable** to connect the GPSDO to the oscilloscope. This is the single most important accessory cable — without it, the atomic reference cannot reach the scope. When ordering, verify the gender: the GPSDO has SMA female outputs, so the cable needs an **SMA male** plug on that end; oscilloscope inputs are BNC female, so the cable needs a **BNC male** plug on the other end.
+
+> **Quick reference:**
+> - GPSDO output → **SMA female** socket → needs **SMA male** plug
+> - GPSDO antenna port → **SMA female** socket → antenna cable has **SMA male** plug (included)
+> - Oscilloscope input → **BNC female** socket → needs **BNC male** plug
+> - Key cable: **SMA male ↔ BNC male**, 50 cm, 50Ω (RG316 or RG58)
+
+**Impedance:** All cables in this kit should be 50Ω. This is the standard for RF test equipment. Do not use 75Ω cables (commonly sold for TV/video applications) — they will work electrically at these power levels, but may cause reflections that distort waveform shape at 10 MHz.
+
+---
+
 ## How They Work Together
 
 ### Regime 1 — Acoustic (440 Hz)
@@ -223,7 +245,7 @@ For Regime 1, the scope's DDS replaces the VCXO as the free-running source (the 
 
 ### Regime 3 — RF (10 MHz)
 
-GPSDO programmed to 10.000000 MHz → oscilloscope Channel 1 (via SMA-to-BNC adapter or cable). VCXO output (~10 MHz, drifting) → oscilloscope Channel 2 (via wire or BNC pigtail). The scope triggers on Channel 1 and the VCXO waveform drifts across the screen — visible proof of frequency offset. The scope's DDS at 10 MHz provides a third comparison point.
+GPSDO programmed to 10.000000 MHz → oscilloscope Channel 1 (via SMA-to-BNC cable). VCXO output (~10 MHz, drifting) → oscilloscope Channel 2 (via wire or BNC pigtail). The scope triggers on Channel 1 and the VCXO waveform drifts across the screen — visible proof of frequency offset. The scope's DDS at 10 MHz provides a third comparison point.
 
 With the 1014D, the 100 MHz bandwidth shows the 10 MHz fundamental and harmonics up to the 5th; with the 2C53P, the 50 MHz bandwidth captures the fundamental cleanly with fewer harmonics visible.
 
@@ -244,7 +266,7 @@ Pairwise comparisons: GPSDO vs VCXO (large drift), GPSDO vs DDS (small drift), D
 ### LBE-1420 (ships from Leo Bodnar, UK)
 
 - LBE-1420 GPSDO unit (SMA female output, SMA female antenna port)
-- Active GPS antenna with magnetic base, 5 m cable, SMA male connector
+- **Active GPS antenna with magnetic base, 5 m cable, SMA male connector — included in the box, no separate purchase required**
 - USB-C cable (power and configuration)
 - Pre-configured to 10 MHz output (reconfigurable via Windows utility)
 
@@ -282,9 +304,11 @@ These items are not included with any device and must be ordered separately.
 
 | Item | Purpose | Qty | Approx. price | Source |
 |---|---|---|---|---|
-| SMA male to BNC male cable (50 cm, 50Ω, RG58 or RG316) | Connects GPSDO SMA output to oscilloscope BNC input | 1 | ~€3 | [AliExpress](https://www.aliexpress.com/w/wholesale-SMA-male-BNC-male-cable-RG316.html), [eBay](https://www.ebay.com/sch/i.html?_nkw=SMA+male+BNC+male+cable+50cm) |
+| SMA male to BNC male cable (50 cm, 50Ω, RG58 or RG316) | Connects GPSDO SMA output to oscilloscope BNC input — **the single most important accessory cable** | 1 | ~€3 | [AliExpress](https://www.aliexpress.com/w/wholesale-SMA-male-BNC-male-cable-RG316.html), [eBay](https://www.ebay.com/sch/i.html?_nkw=SMA+male+BNC+male+cable+50cm) |
 | SMA male to croc clip cable (or SMA male to bare wire pigtail) | Connects GPSDO output to breadboard or speaker for Regime 1 | 1 | ~€2 | [AliExpress](https://www.aliexpress.com/w/wholesale-SMA-male-crocodile-clip-cable.html) |
 | BNC male to croc clip cable | Connects oscilloscope signal generator BNC output to breadboard or speaker | 1 | incl. | Included with both 1014D and 2C53P (croc clip probe/cable) |
+
+See the [Connectors: SMA and BNC](#connectors-sma-and-bnc--a-short-primer) section above for gender and impedance details.
 
 ### Attenuation
 
@@ -307,8 +331,12 @@ These items are not included with any device and must be ordered separately.
 | Item | Purpose | Qty | Approx. price | Source |
 |---|---|---|---|---|
 | USB-C power adapter (5V, 2A or higher) | Mains power for both devices (both are USB-C) | 1 | ~€3 | Any; locally available |
-| USB power bank (5V, 10000 mAh+) | Field use without mains power | 1 | ~€8 | Any; locally available |
+| Solar power bank (20000 mAh+, USB-C output, 5V/2A+) | Field use without mains; solar top-up during extended outdoor sessions | 1 | ~€15–25 | [AliExpress](https://www.aliexpress.com/w/wholesale-solar-power-bank-20000mAh-USB-C.html), locally available |
 | USB-C to USB-C cable (1 m) | Spare / second device power | 1 | ~€2 | Any |
+
+> **Why a solar power bank?** In locations with unreliable mains power or where outdoor GPS antenna placement requires working away from wall sockets, a solar-equipped power bank provides resilience. The built-in solar panel is best understood as a top-up feature — it extends runtime on sunny days but is too slow to serve as the primary charging method. Always charge the bank fully from mains or a USB adapter before a measurement session.
+>
+> **What to look for:** 20000 mAh or larger capacity; at least one USB-C output port rated at 5V/2A (required for the oscilloscope); dual USB outputs (to power GPSDO and oscilloscope simultaneously); IP65 or higher waterproof rating if the bank will be used outdoors. Foldable-panel models (3 panels, ~6W total) charge faster via solar than single-panel models (~2W) but are bulkier.
 
 **Note:** The LBE-1420 (250 mA) is USB-C powered. The 1014D is USB powered (5V/2A adapter included). The 2C53P is USB-C powered (charging at 5V/2A). A dual-port USB power adapter or a power bank with two USB outputs can run the GPSDO and either oscilloscope simultaneously.
 
@@ -331,11 +359,11 @@ Not required for breadboard assembly of the VCXO (no soldering needed). Recommen
 
 ### GPS Antenna Placement
 
-The LBE-1420 includes a magnetic-base active GPS antenna with 5 m cable (SMA male). For reliable GPS lock:
+The LBE-1420 **ships with** a magnetic-base active GPS antenna and 5 m cable (SMA male) — no separate antenna purchase is needed. For reliable GPS lock:
 
-- Place the antenna on a metal surface (e.g. window frame, filing cabinet) near a window with clear sky view, or outdoors.
+- Place the antenna on a metal surface (e.g. window frame, filing cabinet, metal roof edge) near a window with clear sky view, or outdoors. In tropical climates with open corridors or covered walkways, placing the antenna just outside under open sky usually gives fast acquisition.
 - GPS acquisition takes ~30 seconds with a clear view, longer indoors or with obstructed sky.
-- If the included 5 m cable is too short to reach a window, a longer replacement antenna cable is available: [SDR-Kits replacement antenna](https://www.sdr-kits.net/LBE-1420-GPS-Clock) or any active GPS antenna with SMA male connector and 3.3V–5V power compatibility.
+- If the included 5 m cable is too short to reach a window or outdoor placement, a longer replacement antenna cable is available: [SDR-Kits replacement antenna](https://www.sdr-kits.net/LBE-1420-GPS-Clock) or any active GPS antenna with SMA male connector and 3.3V–5V power compatibility.
 
 | Item | Purpose | Qty | Approx. price | Source |
 |---|---|---|---|---|
@@ -357,42 +385,42 @@ The LBE-1420 includes a magnetic-base active GPS antenna with 5 m cable (SMA mal
 
 | Category | Items | Approx. cost |
 |---|---|---|
-| **Leo Bodnar LBE-1420 GPSDO** | Unit + included antenna + USB-C cable | ~€170 |
+| **Leo Bodnar LBE-1420 GPSDO** | Unit + **included antenna** + USB-C cable | ~€170 |
 | **FNIRSI 1014D** | Unit + 2 probes + HV probe + croc clip + USB + 5V adapter | ~€145 |
 | **Basic multimeter** | Required (1014D has no DMM); any 2000+ counts unit | ~€10–20 |
 | **10 MHz VCXO components** | 74HC04 + crystal + varicap + caps + resistors + pot | ~€1.50 |
 | **Cables and adapters** | SMA-BNC cable, SMA-croc cable, SMA attenuator | ~€8 |
 | **Audio output** | PAM8403 + 2 speakers + audio cable | ~€3 |
-| **Power** | USB power bank + spare cable (mains adapter included with 1014D) | ~€10 |
+| **Power** | Solar power bank + spare cable (mains adapter included with 1014D) | ~€17–27 |
 | **Breadboard and prototyping** | Breadboard + jumper wires + cutters | ~€5.50 |
 | **GPS antenna extension** | Only if 5 m cable insufficient | €0–5 |
 | **Soldering iron (optional)** | FNIRSI HS-02B + solder + wick | ~€31 |
 | | | |
-| **Subtotal (without soldering iron)** | | **~€355–375** |
-| **Subtotal (with soldering iron)** | | **~€386–406** |
+| **Subtotal (without soldering iron)** | | **~€362–390** |
+| **Subtotal (with soldering iron)** | | **~€393–421** |
 | **Shipping estimate** | UK + China to destination | ~€15–30 |
-| **Customs estimate (varies by country)** | 15–30% on declared value | ~€55–120 |
-| **Total landed estimate** | Without iron: **~€430–510** / With iron: **~€460–550** |
+| **Customs estimate (varies by country)** | 15–30% on declared value | ~€55–125 |
+| **Total landed estimate** | Without iron: **~€435–530** / With iron: **~€465–570** | |
 
 ### Option B — With FNIRSI 2C53P (portable alternative)
 
 | Category | Items | Approx. cost |
 |---|---|---|
-| **Leo Bodnar LBE-1420 GPSDO** | Unit + included antenna + USB-C cable | ~€170 |
+| **Leo Bodnar LBE-1420 GPSDO** | Unit + **included antenna** + USB-C cable | ~€170 |
 | **FNIRSI 2C53P** | Unit + 2 probes + croc clip + multimeter leads + USB-C + bag | ~€120 |
 | **10 MHz VCXO components** | 74HC04 + crystal + varicap + caps + resistors + pot | ~€1.50 |
 | **Cables and adapters** | SMA-BNC cable, SMA-croc cable, SMA attenuator | ~€8 |
 | **Audio output** | PAM8403 + 2 speakers + audio cable | ~€3 |
-| **Power** | USB-C adapter + power bank + spare cable | ~€13 |
+| **Power** | USB-C adapter + solar power bank + spare cable | ~€20–30 |
 | **Breadboard and prototyping** | Breadboard + jumper wires + cutters | ~€5.50 |
 | **GPS antenna extension** | Only if 5 m cable insufficient | €0–5 |
 | **Soldering iron (optional)** | FNIRSI HS-02B + solder + wick | ~€31 |
 | | | |
-| **Subtotal (without soldering iron)** | | **~€322–347** |
-| **Subtotal (with soldering iron)** | | **~€353–378** |
+| **Subtotal (without soldering iron)** | | **~€329–363** |
+| **Subtotal (with soldering iron)** | | **~€360–394** |
 | **Shipping estimate** | UK + China to destination | ~€15–30 |
-| **Customs estimate (varies by country)** | 15–30% on declared value | ~€50–115 |
-| **Total landed estimate** | Without iron: **~€390–475** / With iron: **~€420–520** |
+| **Customs estimate (varies by country)** | 15–30% on declared value | ~€50–120 |
+| **Total landed estimate** | Without iron: **~€395–500** / With iron: **~€425–540** | |
 
 ---
 
@@ -400,6 +428,7 @@ The LBE-1420 includes a magnetic-base active GPS antenna with 5 m cable (SMA mal
 
 | Exercise | Setup | Measurement |
 |---|---|---|
+| Environmental characterisation | Smartphone + phyphox app + open data | Local noise budget (see [Local Data Collection Guide](local-data-collection-guide.md)) |
 | 1.0 — Two Tones, One Beat | GPSDO 440 Hz + DDS ~440 Hz → speakers | Beat frequency by ear |
 | 1.1 — Beat Lab (browser) | Same setup + laptop microphone | Beat frequency with uncertainty in software |
 | VCXO assembly | Breadboard + components | Build a 10 MHz oscillator in 15 minutes |
@@ -427,6 +456,14 @@ The LBE-1420 includes a magnetic-base active GPS antenna with 5 m cable (SMA mal
 
 ---
 
+**See also:**
+
+- [Local Data Collection Guide](local-data-collection-guide.md) — Environmental noise characterisation with open data and smartphone sensors
+- [Clock School Blueprint](blueprint.md) — Full programme design (v0.3)
+- [Clock School README](../README.md) — Programme overview and entry points
+
+---
+
 *Clock School — What Is a Clock?*
-*Starter Kit Specification v5 · March 2026*
+*Starter Kit Specification v6 · March 2026*
 *CC BY-SA 4.0*
