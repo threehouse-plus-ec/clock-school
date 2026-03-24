@@ -332,11 +332,14 @@ See the [Connectors: SMA and BNC](#connectors-sma-and-bnc--a-short-primer) secti
 |---|---|---|---|---|
 | USB-C power adapter (5V, 2A or higher) | Mains power for both devices (both are USB-C) | 1 | ~€3 | Any; locally available |
 | Solar power bank (20000 mAh+, USB-C output, 5V/2A+) | Field use without mains; solar top-up during extended outdoor sessions | 1 | ~€15–25 | [AliExpress](https://www.aliexpress.com/w/wholesale-solar-power-bank-20000mAh-USB-C.html), locally available |
+| Portable power station (300W, LiFePO4, AC+USB-C output, solar input) | Full power independence — runs oscilloscope, GPSDO, soldering iron, and laptop from battery; recharges via mains, car, or solar panel | 0–1 | ~€200–250 | [AliExpress](https://www.aliexpress.com/w/wholesale-portable-power-station-300W-LiFePO4.html) |
 | USB-C to USB-C cable (1 m) | Spare / second device power | 1 | ~€2 | Any |
 
 > **Why a solar power bank?** In locations with unreliable mains power or where outdoor GPS antenna placement requires working away from wall sockets, a solar-equipped power bank provides resilience. The built-in solar panel is best understood as a top-up feature — it extends runtime on sunny days but is too slow to serve as the primary charging method. Always charge the bank fully from mains or a USB adapter before a measurement session.
 >
 > **What to look for:** 20000 mAh or larger capacity; at least one USB-C output port rated at 5V/2A (required for the oscilloscope); dual USB outputs (to power GPSDO and oscilloscope simultaneously); IP65 or higher waterproof rating if the bank will be used outdoors. Foldable-panel models (3 panels, ~6W total) charge faster via solar than single-panel models (~2W) but are bulkier.
+
+> **Full power independence (optional).** For deployment sites with unreliable or absent mains power, a portable power station with AC output replaces the wall socket entirely. A 300W / ~300 Wh LiFePO4 unit provides approximately 6–8 hours of continuous operation for the GPSDO + oscilloscope (~15 W combined), with USB-C and 220V AC outlets. It recharges from mains, a car cigarette lighter, or a solar panel (100W panel recommended, sold separately). This is a larger investment (~€200–250) but converts the entire kit into a self-contained, mains-independent laboratory. LiFePO4 chemistry is preferred over lithium-ion for safety, thermal stability, and cycle life (~3000 cycles).
 
 **Note:** The LBE-1420 (250 mA) is USB-C powered. The 1014D is USB powered (5V/2A adapter included). The 2C53P is USB-C powered (charging at 5V/2A). A dual-port USB power adapter or a power bank with two USB outputs can run the GPSDO and either oscilloscope simultaneously.
 
@@ -395,12 +398,15 @@ The LBE-1420 **ships with** a magnetic-base active GPS antenna and 5 m cable (SM
 | **Breadboard and prototyping** | Breadboard + jumper wires + cutters | ~€5.50 |
 | **GPS antenna extension** | Only if 5 m cable insufficient | €0–5 |
 | **Soldering iron (optional)** | FNIRSI HS-02B + solder + wick | ~€31 |
+| **Portable power station (optional)** | 300W LiFePO4, AC+USB-C output, solar-rechargeable | ~€200–250 |
 | | | |
-| **Subtotal (without soldering iron)** | | **~€362–390** |
+| **Subtotal (without options)** | | **~€362–390** |
 | **Subtotal (with soldering iron)** | | **~€393–421** |
+| **Subtotal (with power station)** | | **~€562–640** |
+| **Subtotal (with both options)** | | **~€593–671** |
 | **Shipping estimate** | UK + China to destination | ~€15–30 |
-| **Customs estimate (varies by country)** | 15–30% on declared value | ~€55–125 |
-| **Total landed estimate** | Without iron: **~€435–530** / With iron: **~€465–570** | |
+| **Customs estimate (varies by country)** | 15–30% on declared value | ~€55–200 |
+| **Total landed estimate** | Base: **~€435–530** / Full: **~€670–900** | |
 
 ### Option B — With FNIRSI 2C53P (portable alternative)
 
@@ -415,12 +421,15 @@ The LBE-1420 **ships with** a magnetic-base active GPS antenna and 5 m cable (SM
 | **Breadboard and prototyping** | Breadboard + jumper wires + cutters | ~€5.50 |
 | **GPS antenna extension** | Only if 5 m cable insufficient | €0–5 |
 | **Soldering iron (optional)** | FNIRSI HS-02B + solder + wick | ~€31 |
+| **Portable power station (optional)** | 300W LiFePO4, AC+USB-C output, solar-rechargeable | ~€200–250 |
 | | | |
-| **Subtotal (without soldering iron)** | | **~€329–363** |
+| **Subtotal (without options)** | | **~€329–363** |
 | **Subtotal (with soldering iron)** | | **~€360–394** |
+| **Subtotal (with power station)** | | **~€529–613** |
+| **Subtotal (with both options)** | | **~€560–644** |
 | **Shipping estimate** | UK + China to destination | ~€15–30 |
-| **Customs estimate (varies by country)** | 15–30% on declared value | ~€50–120 |
-| **Total landed estimate** | Without iron: **~€395–500** / With iron: **~€425–540** | |
+| **Customs estimate (varies by country)** | 15–30% on declared value | ~€50–195 |
+| **Total landed estimate** | Base: **~€395–500** / Full: **~€635–870** | |
 
 ---
 
@@ -465,5 +474,5 @@ The LBE-1420 **ships with** a magnetic-base active GPS antenna and 5 m cable (SM
 ---
 
 *Clock School — What Is a Clock?*
-*Starter Kit Specification v6 · March 2026*
+*Starter Kit Specification v7 · March 2026*
 *CC BY-SA 4.0*
