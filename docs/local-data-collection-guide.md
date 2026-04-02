@@ -4,7 +4,7 @@
 
 **Endorsement Marker:** Handbook (practical workflow) under local stewardship. Not a coastline document. Epistemic claims are bounded by the measurement-to-inference invariant stated below; the workflow itself is replaceable as better tools or data sources become available.
 
-**Companion document:** This note accompanies the [Clock School Starter Kit](clock-school-starter-kit-v3.md), which specifies the hardware (GPSDO, VCXO, oscilloscope) used in Tier 1 exercises. The present document covers the *environmental characterisation* that precedes and supports clock deployment: understanding the local noise landscape before connecting instruments.
+**Companion document:** This note accompanies the [Clock School Starter Kit](clock-school-starter-kit-concept.md), which specifies the hardware (GPSDO, VCXO, oscilloscope) used in Tier 1 exercises. The present document covers the *environmental characterisation* that precedes and supports clock deployment: understanding the local noise landscape before connecting instruments.
 
 ---
 
@@ -272,7 +272,7 @@ This workflow can run in parallel with the theoretical sections of the thesis an
 
 **See also:**
 
-- [Clock School Starter Kit](clock-school-starter-kit-v3.md) — Hardware specification (GPSDO, VCXO, oscilloscope)
+- [Clock School Starter Kit](clock-school-starter-kit-concept.md) — Hardware specification (GPSDO, VCXO, oscilloscope)
 - [Clock School Blueprint](blueprint.md) — Full programme design (v0.3)
 - [Clock School README](../README.md) — Programme overview and entry points
 

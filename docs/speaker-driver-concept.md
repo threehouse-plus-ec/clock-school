@@ -2,7 +2,7 @@
 
 **Concept Note — Council-Amended**
 
-Clock School · March 2026 · v0.2
+Clock School · March 2026 · v0.3
 
 **Endorsement Marker:** Local candidate framework under local stewardship. No parity implied with externally validated metrological standards. Stability claims refer to the electrical output of GPS-disciplined oscillators, not to acoustic signals, student measurements, or pedagogical apparatus.
 
@@ -328,5 +328,5 @@ Regimes 1 and 2 use the same hardware at different frequency settings — zero a
 ---
 
 *Clock School — What Is a Clock?*
-*Council-Amended Concept Note · v0.2 · March 2026*
+*Council-Amended Concept Note · v0.3 · March 2026*
 *CC BY-SA 4.0 · Ulrich Warring and contributors*

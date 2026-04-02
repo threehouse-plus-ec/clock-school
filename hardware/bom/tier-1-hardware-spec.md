@@ -2,7 +2,7 @@
 
 **Two-Box Architecture: XR2206 + Reference**
 
-Specification v0.2 · March 2026
+Specification v0.3 · March 2026
 
 ---
 
@@ -11,6 +11,11 @@ Specification v0.2 · March 2026
 This specification defines the hardware for Tier 1 of the Clock School programme. The student compares a free-running oscillator with a reference oscillator, observes the beat note, and measures drift over time — the same comparison logic as Tier 0 (Sun vs pendulum vs household clock), now implemented with electronics.
 
 The architecture uses two off-the-shelf modules and a laptop. No breadboard wiring. No soldering. No mixer hardware. The comparison is performed in software by the Beat Lab browser interface.
+
+**Related hardware specifications:**
+
+- The [Starter Kit](../../docs/clock-school-starter-kit-concept.md) describes a **general-purpose Tier 1C field deployment** — a GPSDO + breadboard VCXO + oscilloscope kit covering acoustic through RF regimes.
+- The [Equipment Inventory](../../docs/clock-school-prototype-inventory.md) describes the **AIMS-Cameroon Tier 1C (RF) deployment** — a research-grade kit using pre-built OCXOs and an oscilloscope for direct 10 MHz comparison.
 
 ---
 

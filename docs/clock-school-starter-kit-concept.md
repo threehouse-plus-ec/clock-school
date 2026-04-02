@@ -6,6 +6,11 @@
 
 **Companion document:** Before connecting instruments, characterise the local noise environment — temperature, magnetic field, pressure. See the [Local Data Collection Guide](local-data-collection-guide.md), which uses open-access databases and smartphone sensors (phyphox) to build a noise budget for the deployment site.
 
+**Related hardware specifications:**
+
+- The [Equipment Inventory](clock-school-prototype-inventory.md) describes the **AIMS-Cameroon Tier 1C (RF) deployment** — a research-grade kit using pre-built OCXOs and an oscilloscope for direct 10 MHz comparison.
+- The [Tier 1 Hardware Specification](../hardware/bom/tier-1-hardware-spec.md) describes the **minimal audio-band Tier 1B/1C** — an XR2206 function generator compared via laptop sound card and Beat Lab, with no oscilloscope required.
+
 ---
 
 ## Architecture
@@ -474,5 +479,5 @@ The LBE-1420 **ships with** a magnetic-base active GPS antenna and 5 m cable (SM
 ---
 
 *Clock School — What Is a Clock?*
-*Starter Kit Specification v7 · March 2026*
+*Starter Kit Specification v0.3 · March 2026*
 *CC BY-SA 4.0*
