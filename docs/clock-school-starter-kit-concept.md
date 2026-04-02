@@ -8,7 +8,7 @@
 
 **Related hardware specifications:**
 
-- The [Equipment Inventory](clock-school-prototype-inventory.md) describes the **AIMS-Cameroon Tier 1C (RF) deployment** — a research-grade kit using pre-built OCXOs and an oscilloscope for direct 10 MHz comparison.
+- The [10-MHz Demonstrator Lab Guide](clock-school-demonstrator-guide.md) describes the **AIMS-Cameroon Tier 1C (RF) deployment** — a research-grade kit using pre-built OCXOs and an oscilloscope for direct 10 MHz comparison, with a digital twin notebook and curated references.
 - The [Tier 1 Hardware Specification](../hardware/bom/tier-1-hardware-spec.md) describes the **minimal audio-band Tier 1B/1C** — an XR2206 function generator compared via laptop sound card and Beat Lab, with no oscilloscope required.
 
 ---

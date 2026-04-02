@@ -1,4 +1,4 @@
-# Clock School (Prototype v0.3) — Equipment Inventory
+# Clock School 10-MHz Demonstrator — Lab Guide
 
 **Programme:** [Clock School — What Is a Clock?](https://threehouse-plus-ec.github.io/clock-school/)
 **Last updated:** 2 April 2026
@@ -173,6 +173,47 @@ This is the core Clock School experiment: making stability visible.
 
 ---
 
+## Digital twin
+
+Before the hardware arrives — or after your first measurements — you can run
+every experiment in this inventory as a numerical simulation. The
+[Digital Twin notebook](../notebooks/digital-twin-10mhz-prototype.ipynb)
+models each component in the kit:
+
+| Hardware | Digital counterpart |
+|---|---|
+| LBE-1420 GPSDO | Oscillator with white noise at 10⁻¹² level |
+| 3× OCXO modules (two suppliers) | Oscillators with flicker + random-walk noise, per-unit offsets |
+| FNIRSI 2C53P oscilloscope | Phase-difference time series and simulated waveform snapshots |
+| NTC thermistors + room | 24-hour diurnal temperature profile with oven suppression model |
+
+The notebook generates synthetic frequency data, computes Allan deviation,
+tests triangular closure across all three OCXOs, and builds a noise budget
+that decomposes stability by source. It uses the same invariant as the
+physical experiment: every measurement is a comparison between two oscillators,
+never a reading from one in isolation.
+
+**Use it to:**
+
+- Predict what you will see on the oscilloscope before powering on the kit
+- Identify which noise source limits your measurement at each averaging time
+- Compare your real data against the model — discrepancies reveal physics
+  the model doesn't yet capture (cable reflections, power-supply noise,
+  building vibrations)
+
+**Run it now — no installation required:**
+
+[![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/threehouse-plus-ec/clock-school/main?labpath=notebooks%2Fdigital-twin-10mhz-prototype.ipynb)
+
+Click the badge to open the notebook in a free JupyterLab session in your
+browser. All dependencies are pre-installed. Nothing to download, nothing to
+configure — just run the cells.
+
+To run locally instead, install Python with `numpy`, `scipy`, `matplotlib`,
+and `allantools`.
+
+---
+
 ## Full parts list
 
 | # | Item | Qty |
@@ -190,4 +231,106 @@ This is the core Clock School experiment: making stability visible.
 
 ---
 
-*[Clock School — What Is a Clock?](https://threehouse-plus-ec.github.io/clock-school/) · Equipment Inventory · April 2026*
+## References and further reading
+
+All resources below are open access — free PDFs, no paywall, no login. They are ordered by reading sequence: start at the top if you are new to the subject, skip to the section you need if you are not.
+
+### Where to start
+
+These three documents cover the full breadth of the prototype experiments. Read them in this order.
+
+1. **D. W. Allan, N. Ashby, C. C. Hodge, *The Science of Timekeeping*, HP Application Note 1289, 1997.**
+   Broad tutorial: oscillator physics, quartz and atomic clocks, Allan variance, GPS time transfer. The single best starting point for everything in this kit.
+   [PDF](http://allanstime.com/Publications/DWA/Science_Timekeeping/TheScienceOfTimekeeping.pdf) · [Mirror](http://www.leapsecond.com/hpan/an1289.pdf)
+
+2. **M. A. Lombardi, *Fundamentals of Time and Frequency*, NIST, 2002.**
+   Accessible overview of oscillators, frequency standards, time transfer, and stability analysis. Covers the full Clock School curriculum in 40 pages.
+   [PDF](https://tf.nist.gov/general/pdf/1498.pdf)
+
+3. **J. R. Vig, *Quartz Crystal Resonators and Oscillators — A Tutorial*, US Army CECOM.**
+   The standard reference on quartz crystal physics, resonator design, OCXO construction, ageing, and temperature sensitivity. Explains why the oven is there and what limits its performance.
+   [PDF](https://www.am1.us/wp-content/uploads/Documents/U11625_VIG-TUTORIAL.pdf)
+
+### Allan deviation and frequency stability
+
+These cover the measurement and analysis tools you will use in the digital twin notebook and with real data from the oscilloscope.
+
+4. **W. J. Riley, *Handbook of Frequency Stability Analysis*, NIST SP 1065, 2008.**
+   The definitive practical guide: Allan deviation, modified Allan deviation, noise identification, confidence intervals, and data processing. 136 pages.
+   [PDF](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication1065.pdf)
+
+5. **D. W. Allan, *Time and Frequency (Time-Domain) Characterization, Estimation, and Prediction of Precision Clocks and Oscillators*, IEEE Trans. UFFC, 1987.**
+   Allan's own tutorial on the variance he invented. Covers noise identification from the slope of σ_y(τ).
+   [PDF](https://tf.nist.gov/general/pdf/752.pdf)
+
+6. **E. Rubiola and F. Vernotte, *The Companion of Enrico's Chart for Phase Noise and Two-Sample Variances*, arXiv:2201.07109, 2023.**
+   Comprehensive reference relating phase noise PSD, frequency noise PSD, and all two-sample variances (Allan, modified, Hadamard) with conversion formulas. The chart itself is a one-page visual summary worth printing.
+   [arXiv](https://arxiv.org/abs/2201.07109)
+
+7. **D. A. Howe, D. W. Allan, J. A. Barnes, *Properties of Signal Sources and Measurement Methods*, NIST, 1981.**
+   Power spectral density of frequency fluctuations and the relationship between time-domain and frequency-domain stability. Bridges the gap between the PSD plot and the Allan deviation plot in the digital twin.
+   [PDF](https://tf.nist.gov/general/pdf/1558.pdf)
+
+### GPS-disciplined oscillators
+
+The LBE-1420 GPSDO is the atomic reference in this kit. These explain how it works and what its limits are.
+
+8. **M. A. Lombardi, *The Use of GPS Disciplined Oscillators as Primary Frequency Standards for Calibration and Metrology Laboratories*, NIST, 2008.**
+   Practical guidance on GPSDO performance, limitations, and calibration use. Explains why the GPSDO is stable to 10⁻¹² and where that number comes from.
+   [PDF](https://tf.nist.gov/general/pdf/2297.pdf)
+
+9. **Leo Bodnar Electronics, *LBE-1420 GPSDO Datasheet*, v1.1, 2025.**
+   Technical specifications for the reference oscillator in this kit.
+   [PDF](https://leobodnar.com/files/datasheets/LBE-1420-Datasheet-DRAFT-17-01-2025.pdf)
+
+### Clock comparison and networks
+
+The three-OCXO triangular closure test in this kit uses the same logic as international clock comparisons. These explain the broader context.
+
+10. **J. Levine, *Measuring Time and Comparing Clocks*, NIST, 2016.**
+    Clock comparison methods, Allan variance characterisation, and time transfer including closure analysis. Directly relevant to the triangular closure section of the digital twin.
+    [PDF](https://tf.nist.gov/general/pdf/2718.pdf)
+
+11. **BIPM, *Annual Report on Time Activities*.**
+    Documents how international clock comparisons are performed and how UTC is computed. Reports up to 2020 are downloadable as PDFs; later data is in an online database.
+    [Reports](https://www.bipm.org/en/time-ftp/annual-reports) · [Database](https://webtai.bipm.org/database/)
+
+### Phase noise (advanced)
+
+For students who want to go deeper into the spectral analysis in the digital twin notebook.
+
+12. **E. Rubiola, *Phase Noise and Frequency Stability in Oscillators*, lecture series, Université de Franche-Comté / FEMTO-ST.**
+    15 hours of PhD-level lectures: phase noise spectra, Leeson effect, oscillator noise models. Freely downloadable slides and lecture notes.
+    [Lectures](https://rubiola.org/pdf-lectures/) · [Slides](https://rubiola.org/pdf-slides/)
+
+13. **IEEE Std 1139-2008 (draft), *Standard Definitions of Physical Quantities for Fundamental Frequency and Time Metrology*.**
+    Defines the spectral densities S_φ(f) and S_y(f), Allan variance, and noise type classification. The NIST draft covers the essential definitions.
+    [NIST draft PDF](https://tf.nist.gov/general/pdf/1206.pdf)
+
+### Frontiers
+
+Where this field is going — portable optical clocks that outperform the GPSDO by orders of magnitude.
+
+14. **Various authors, *International comparison of optical frequencies with transportable optical lattice clocks*, arXiv:2410.22973, 2024.**
+    State-of-the-art international clock comparisons using transportable optical lattice clocks.
+    [arXiv](https://arxiv.org/abs/2410.22973)
+
+15. **Various authors, *The SWaP plot: Visualising the performance of portable atomic clocks as a function of their size, weight and power*, arXiv:2409.08484, 2024.**
+    Review of Allan deviation performance versus size/weight/power for portable clocks. Useful context for where the GPSDO and OCXO sit in the landscape.
+    [arXiv](https://arxiv.org/abs/2409.08484)
+
+### Software
+
+16. **A. E. Wallin et al., *allantools* — Allan deviation and related time/frequency statistics in Python.** LGPL v3+.
+    The computational engine used in the digital twin notebook.
+    [GitHub](https://github.com/aewallin/allantools) · [Docs](https://allantools.readthedocs.io/) · [PyPI](https://pypi.org/project/AllanTools/)
+
+### Quick-reference glossary
+
+17. **NIST, *Time and Frequency from A to Z*.**
+    Accessible glossary of time and frequency terms. Look up anything unfamiliar.
+    [Web](https://www.nist.gov/pml/time-and-frequency-division/popular-links/time-frequency-z)
+
+---
+
+*[Clock School — What Is a Clock?](https://threehouse-plus-ec.github.io/clock-school/) · 10-MHz Demonstrator Lab Guide · April 2026*

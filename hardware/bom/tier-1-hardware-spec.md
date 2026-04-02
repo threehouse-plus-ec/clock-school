@@ -15,7 +15,7 @@ The architecture uses two off-the-shelf modules and a laptop. No breadboard wiri
 **Related hardware specifications:**
 
 - The [Starter Kit](../../docs/clock-school-starter-kit-concept.md) describes a **general-purpose Tier 1C field deployment** — a GPSDO + breadboard VCXO + oscilloscope kit covering acoustic through RF regimes.
-- The [Equipment Inventory](../../docs/clock-school-prototype-inventory.md) describes the **AIMS-Cameroon Tier 1C (RF) deployment** — a research-grade kit using pre-built OCXOs and an oscilloscope for direct 10 MHz comparison.
+- The [10-MHz Demonstrator Lab Guide](../../docs/clock-school-demonstrator-guide.md) describes the **AIMS-Cameroon Tier 1C (RF) deployment** — a research-grade kit using pre-built OCXOs and an oscilloscope for direct 10 MHz comparison, with a digital twin notebook and curated references.
 
 ---
 

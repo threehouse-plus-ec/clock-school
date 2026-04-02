@@ -15,7 +15,7 @@ This school teaches how to make those comparisons carefully.
 - **Tier 0 — Observe:** [`site/observe/experiment-01.html`](site/observe/experiment-01.html) — Three Clocks That Disagree. A stick, a string, a clock, and a notebook.
 - **Project blueprint:** [`docs/blueprint.md`](docs/blueprint.md) — The full programme design (v0.3).
 - **Starter Kit:** [`docs/clock-school-starter-kit-concept.md`](docs/clock-school-starter-kit-concept.md) — Hardware specification for Tier 1C field deployment (GPSDO, VCXO, oscilloscope).
-- **Equipment Inventory:** [`docs/clock-school-prototype-inventory.md`](docs/clock-school-prototype-inventory.md) — Full parts list for the Prototype v0.3 kit.
+- **10-MHz Demonstrator:** [`docs/clock-school-demonstrator-guide.md`](docs/clock-school-demonstrator-guide.md) — Lab guide for the AIMS-Cameroon kit (equipment, connections, digital twin, references).
 - **Local Data Guide:** [`docs/local-data-collection-guide.md`](docs/local-data-collection-guide.md) — Environmental noise characterisation with open data and smartphone sensors.
 - **Homepage:** [`site/index.html`](site/index.html) — The public-facing entry point.
 
