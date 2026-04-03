@@ -4,7 +4,7 @@
  * Licence: MIT
  */
 
-@import url('../assets/tokens.css');
+@import url('assets/tokens.css');
 
 :root {
   --focus-ring: 2px solid var(--sea);
