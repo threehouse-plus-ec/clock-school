@@ -8,26 +8,26 @@ const MAX_FREQ = 2000;
 const DEFAULT_F1 = 440;
 const DEFAULT_F2 = 443;
 
-// ─── Color tokens (observatory logbook) ───
+// ─── Color tokens (T[h]ree +EC corporate design) ───
 const C = {
-  bg: "#1a2332",
-  panel: "#1e2a3a",
-  panelBorder: "#2e3f56",
-  surface: "#243044",
-  text: "#c4ced8",
-  textBright: "#e3e8ed",
-  textDim: "#6b7d90",
-  amber: "#d4860a",
-  amberLight: "#e8a020",
-  amberDim: "#8a5a10",
-  green: "#2dd4a0",
-  red: "#ef6461",
-  sand: "#f7f3ea",
-  waveform: "#5db8fe",
-  spectrum: "#e8a020",
-  envelope: "#2dd4a0",
-  grid: "rgba(122,143,166,0.12)",
-  gridText: "rgba(122,143,166,0.5)",
+  bg: "#f5f0e8",
+  panel: "#faf8f4",
+  panelBorder: "#e0dbd2",
+  surface: "#f5f0e8",
+  text: "#1a1a1a",
+  textBright: "#1a1a1a",
+  textDim: "#6b6b6b",
+  amber: "#2c5f7c",
+  amberLight: "#2c5f7c",
+  amberDim: "rgba(44,95,124,0.15)",
+  green: "#0d9668",
+  red: "#c0392b",
+  sand: "#f5f0e8",
+  waveform: "#2c5f7c",
+  spectrum: "#c0392b",
+  envelope: "#0d9668",
+  grid: "rgba(26,26,26,0.08)",
+  gridText: "rgba(26,26,26,0.4)",
 };
 
 // ─── Utility ───
@@ -130,7 +130,7 @@ function drawSpectrum(canvas, analyser, sampleRate) {
 
   // Freq grid lines
   ctx.fillStyle = C.gridText;
-  ctx.font = "10px 'JetBrains Mono', monospace";
+  ctx.font = "10px 'IBM Plex Mono', monospace";
   ctx.textAlign = "center";
   for (let f = 500; f <= 2000; f += 500) {
     const x = (f / maxFreqDisplay) * W;
@@ -209,8 +209,8 @@ function FreqControl({ label, freq, setFreq, color }) {
   return (
     <div style={{ marginBottom: 12 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
-        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: C.textDim }}>{label}</span>
-        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 18, fontWeight: 600, color }}>{freq.toFixed(1)} <span style={{ fontSize: 11, color: C.textDim }}>Hz</span></span>
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: C.textDim }}>{label}</span>
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 18, fontWeight: 600, color }}>{freq.toFixed(1)} <span style={{ fontSize: 11, color: C.textDim }}>Hz</span></span>
       </div>
       <input
         type="range" min={MIN_FREQ} max={MAX_FREQ} step={0.1} value={freq}
@@ -220,7 +220,7 @@ function FreqControl({ label, freq, setFreq, color }) {
       <div style={{ display: "flex", gap: 6, marginTop: 4 }}>
         {[-10, -1, -0.1, 0.1, 1, 10].map((d) => (
           <button key={d} onClick={() => setFreq(Math.max(MIN_FREQ, Math.min(MAX_FREQ, freq + d)))}
-            style={{ flex: 1, padding: "3px 0", fontSize: 10, fontFamily: "'JetBrains Mono', monospace", background: C.surface, color: C.textDim, border: `1px solid ${C.panelBorder}`, borderRadius: 3, cursor: "pointer" }}>
+            style={{ flex: 1, padding: "3px 0", fontSize: 10, fontFamily: "'IBM Plex Mono', monospace", background: C.surface, color: C.textDim, border: `1px solid ${C.panelBorder}`, borderRadius: 3, cursor: "pointer" }}>
             {d > 0 ? "+" : ""}{d}
           </button>
         ))}
@@ -482,7 +482,7 @@ export default function BeatLab() {
   const btnStyle = (active) => ({
     padding: "8px 18px",
     fontSize: 12,
-    fontFamily: "'JetBrains Mono', monospace",
+    fontFamily: "'IBM Plex Mono', monospace",
     fontWeight: 500,
     letterSpacing: "0.04em",
     textTransform: "uppercase",
@@ -497,7 +497,7 @@ export default function BeatLab() {
   const smallBtn = {
     padding: "5px 12px",
     fontSize: 10,
-    fontFamily: "'JetBrains Mono', monospace",
+    fontFamily: "'IBM Plex Mono', monospace",
     fontWeight: 500,
     letterSpacing: "0.04em",
     textTransform: "uppercase",
@@ -509,9 +509,9 @@ export default function BeatLab() {
   };
 
   return (
-    <div style={{ background: C.bg, color: C.text, minHeight: "100vh", fontFamily: "'Source Serif 4', Georgia, serif" }}>
+    <div style={{ background: C.bg, color: C.text, minHeight: "100vh", fontFamily: "'Crimson Pro', Georgia, serif" }}>
       {/* ─── Nav ─── */}
-      <div style={{ background: C.slate900, padding: "6px 20px", display: "flex", gap: 16, fontSize: 11, fontFamily: "'JetBrains Mono', monospace" }}>
+      <div style={{ background: C.slate900, padding: "6px 20px", display: "flex", gap: 16, fontSize: 11, fontFamily: "'IBM Plex Mono', monospace" }}>
         <a href="../index.html" style={{ color: C.slate400, textDecoration: "none" }}>Home</a>
         <a href="../observe/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Observe</a>
         <a href="index.html" style={{ color: C.slate400, textDecoration: "none" }}>Build</a>
@@ -523,7 +523,7 @@ export default function BeatLab() {
       {/* ─── Header ─── */}
       <div style={{ background: C.surface, borderBottom: `1px solid ${C.panelBorder}`, padding: "12px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: C.amberLight }}>Tier 1A · Clock School</span>
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: C.amberLight }}>Tier 1A · Clock School</span>
           <h1 style={{ fontSize: 20, fontWeight: 700, color: C.textBright, margin: "2px 0 0", lineHeight: 1.2 }}>Beat Lab</h1>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
@@ -560,8 +560,8 @@ export default function BeatLab() {
               {/* Internal reference tone */}
               <div style={{ padding: 12, background: "rgba(93,184,254,0.08)", border: `1px solid rgba(93,184,254,0.2)`, borderRadius: 4, marginBottom: 12 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.06em", color: C.waveform }}>Reference Tone</span>
-                  <button onClick={() => setMicRefEnabled(!micRefEnabled)} style={{ padding: "3px 10px", fontSize: 10, fontFamily: "'JetBrains Mono', monospace", background: micRefEnabled ? C.waveform : C.surface, color: micRefEnabled ? C.bg : C.textDim, border: `1px solid ${micRefEnabled ? C.waveform : C.panelBorder}`, borderRadius: 3, cursor: "pointer" }}>
+                  <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.06em", color: C.waveform }}>Reference Tone</span>
+                  <button onClick={() => setMicRefEnabled(!micRefEnabled)} style={{ padding: "3px 10px", fontSize: 10, fontFamily: "'IBM Plex Mono', monospace", background: micRefEnabled ? C.waveform : C.surface, color: micRefEnabled ? C.bg : C.textDim, border: `1px solid ${micRefEnabled ? C.waveform : C.panelBorder}`, borderRadius: 3, cursor: "pointer" }}>
                     {micRefEnabled ? "ON" : "OFF"}
                   </button>
                 </div>
@@ -579,8 +579,8 @@ export default function BeatLab() {
               {micRefEnabled && (
                 <div style={{ marginBottom: 8 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: "uppercase", color: C.textDim }}>Ref Volume</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: C.text }}>{Math.round(volume * 100)}%</span>
+                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, textTransform: "uppercase", color: C.textDim }}>Ref Volume</span>
+                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, color: C.text }}>{Math.round(volume * 100)}%</span>
                   </div>
                   <input type="range" min={0} max={1} step={0.01} value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))} style={{ width: "100%", accentColor: C.waveform }} />
                 </div>
@@ -595,8 +595,8 @@ export default function BeatLab() {
           {mode === "internal" && (
             <div style={{ marginTop: 16 }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: "uppercase", color: C.textDim }}>Volume</span>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: C.text }}>{Math.round(volume * 100)}%</span>
+                <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, textTransform: "uppercase", color: C.textDim }}>Volume</span>
+                <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, color: C.text }}>{Math.round(volume * 100)}%</span>
               </div>
               <input type="range" min={0} max={1} step={0.01} value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))} style={{ width: "100%", accentColor: C.textDim }} />
             </div>
@@ -614,13 +614,13 @@ export default function BeatLab() {
           {/* ─── Integration time ─── */}
           <div style={{ marginTop: 20 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.06em", color: C.textDim }}>Integration Time</span>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: C.text }}>{integrationTime}s</span>
+              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.06em", color: C.textDim }}>Integration Time</span>
+              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 13, color: C.text }}>{integrationTime}s</span>
             </div>
             <div style={{ display: "flex", gap: 4 }}>
               {[0.5, 1, 2, 5, 10, 30].map((t) => (
                 <button key={t} onClick={() => { setIntegrationTime(t); sampleBufRef.current = []; }}
-                  style={{ flex: 1, padding: "5px 0", fontSize: 10, fontFamily: "'JetBrains Mono', monospace",
+                  style={{ flex: 1, padding: "5px 0", fontSize: 10, fontFamily: "'IBM Plex Mono', monospace",
                     background: integrationTime === t ? C.amber : C.surface,
                     color: integrationTime === t ? C.bg : C.textDim,
                     border: `1px solid ${integrationTime === t ? C.amber : C.panelBorder}`,
@@ -634,17 +634,17 @@ export default function BeatLab() {
           {/* ─── Beat readout ─── */}
           <div style={{ marginTop: 16, padding: 16, background: C.surface, border: `1px solid ${C.panelBorder}`, borderRadius: 4, textAlign: "center" }}>
             {/* Averaged value */}
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", color: C.textDim, marginBottom: 4 }}>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", color: C.textDim, marginBottom: 4 }}>
               Beat Frequency (avg {integrationTime}s)
             </div>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 32, fontWeight: 700, color: avgBeat !== null && avgBeat > 0.01 ? C.green : C.textDim }}>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 32, fontWeight: 700, color: avgBeat !== null && avgBeat > 0.01 ? C.green : C.textDim }}>
               {playing && avgBeat !== null ? formatFreq(avgBeat) : "—"}
               <span style={{ fontSize: 14, fontWeight: 400, color: C.textDim, marginLeft: 4 }}>Hz</span>
             </div>
 
             {/* Uncertainty */}
             {playing && beatSigma !== null && sampleCount > 1 && (
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 14, color: C.amberLight, marginTop: 4 }}>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 14, color: C.amberLight, marginTop: 4 }}>
                 &plusmn; {formatFreq(beatSigma)} Hz
                 <span style={{ fontSize: 10, color: C.textDim, marginLeft: 6 }}>({sampleCount} samples)</span>
               </div>
@@ -653,7 +653,7 @@ export default function BeatLab() {
             {/* Instantaneous */}
             {playing && beatFreq !== null && (
               <div style={{ fontSize: 11, color: C.textDim, marginTop: 8, borderTop: `1px solid ${C.panelBorder}`, paddingTop: 8 }}>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>instantaneous: {formatFreq(beatFreq)} Hz</span>
+                <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>instantaneous: {formatFreq(beatFreq)} Hz</span>
               </div>
             )}
 
@@ -664,7 +664,7 @@ export default function BeatLab() {
 
           {/* ─── Precision vs integration ─── */}
           {playing && sampleCount > 1 && beatSigma !== null && (
-            <div style={{ marginTop: 8, padding: 10, background: "rgba(45,212,160,0.06)", border: `1px solid rgba(45,212,160,0.15)`, borderRadius: 4, fontSize: 11, fontFamily: "'JetBrains Mono', monospace", color: C.textDim, lineHeight: 1.6 }}>
+            <div style={{ marginTop: 8, padding: 10, background: "rgba(45,212,160,0.06)", border: `1px solid rgba(45,212,160,0.15)`, borderRadius: 4, fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", color: C.textDim, lineHeight: 1.6 }}>
               <div style={{ color: C.green, fontWeight: 600, marginBottom: 2, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em" }}>Precision</div>
               <div>&#963; = {formatFreq(beatSigma)} Hz over {integrationTime}s</div>
               <div>Relative: {avgBeat > 0.01 ? (beatSigma / avgBeat * 100).toFixed(2) : "—"}%</div>
@@ -683,7 +683,7 @@ export default function BeatLab() {
 
           {/* ─── Notebook prompts ─── */}
           <div style={{ marginTop: 24, padding: 12, background: "rgba(212,134,10,0.06)", border: `1px solid ${C.amberDim}`, borderRadius: 4, fontSize: 12, lineHeight: 1.7, color: C.textDim }}>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, textTransform: "uppercase", letterSpacing: "0.1em", color: C.amber, marginBottom: 6 }}>Notebook Prompts</div>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, textTransform: "uppercase", letterSpacing: "0.1em", color: C.amber, marginBottom: 6 }}>Notebook Prompts</div>
             <div>→ What beat frequency do you observe?</div>
             <div>→ Is it stable over repeated measurements?</div>
             <div>→ What happens when you change one frequency by 1 Hz?</div>
@@ -694,7 +694,7 @@ export default function BeatLab() {
         <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
           {/* Waveform */}
           <div style={{ height: 250, padding: "12px 16px 4px", position: "relative" }}>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em", color: C.textDim, marginBottom: 4 }}>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em", color: C.textDim, marginBottom: 4 }}>
               Time Domain
               <span style={{ marginLeft: 12, color: C.waveform }}>■</span> Signal
               <span style={{ marginLeft: 8, color: C.envelope }}>■</span> Envelope
@@ -704,7 +704,7 @@ export default function BeatLab() {
 
           {/* Spectrum */}
           <div style={{ height: 250, padding: "4px 16px 12px", position: "relative" }}>
-            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em", color: C.textDim, marginBottom: 4 }}>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em", color: C.textDim, marginBottom: 4 }}>
               Frequency Spectrum
               <span style={{ marginLeft: 12, color: C.spectrum }}>■</span> Magnitude
             </div>
@@ -714,7 +714,7 @@ export default function BeatLab() {
           {/* Data log */}
           <div style={{ borderTop: `1px solid ${C.panelBorder}`, padding: "12px 16px", maxHeight: 200, overflowY: "auto" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em", color: C.textDim }}>
+              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em", color: C.textDim }}>
                 Measurement Log ({log.length} entries)
               </span>
               <div style={{ display: "flex", gap: 6 }}>
@@ -725,7 +725,7 @@ export default function BeatLab() {
             {log.length === 0 ? (
               <div style={{ fontSize: 12, color: C.textDim, fontStyle: "italic" }}>No measurements recorded yet. Press "Record" to log the current beat frequency.</div>
             ) : (
-              <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: "'JetBrains Mono', monospace", fontSize: 11 }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: "'IBM Plex Mono', monospace", fontSize: 11 }}>
                 <thead>
                   <tr style={{ color: C.textDim, borderBottom: `1px solid ${C.panelBorder}` }}>
                     <th style={{ textAlign: "left", padding: "4px 6px", fontWeight: 500 }}>#</th>
@@ -755,7 +755,7 @@ export default function BeatLab() {
       </div>
 
       {/* ─── Footer ─── */}
-      <div style={{ borderTop: `1px solid ${C.panelBorder}`, padding: "8px 20px", fontSize: 11, color: C.textDim, fontFamily: "'JetBrains Mono', monospace", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+      <div style={{ borderTop: `1px solid ${C.panelBorder}`, padding: "8px 20px", fontSize: 11, color: C.textDim, fontFamily: "'IBM Plex Mono', monospace", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
         <span><a href="../index.html" style={{ color: C.slate400, textDecoration: "none" }}>Clock School</a> — What Is a Clock? · Beat Lab v0.1</span>
         <span>Web Audio API · Educational use · Not metrology-grade timing</span>
       </div>

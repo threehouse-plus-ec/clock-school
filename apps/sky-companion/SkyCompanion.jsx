@@ -1,29 +1,29 @@
 import { useState, useMemo, useCallback } from "react";
 
-// ─── Color tokens (matching Clock School) ───
+// ─── Color tokens (T[h]ree +EC corporate design) ───
 const C = {
-  bg: "#f7f3ea",
-  panel: "#ffffff",
-  panelBorder: "#e4d9c4",
-  surface: "#efe8d8",
-  slate900: "#1a2332",
-  slate800: "#243044",
-  slate700: "#2e3f56",
-  slate600: "#3d5068",
-  slate400: "#7a8fa6",
-  text: "#1f2937",
-  textSecondary: "#4b5563",
-  textDim: "#6b7280",
-  amber: "#d4860a",
-  amberLight: "#e8a020",
-  amberDim: "rgba(212,134,10,0.12)",
+  bg: "#f5f0e8",
+  panel: "#faf8f4",
+  panelBorder: "#e0dbd2",
+  surface: "#e0dbd2",
+  slate900: "#1a1a1a",
+  slate800: "#1a1a1a",
+  slate700: "#1a1a1a",
+  slate600: "#6b6b6b",
+  slate400: "#6b6b6b",
+  text: "#1a1a1a",
+  textSecondary: "#6b6b6b",
+  textDim: "#6b6b6b",
+  amber: "#2c5f7c",
+  amberLight: "#2c5f7c",
+  amberDim: "rgba(44,95,124,0.12)",
   green: "#0d9668",
   greenLight: "#d1fae5",
-  blue: "#2563eb",
-  blueLight: "#dbeafe",
-  purple: "#7c3aed",
-  purpleLight: "#ede9fe",
-  red: "#dc2626",
+  blue: "#2c5f7c",
+  blueLight: "rgba(44,95,124,0.12)",
+  purple: "#6b6b6b",
+  purpleLight: "#e0dbd2",
+  red: "#c0392b",
 };
 
 // ─── Astronomical calculations (simplified but real) ───
@@ -103,14 +103,14 @@ function MoonIcon({ phase, size = 48 }) {
 
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-      <circle cx={cx} cy={cy} r={r} fill="#2e3f56" />
+      <circle cx={cx} cy={cy} r={r} fill="#1a1a1a" />
       {illum > 0.02 && (
         <path
           d={lightSide === "right"
             ? `M ${cx} ${cy - r} A ${r} ${r} 0 0 1 ${cx} ${cy + r} A ${k} ${r} 0 0 ${sweep} ${cx} ${cy - r}`
             : `M ${cx} ${cy - r} A ${r} ${r} 0 0 0 ${cx} ${cy + r} A ${k} ${r} 0 0 ${1 - sweep} ${cx} ${cy - r}`
           }
-          fill="#e8d8b4"
+          fill="#f5f0e8"
         />
       )}
     </svg>
@@ -169,7 +169,7 @@ function ObservationEntry({ onSave, existingEntries }) {
     width: "100%",
     padding: "8px 10px",
     fontSize: 14,
-    fontFamily: "'JetBrains Mono', monospace",
+    fontFamily: "'IBM Plex Mono', monospace",
     border: `1px solid ${C.panelBorder}`,
     borderRadius: 4,
     background: C.bg,
@@ -180,7 +180,7 @@ function ObservationEntry({ onSave, existingEntries }) {
   const labelStyle = {
     display: "block",
     fontSize: 11,
-    fontFamily: "'JetBrains Mono', monospace",
+    fontFamily: "'IBM Plex Mono', monospace",
     textTransform: "uppercase",
     letterSpacing: "0.06em",
     color: C.textDim,
@@ -206,11 +206,11 @@ function ObservationEntry({ onSave, existingEntries }) {
       </select>
 
       <label style={labelStyle}>Notes (weather, conditions, anything unusual)</label>
-      <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} style={{ ...inputStyle, resize: "vertical", fontFamily: "'Source Serif 4', Georgia, serif" }} placeholder="Cloudy, shadow edge unclear…" />
+      <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} style={{ ...inputStyle, resize: "vertical", fontFamily: "'Crimson Pro', Georgia, serif" }} placeholder="Cloudy, shadow edge unclear…" />
 
       <button onClick={save} style={{
         marginTop: 16, width: "100%", padding: "10px", fontSize: 12,
-        fontFamily: "'JetBrains Mono', monospace", fontWeight: 600,
+        fontFamily: "'IBM Plex Mono', monospace", fontWeight: 600,
         textTransform: "uppercase", letterSpacing: "0.06em",
         background: C.amber, color: "#fff", border: "none", borderRadius: 4, cursor: "pointer",
       }}>
@@ -252,7 +252,7 @@ function ExpectedSky({ date, lat, lon, tz, hasObserved }) {
         <div style={{ fontSize: 13, color: C.textSecondary }}>{label}</div>
         {note && <div style={{ fontSize: 11, color: C.textDim, marginTop: 2 }}>{note}</div>}
       </div>
-      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 16, fontWeight: 600, color: C.text }}>
+      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 16, fontWeight: 600, color: C.text }}>
         {value} <span style={{ fontSize: 11, fontWeight: 400, color: C.textDim }}>{unit}</span>
       </div>
     </div>
@@ -297,7 +297,7 @@ function BiggerNetwork({ date, hasObserved }) {
     <div style={{ padding: 16, background: bgColor, border: `1px solid ${C.panelBorder}`, borderRadius: 6, marginBottom: 12 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
         <span style={{ fontSize: 16 }}>{icon}</span>
-        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.06em", fontWeight: 600, color }}>{title}</span>
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.06em", fontWeight: 600, color }}>{title}</span>
       </div>
       <div style={{ fontSize: 13, lineHeight: 1.65, color: C.textSecondary }}>{body}</div>
     </div>
@@ -345,7 +345,7 @@ function CompareCity({ date, myCity, myLat, myLon, myTz }) {
 
   return (
     <div style={{ marginTop: 16, padding: 14, background: C.blueLight, border: `1px solid ${C.panelBorder}`, borderRadius: 6 }}>
-      <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.06em", color: C.blue, marginBottom: 8 }}>Compare with another city</div>
+      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.06em", color: C.blue, marginBottom: 8 }}>Compare with another city</div>
       <select
         value={compareCity ? compareCity.name : ""}
         onChange={(e) => { const c = otherCities.find((x) => x.name === e.target.value); setCompareCity(c || null); }}
@@ -356,8 +356,8 @@ function CompareCity({ date, myCity, myLat, myLon, myTz }) {
       </select>
       {compareCity && otherNoon !== null && (
         <div style={{ marginTop: 10, fontSize: 13, lineHeight: 1.65, color: C.textSecondary }}>
-          <div>Solar noon in <strong>{compareCity.name}</strong>: <span style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 600 }}>{formatTime(otherNoon)}</span> (local clock)</div>
-          <div>Daylight: <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>{otherDayLen.toFixed(1)} h</span> vs your <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>{dayLength(d, myLat).toFixed(1)} h</span></div>
+          <div>Solar noon in <strong>{compareCity.name}</strong>: <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontWeight: 600 }}>{formatTime(otherNoon)}</span> (local clock)</div>
+          <div>Daylight: <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>{otherDayLen.toFixed(1)} h</span> vs your <span style={{ fontFamily: "'IBM Plex Mono', monospace" }}>{dayLength(d, myLat).toFixed(1)} h</span></div>
           <div style={{ marginTop: 6, fontSize: 12, color: C.textDim }}>
             The difference in solar noon comes from longitude (east–west position) and time zone. The difference in daylight comes from latitude (north–south position) and season.
           </div>
@@ -416,7 +416,7 @@ export default function SkyCompanion() {
 
   const tabStyle = (i) => ({
     flex: 1, padding: "10px 8px", fontSize: 12,
-    fontFamily: "'JetBrains Mono', monospace", fontWeight: activePane === i ? 600 : 400,
+    fontFamily: "'IBM Plex Mono', monospace", fontWeight: activePane === i ? 600 : 400,
     textTransform: "uppercase", letterSpacing: "0.04em", textAlign: "center",
     background: activePane === i ? C.panel : "transparent",
     color: activePane === i ? panes[i].color : C.textDim,
@@ -425,9 +425,9 @@ export default function SkyCompanion() {
   });
 
   return (
-    <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Source Serif 4', Georgia, serif", color: C.text }}>
+    <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Crimson Pro', Georgia, serif", color: C.text }}>
       {/* Nav */}
-      <div style={{ background: "#111827", padding: "6px 20px", display: "flex", gap: 16, fontSize: 11, fontFamily: "'JetBrains Mono', monospace" }}>
+      <div style={{ background: "#1a1a1a", padding: "6px 20px", display: "flex", gap: 16, fontSize: 11, fontFamily: "'IBM Plex Mono', monospace" }}>
         <a href="../index.html" style={{ color: C.slate400, textDecoration: "none" }}>Home</a>
         <a href="index.html" style={{ color: C.slate400, textDecoration: "none" }}>Observe</a>
         <a href="../build/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Build</a>
@@ -439,7 +439,7 @@ export default function SkyCompanion() {
       {/* Header */}
       <div style={{ background: C.slate900, color: "#fff", padding: "16px 20px" }}>
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
-          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: C.amberLight, marginBottom: 4 }}>Tier 0 · Clock School</div>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: C.amberLight, marginBottom: 4 }}>Tier 0 · Clock School</div>
           <h1 style={{ fontSize: 22, fontWeight: 700, margin: 0, lineHeight: 1.2 }}>Sky Companion</h1>
           <p style={{ fontSize: 13, color: C.slate400, margin: "4px 0 0", lineHeight: 1.5 }}>
             A field notebook for comparing your observations with the expected sky.
@@ -450,7 +450,7 @@ export default function SkyCompanion() {
       {/* Location selector */}
       <div style={{ background: C.surface, borderBottom: `1px solid ${C.panelBorder}`, padding: "10px 20px" }}>
         <div style={{ maxWidth: 600, margin: "0 auto", display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.06em", color: C.textDim }}>Location:</span>
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.06em", color: C.textDim }}>Location:</span>
           <select
             value={selectedCity.name}
             onChange={(e) => setSelectedCity(CITIES.find((c) => c.name === e.target.value))}
@@ -466,12 +466,12 @@ export default function SkyCompanion() {
             </>
           )}
           {!isCustom && (
-            <span style={{ fontSize: 11, color: C.textDim, fontFamily: "'JetBrains Mono', monospace" }}>
+            <span style={{ fontSize: 11, color: C.textDim, fontFamily: "'IBM Plex Mono', monospace" }}>
               {Math.abs(lat).toFixed(1)}{"\u00B0"}{lat >= 0 ? "N" : "S"}, {Math.abs(lon).toFixed(1)}{"\u00B0"}{lon >= 0 ? "E" : "W"}, UTC{tz >= 0 ? "+" : ""}{tz}
             </span>
           )}
         </div>
-        <div style={{ maxWidth: 600, margin: "2px auto 0", fontSize: 10, color: C.textDim, fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.02em" }}>
+        <div style={{ maxWidth: 600, margin: "2px auto 0", fontSize: 10, color: C.textDim, fontFamily: "'IBM Plex Mono', monospace", letterSpacing: "0.02em" }}>
           Timezone offsets are fixed approximations. Daylight saving time is not included.
         </div>
       </div>
@@ -494,12 +494,12 @@ export default function SkyCompanion() {
               {entries.length > 0 && (
                 <div style={{ marginTop: 20, borderTop: `1px solid ${C.surface}`, paddingTop: 16 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, textTransform: "uppercase", color: C.textDim }}>Saved observations</span>
-                    <button onClick={exportCSV} style={{ padding: "4px 10px", fontSize: 10, fontFamily: "'JetBrains Mono', monospace", background: C.surface, color: C.textDim, border: `1px solid ${C.panelBorder}`, borderRadius: 3, cursor: "pointer" }}>Export CSV</button>
+                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, textTransform: "uppercase", color: C.textDim }}>Saved observations</span>
+                    <button onClick={exportCSV} style={{ padding: "4px 10px", fontSize: 10, fontFamily: "'IBM Plex Mono', monospace", background: C.surface, color: C.textDim, border: `1px solid ${C.panelBorder}`, borderRadius: 3, cursor: "pointer" }}>Export CSV</button>
                   </div>
                   {entries.map((e, i) => (
                     <div key={i} style={{ padding: "8px 0", borderBottom: `1px solid ${C.surface}`, fontSize: 13 }}>
-                      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: C.textDim }}>{e.date}</span>
+                      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.textDim }}>{e.date}</span>
                       {e.solarNoonObs && <span style={{ marginLeft: 12 }}>☀ {e.solarNoonObs}</span>}
                       {e.pendulumCount && <span style={{ marginLeft: 12 }}>🔔 {e.pendulumCount} swings</span>}
                       {e.moonObs && e.moonObs !== "Did not observe" && <span style={{ marginLeft: 12 }}>🌙 {e.moonObs}</span>}
@@ -524,7 +524,7 @@ export default function SkyCompanion() {
       </div>
 
       {/* Footer */}
-      <div style={{ borderTop: `1px solid ${C.panelBorder}`, padding: "12px 20px", fontSize: 11, color: C.textDim, textAlign: "center", fontFamily: "'JetBrains Mono', monospace" }}>
+      <div style={{ borderTop: `1px solid ${C.panelBorder}`, padding: "12px 20px", fontSize: 11, color: C.textDim, textAlign: "center", fontFamily: "'IBM Plex Mono', monospace" }}>
         <a href="../index.html" style={{ color: C.textDim, textDecoration: "none" }}>Clock School</a> — What Is a Clock? · Sky Companion v0.1 · Astronomical calculations are approximate (Spencer 1971, synodic month) · Not a precision ephemeris
       </div>
     </div>

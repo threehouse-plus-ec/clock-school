@@ -50,4 +50,4 @@ Key design principle: the browser app is the front end for both Tier 1A (interna
 
 - React (hooks: useState, useRef, useEffect, useCallback, useMemo)
 - No external libraries required
-- Fonts: Source Serif 4, JetBrains Mono (loaded from Google Fonts in the host page)
+- Fonts: Crimson Pro, IBM Plex Mono (loaded from Google Fonts in the host page)
