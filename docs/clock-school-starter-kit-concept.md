@@ -480,4 +480,4 @@ The LBE-1420 **ships with** a magnetic-base active GPS antenna and 5 m cable (SM
 
 *Clock School — What Is a Clock?*
 *Starter Kit Specification v0.3 · March 2026*
-*CC BY-SA 4.0*
+*CC BY-NC-SA 4.0*

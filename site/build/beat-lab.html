@@ -4,12 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Beat Lab — Clock School</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body, #root { height: 100%; }
-    body { font-family: 'Crimson Pro', Georgia, serif; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font-serif); -webkit-font-smoothing: antialiased; }
   </style>
 </head>
 <body>
@@ -34,18 +33,20 @@ const C = {
   panel: "#faf8f4",
   panelBorder: "#e0dbd2",
   surface: "#f5f0e8",
+  slate900: "#faf8f4",
+  slate400: "#6b6b6b",
   text: "#1a1a1a",
   textBright: "#1a1a1a",
   textDim: "#6b6b6b",
   amber: "#2c5f7c",
   amberLight: "#2c5f7c",
   amberDim: "rgba(44,95,124,0.15)",
-  green: "#0d9668",
+  green: "#2c5f7c",
   red: "#c0392b",
   sand: "#f5f0e8",
   waveform: "#2c5f7c",
   spectrum: "#c0392b",
-  envelope: "#0d9668",
+  envelope: "#6b6b6b",
   grid: "rgba(26,26,26,0.08)",
   gridText: "rgba(26,26,26,0.4)",
 };
@@ -539,6 +540,9 @@ function BeatLab() {
         <a href="../explore/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Explore</a>
         <a href="../teachers/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Teachers</a>
       </div>
+      <div style={{ background: C.bg, borderBottom: `1px solid ${C.panelBorder}`, padding: "6px 20px", fontSize: 10, color: C.textDim, fontFamily: "'IBM Plex Mono', monospace", lineHeight: 1.5 }}>
+        Endorsement Marker: Local candidate framework under local stewardship. Beat measurements here are educational comparisons, not certified calibration output.
+      </div>
 
       {/* ─── Header ─── */}
       <div style={{ background: C.surface, borderBottom: `1px solid ${C.panelBorder}`, padding: "12px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -554,7 +558,7 @@ function BeatLab() {
 
       {/* ─── Guide ─── */}
       {showGuide && (
-        <div style={{ background: "rgba(212,134,10,0.08)", borderBottom: `1px solid ${C.amberDim}`, padding: "12px 20px", fontSize: 14, lineHeight: 1.6 }}>
+        <div style={{ background: C.panel, borderBottom: `1px solid ${C.amberDim}`, padding: "12px 20px", fontSize: 14, lineHeight: 1.6 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <div style={{ maxWidth: 700 }}>
               You are comparing two periodic signals. When their frequencies differ slightly, they produce a pattern called <strong style={{ color: C.amberLight }}>beating</strong>. The beat frequency tells you how much they disagree. This is the same measurement principle used in atomic clock networks — only the precision and the tools change.
@@ -578,7 +582,7 @@ function BeatLab() {
               <p style={{ fontSize: 13, color: C.textDim, lineHeight: 1.6, marginBottom: 10 }}>Microphone mode analyses audio from your device's microphone.</p>
 
               {/* Internal reference tone */}
-              <div style={{ padding: 12, background: "rgba(93,184,254,0.08)", border: `1px solid rgba(93,184,254,0.2)`, borderRadius: 4, marginBottom: 12 }}>
+              <div style={{ padding: 12, background: C.panel, border: `1px solid ${C.panelBorder}`, borderRadius: 4, marginBottom: 12 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
                   <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.06em", color: C.waveform }}>Reference Tone</span>
                   <button onClick={() => setMicRefEnabled(!micRefEnabled)} style={{ padding: "3px 10px", fontSize: 10, fontFamily: "'IBM Plex Mono', monospace", background: micRefEnabled ? C.waveform : C.surface, color: micRefEnabled ? C.bg : C.textDim, border: `1px solid ${micRefEnabled ? C.waveform : C.panelBorder}`, borderRadius: 3, cursor: "pointer" }}>
@@ -684,7 +688,7 @@ function BeatLab() {
 
           {/* ─── Precision vs integration ─── */}
           {playing && sampleCount > 1 && beatSigma !== null && (
-            <div style={{ marginTop: 8, padding: 10, background: "rgba(45,212,160,0.06)", border: `1px solid rgba(45,212,160,0.15)`, borderRadius: 4, fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", color: C.textDim, lineHeight: 1.6 }}>
+            <div style={{ marginTop: 8, padding: 10, background: C.panel, border: `1px solid ${C.panelBorder}`, borderRadius: 4, fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", color: C.textDim, lineHeight: 1.6 }}>
               <div style={{ color: C.green, fontWeight: 600, marginBottom: 2, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.08em" }}>Precision</div>
               <div>&#963; = {formatFreq(beatSigma)} Hz over {integrationTime}s</div>
               <div>Relative: {avgBeat > 0.01 ? (beatSigma / avgBeat * 100).toFixed(2) : "—"}%</div>
@@ -702,7 +706,7 @@ function BeatLab() {
           </button>
 
           {/* ─── Notebook prompts ─── */}
-          <div style={{ marginTop: 24, padding: 12, background: "rgba(212,134,10,0.06)", border: `1px solid ${C.amberDim}`, borderRadius: 4, fontSize: 12, lineHeight: 1.7, color: C.textDim }}>
+          <div style={{ marginTop: 24, padding: 12, background: C.panel, border: `1px solid ${C.amberDim}`, borderRadius: 4, fontSize: 12, lineHeight: 1.7, color: C.textDim }}>
             <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, textTransform: "uppercase", letterSpacing: "0.1em", color: C.amber, marginBottom: 6 }}>Notebook Prompts</div>
             <div>→ What beat frequency do you observe?</div>
             <div>→ Is it stable over repeated measurements?</div>

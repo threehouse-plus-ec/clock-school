@@ -2,6 +2,8 @@
 
 **An Open Science School on Time, Comparison, and Measurement**
 
+**Endorsement Marker:** Local candidate framework under local stewardship. No external endorsement implied.
+
 ---
 
 Every civilisation has built clocks.
@@ -50,11 +52,11 @@ The programme has four tiers. Each preserves the same question while changing sc
 
 ## Licensing
 
-- Text, documentation, worksheets, 3D designs: **CC BY-SA 4.0**
-- Code: **MIT Licence**
+- Authored text, documentation, worksheets, and concept notes: **CC BY-NC-SA 4.0**
+- Code and copied design assets: **MIT**
 - Public datasets in Tier 3: original licences apply
 
-See [LICENSE-TEXT.md](LICENSE-TEXT.md) and [LICENSE-CODE.md](LICENSE-CODE.md).
+See the repository [LICENCE](LICENCE) map for folder-level details. Legacy aliases remain at [LICENSE-TEXT.md](LICENSE-TEXT.md) and [LICENSE-CODE.md](LICENSE-CODE.md).
 
 ## Contributing
 

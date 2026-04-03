@@ -1,0 +1,9 @@
+This folder contains mixed notebook content.
+
+Default licence for notebook narrative, explanatory text, figures, and rendered outputs:
+- CC BY-NC-SA 4.0
+
+Default licence for reusable source code contained in notebooks:
+- MIT
+
+When a notebook includes a more specific in-file declaration, that declaration prevails.

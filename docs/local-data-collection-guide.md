@@ -280,4 +280,4 @@ This workflow can run in parallel with the theoretical sections of the thesis an
 
 *Clock School — What Is a Clock?*
 *Local Data Collection Guide v1.0 · March 2026*
-*CC BY-SA 4.0*
+*CC BY-NC-SA 4.0*

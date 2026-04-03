@@ -329,4 +329,4 @@ Regimes 1 and 2 use the same hardware at different frequency settings — zero a
 
 *Clock School — What Is a Clock?*
 *Council-Amended Concept Note · v0.3 · March 2026*
-*CC BY-SA 4.0 · Ulrich Warring and contributors*
+*CC BY-NC-SA 4.0 · Ulrich Warring and contributors*

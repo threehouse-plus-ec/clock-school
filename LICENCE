@@ -1,0 +1,25 @@
+Clock School uses a split licence architecture aligned with the T(h)reehouse +EC corporate-design blueprint.
+
+Default rule:
+- Authored works are licensed under CC BY-NC-SA 4.0 unless a folder-level `LICENCE` file or an in-file header declares otherwise.
+- Code, tooling, and copied design assets are licensed under MIT where declared below.
+
+Repository map:
+- `assets/`: MIT. Canonical corporate-design assets copied from `threehouse-plus-ec/cd-rules`; see `assets/LICENCE` and `assets/SOURCE.md`.
+- `apps/`: MIT. React source for browser tools.
+- `site/style.css`: MIT. Shared site stylesheet and rendering code.
+- `docs/`: CC BY-NC-SA 4.0. Authored programme documents and concept notes.
+- `hardware/`: CC BY-NC-SA 4.0 unless a subfolder declares otherwise.
+- `notebooks/`: CC BY-NC-SA 4.0 for authored notebook narrative and outputs. Reusable code snippets remain available under MIT unless a notebook states otherwise.
+- `README.md`: CC BY-NC-SA 4.0.
+- `CONTRIBUTING.md`: CC BY-NC-SA 4.0.
+
+Legacy alias files:
+- `LICENSE-CODE.md` points to the MIT layer for code and assets.
+- `LICENSE-TEXT.md` points to the authored-work layer and this split declaration.
+
+External dependencies keep their own licences:
+- IBM Plex Mono: SIL OFL 1.1
+- Crimson Pro: SIL OFL 1.1
+
+When in doubt, the more specific declaration prevails.

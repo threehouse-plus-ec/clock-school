@@ -2,6 +2,8 @@
 
 **An Open Science School on Time, Comparison, and Measurement**
 
+**Endorsement Marker:** Local candidate framework under local stewardship. No external endorsement implied.
+
 Project Blueprint · v0.3 · March 2026
 
 ---
@@ -219,7 +221,7 @@ The following concepts appear in every tier. Each tier engages them at a level a
 
 ## Access Philosophy
 
-The programme is not attached to any university, any degree, or any credentialing body. It is freely available under open licence.
+The programme is not attached to any university, any degree, or any credentialing body. It is freely available under a split licence declaration that keeps infrastructure permissive and authored teaching material shareable under non-commercial terms.
 
 It is designed so that scientific seriousness does not require expensive equipment. Tier 0 requires nothing that cannot be found in any household. Tier 1 begins at approximately €10. Tier 2 runs on any laptop. Tier 3 uses public data.
 
@@ -229,17 +231,15 @@ The programme does not target any region. It is built for everyone. It is built 
 
 ## Licensing
 
-All text and documentation: **CC BY-SA 4.0** (Creative Commons Attribution-ShareAlike).
+Authored text and documentation: **CC BY-NC-SA 4.0** (Creative Commons Attribution-NonCommercial-ShareAlike).
 
-All code: **MIT Licence**.
-
-All 3D-printable designs (STL files): **CC BY-SA 4.0**.
+Code and copied design assets: **MIT**.
 
 All public datasets used in Tier 3 retain their original licences and are cited accordingly.
 
 Attribution: "What Is a Clock? — An Open Science School" by Ulrich Warring and contributors.
 
-A **CONTRIBUTING.md** file is included in the repository from the outset, establishing contribution guidelines, code of conduct, and the expectation that all contributions respect the programme's open licence and epistemic standards.
+A **CONTRIBUTING.md** file is included in the repository from the outset, establishing contribution guidelines, code of conduct, and the expectation that all contributions respect the programme's split licence declaration and epistemic standards.
 
 ---
 
@@ -263,7 +263,7 @@ The programme lives as a static website (GitHub Pages) with the following sectio
 
 8. **For Teachers** — Guidance for schools, universities, science clubs, and self-learners. Suggested timelines. Assessment ideas (optional, non-prescriptive). How to run Tier 0 with a class of thirty. How to supervise Tier 1 remotely.
 
-9. **About / Licence / Contribute** — Mission statement. Licensing. How to contribute (CONTRIBUTING.md). Code of conduct. Version history.
+9. **About / Licence / Contribute** — Mission statement. Licence map. How to contribute (CONTRIBUTING.md). Code of conduct. Version history.
 
 ---
 
@@ -326,8 +326,9 @@ clock-school/
 │   ├── pendulum-measurements/
 │   └── student-projects/
 ├── CONTRIBUTING.md                ← Contribution guidelines and code of conduct
-├── LICENSE-TEXT.md                 ← CC BY-SA 4.0
-├── LICENSE-CODE.md                ← MIT
+├── LICENCE                        ← Split declaration
+├── LICENSE-TEXT.md                ← Legacy authored-text alias
+├── LICENSE-CODE.md                ← Legacy MIT alias
 └── README.md                      ← Programme overview (condensed blueprint)
 ```
 
@@ -357,7 +358,7 @@ This framework is a coastline under local stewardship. It has not received broad
 
 **Immediate (can begin now):**
 
-1. Create the GitHub organisation and seed repository with directory structure, licences, and CONTRIBUTING.md.
+1. Create the GitHub organisation and seed repository with directory structure, split licence declarations, and CONTRIBUTING.md.
 2. Write the Home page ("What Is a Clock?") — short, warm, one page.
 3. Write and test Experiment 0.1 (Three Clocks That Disagree) with printable worksheet.
 4. Adapt the existing Tier 2 site pages: remove institutional framing, add cross-tier navigation.

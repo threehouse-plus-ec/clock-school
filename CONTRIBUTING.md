@@ -1,5 +1,7 @@
 # Contributing to Clock School
 
+**Endorsement Marker:** Contribution workflow for a local candidate framework under local stewardship. No external endorsement implied.
+
 Thank you for your interest in contributing. This project exists because people care about honest science education with minimal barriers. Contributions of all kinds are welcome.
 
 ## What We Need
@@ -26,7 +28,7 @@ For small fixes (typos, broken links), a direct pull request is fine. For larger
 - **Clarity over cleverness.** Write so that a motivated teenager can follow.
 - **Show your work.** Document assumptions, parameters, and reasoning.
 - **Respect the invariant.** Every contribution should be consistent with the programme's organising principle: a clock is an operational comparison between periodic processes.
-- **Licence compliance.** Text contributions fall under CC BY-SA 4.0. Code contributions fall under MIT. By contributing, you agree to these terms.
+- **Licence compliance.** Authored text contributions default to CC BY-NC-SA 4.0. Code contributions default to MIT. Check the repository `LICENCE` map if you are working in a mixed folder.
 
 ## Code of Conduct
 

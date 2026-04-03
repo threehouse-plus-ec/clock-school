@@ -2,6 +2,8 @@
 
 **Two-Box Architecture: XR2206 + Reference**
 
+**Endorsement Marker:** Local candidate framework under local stewardship. Stability claims refer to the compared electrical signals and software-derived beat measurements, not to an externally certified metrological standard.
+
 Specification v0.3 · March 2026
 
 ---
@@ -308,4 +310,4 @@ Both oscillators should drive speakers or piezoelectric elements so the beat is 
 ---
 
 *Clock School — What Is a Clock? · Tier 1 Hardware Specification · v0.3*
-*CC BY-SA 4.0 · Ulrich Warring and contributors*
+*CC BY-NC-SA 4.0 · Ulrich Warring and contributors*

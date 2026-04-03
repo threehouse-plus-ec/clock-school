@@ -1,14 +1,4 @@
-# Legacy Code Licence Alias
-
-The MIT licence for code and copied design assets in this repository is now declared through:
-
-- `LICENCE` at the repository root
-- `apps/LICENCE`
-- `assets/LICENCE`
-
-This file remains as a compatibility alias for existing links.
-
-## MIT License
+MIT License
 
 Copyright (c) 2026 Ulrich Warring and contributors
 

@@ -1,6 +1,7 @@
 # Clock School 10-MHz Demonstrator — Lab Guide
 
 **Programme:** [Clock School — What Is a Clock?](https://threehouse-plus-ec.github.io/clock-school/)
+**Endorsement Marker:** Local candidate framework under local stewardship. Stability claims refer to electrical reference outputs and observed comparison traces, not to student apparatus as a calibrated standard.
 **Last updated:** 2 April 2026
 
 ---

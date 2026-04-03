@@ -1,0 +1,7 @@
+This folder contains mixed website material.
+
+Default licences:
+- Authored page copy and narrative content: CC BY-NC-SA 4.0
+- Shared stylesheet code in `site/style.css`: MIT
+
+Code copied into `site/build/*.html` remains governed by the file contents and the source app in `apps/`.

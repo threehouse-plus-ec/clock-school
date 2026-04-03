@@ -4,12 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sky Companion — Clock School</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body, #root { height: 100%; }
-    body { font-family: 'Crimson Pro', Georgia, serif; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font-serif); -webkit-font-smoothing: antialiased; }
   </style>
 </head>
 <body>
@@ -25,8 +24,8 @@ const C = {
   bg: "#f5f0e8",
   panel: "#faf8f4",
   panelBorder: "#e0dbd2",
-  surface: "#e0dbd2",
-  slate900: "#1a1a1a",
+  surface: "#faf8f4",
+  slate900: "#faf8f4",
   slate800: "#1a1a1a",
   slate700: "#1a1a1a",
   slate600: "#6b6b6b",
@@ -37,8 +36,8 @@ const C = {
   amber: "#2c5f7c",
   amberLight: "#2c5f7c",
   amberDim: "rgba(44,95,124,0.12)",
-  green: "#0d9668",
-  greenLight: "#d1fae5",
+  green: "#2c5f7c",
+  greenLight: "#faf8f4",
   blue: "#2c5f7c",
   blueLight: "rgba(44,95,124,0.12)",
   purple: "#6b6b6b",
@@ -232,7 +231,7 @@ function ObservationEntry({ onSave, existingEntries }) {
         marginTop: 16, width: "100%", padding: "10px", fontSize: 12,
         fontFamily: "'IBM Plex Mono', monospace", fontWeight: 600,
         textTransform: "uppercase", letterSpacing: "0.06em",
-        background: C.amber, color: "#fff", border: "none", borderRadius: 4, cursor: "pointer",
+        background: C.amber, color: C.panel, border: "none", borderRadius: 4, cursor: "pointer",
       }}>
         Save Observation
       </button>
@@ -369,7 +368,7 @@ function CompareCity({ date, myCity, myLat, myLon, myTz }) {
       <select
         value={compareCity ? compareCity.name : ""}
         onChange={(e) => { const c = otherCities.find((x) => x.name === e.target.value); setCompareCity(c || null); }}
-        style={{ width: "100%", padding: "6px 8px", fontSize: 13, border: `1px solid ${C.panelBorder}`, borderRadius: 4, background: "#fff" }}
+        style={{ width: "100%", padding: "6px 8px", fontSize: 13, border: `1px solid ${C.panelBorder}`, borderRadius: 4, background: C.panel }}
       >
         <option value="">— select a city —</option>
         {otherCities.map((c) => <option key={c.name} value={c.name}>{c.name} ({c.lat.toFixed(1)}°, {c.lon.toFixed(1)}°)</option>)}
@@ -447,7 +446,7 @@ function SkyCompanion() {
   return (
     <div style={{ background: C.bg, minHeight: "100vh", fontFamily: "'Crimson Pro', Georgia, serif", color: C.text }}>
       {/* Nav */}
-      <div style={{ background: "#1a1a1a", padding: "6px 20px", display: "flex", gap: 16, fontSize: 11, fontFamily: "'IBM Plex Mono', monospace" }}>
+      <div style={{ background: C.panel, borderBottom: `1px solid ${C.panelBorder}`, padding: "6px 20px", display: "flex", gap: 16, fontSize: 11, fontFamily: "'IBM Plex Mono', monospace" }}>
         <a href="../index.html" style={{ color: C.slate400, textDecoration: "none" }}>Home</a>
         <a href="index.html" style={{ color: C.slate400, textDecoration: "none" }}>Observe</a>
         <a href="../build/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Build</a>
@@ -455,9 +454,12 @@ function SkyCompanion() {
         <a href="../explore/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Explore</a>
         <a href="../teachers/index.html" style={{ color: C.slate400, textDecoration: "none" }}>Teachers</a>
       </div>
+      <div style={{ background: C.bg, borderBottom: `1px solid ${C.panelBorder}`, padding: "6px 20px", fontSize: 10, color: C.textDim, fontFamily: "'IBM Plex Mono', monospace", lineHeight: 1.5 }}>
+        Endorsement Marker: Local candidate framework under local stewardship. Sky predictions here are educational approximations, not precision ephemerides.
+      </div>
 
       {/* Header */}
-      <div style={{ background: C.slate900, color: "#fff", padding: "16px 20px" }}>
+      <div style={{ background: C.slate900, color: C.text, padding: "16px 20px", borderBottom: `1px solid ${C.panelBorder}` }}>
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
           <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: C.amberLight, marginBottom: 4 }}>Tier 0 · Clock School</div>
           <h1 style={{ fontSize: 22, fontWeight: 700, margin: 0, lineHeight: 1.2 }}>Sky Companion</h1>
@@ -474,7 +476,7 @@ function SkyCompanion() {
           <select
             value={selectedCity.name}
             onChange={(e) => setSelectedCity(CITIES.find((c) => c.name === e.target.value))}
-            style={{ padding: "5px 8px", fontSize: 13, border: `1px solid ${C.panelBorder}`, borderRadius: 4, background: "#fff" }}
+            style={{ padding: "5px 8px", fontSize: 13, border: `1px solid ${C.panelBorder}`, borderRadius: 4, background: C.panel }}
           >
             {CITIES.map((c) => <option key={c.name} value={c.name}>{c.name}</option>)}
           </select>
